@@ -62,3 +62,8 @@ desktop.ini
 *.db-wal
 *.db-shm
 !data/database/.gitkeep
+
+# MongoDB dedicated instance storage (Port 27018)
+data/database/mongodb_market_data/*
+!data/database/mongodb_market_data/.gitkeep
+data/database/mongod_27018.log

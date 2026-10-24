@@ -17,7 +17,7 @@ from db_manager import get_default_db_path, get_project_root
 def sync_all_data_to_mongodb():
     print("=" * 75)
     print("SYNCHRONIZING US EQUITIES DATASET TO MONGODB")
-    print("Target Instance: mongodb://localhost:27017 | Database: us_equities_db")
+    print("Target Instance: mongodb://localhost:27018 | Database: us_equities_db")
     print("=" * 75)
 
     start_time = time.time()

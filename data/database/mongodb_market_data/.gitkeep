@@ -1,0 +1,2 @@
+# .gitkeep
+# Preserves the data/database/mongodb_market_data directory in Git for the dedicated MongoDB port 27018 instance.

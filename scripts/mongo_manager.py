@@ -14,7 +14,7 @@ import pandas as pd
 from pymongo import MongoClient, UpdateOne, ASCENDING, DESCENDING
 
 
-DEFAULT_MONGO_URI = "mongodb://localhost:27017/"
+DEFAULT_MONGO_URI = "mongodb://localhost:27018/"
 DEFAULT_DB_NAME = "us_equities_db"
 
 
