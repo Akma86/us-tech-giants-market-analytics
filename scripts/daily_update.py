@@ -21,7 +21,7 @@ def chunk_list(lst, chunk_size):
         yield lst[i:i + chunk_size]
 
 
-def run_daily_update(chunk_size: int = 100, lookback_days: int = 7):
+def run_daily_update(chunk_size: int = 100, lookback_days: int = 7, sync_mongo: bool = False, mongo_db=None):
     print("=" * 75)
     print("RUNNING INCREMENTAL DAILY MARKET UPDATE PIPELINE")
     print("=" * 75)
@@ -112,6 +112,13 @@ def run_daily_update(chunk_size: int = 100, lookback_days: int = 7):
                 df_to_insert = pd.DataFrame(records)
                 inserted = db.insert_daily_prices(df_to_insert)
                 total_new_rows += inserted
+                
+                # Dual sync to MongoDB if enabled
+                if sync_mongo and mongo_db:
+                    try:
+                        mongo_db.insert_prices_bulk(df_to_insert)
+                    except Exception:
+                        pass
 
         except Exception as e:
             print(f"    [!] Error updating batch {chunk_idx}: {str(e)}")
@@ -133,13 +140,29 @@ def run_daily_update(chunk_size: int = 100, lookback_days: int = 7):
     print("\n--- DATABASE CURRENT STATUS ---")
     for k, v in stats.items():
         print(f"  {k}: {v}")
+    
+    if sync_mongo and mongo_db:
+        print("\n--- MONGODB STATUS ---")
+        m_stats = mongo_db.get_stats()
+        for k, v in m_stats.items():
+            print(f"  {k}: {v}")
     print("=" * 75)
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Run daily market price update for SQLite database")
+    parser = argparse.ArgumentParser(description="Run daily market price update for SQLite database and MongoDB")
     parser.add_argument("--chunk-size", type=int, default=100, help="Batch size for downloads")
     parser.add_argument("--lookback", type=int, default=7, help="Lookback days to synchronize")
+    parser.add_argument("--mongo", action="store_true", default=False, help="Also synchronize to local MongoDB")
     args = parser.parse_args()
 
-    run_daily_update(chunk_size=args.chunk_size, lookback_days=args.lookback)
+    mongo_inst = None
+    if args.mongo:
+        try:
+            from mongo_manager import MongoStockDatabase
+            mongo_inst = MongoStockDatabase()
+            print("[+] MongoDB integration enabled: mongodb://localhost:27017")
+        except Exception as e:
+            print(f"[!] Warning: Could not connect to MongoDB: {e}")
+
+    run_daily_update(chunk_size=args.chunk_size, lookback_days=args.lookback, sync_mongo=args.mongo, mongo_db=mongo_inst)
