@@ -160,8 +160,8 @@ Below are sample analytical figures generated directly from [`notebooks/01_datas
 
 ### 1. Clone the Repository
 ```bash
-git clone https://github.com/Akma86/Risk-Return-US-Stock.git
-cd Risk-Return-US-Stock
+git clone https://github.com/Akma86/us-tech-giants-market-analytics.git
+cd us-tech-giants-market-analytics
 ```
 
 ### 2. Create and Activate a Virtual Environment
@@ -225,12 +225,12 @@ Follow along step-by-step to inspect data types, sanity checks, distribution cur
 
 When publishing this repository to GitHub, the following metadata is recommended:
 
-* **Repository Name:** `Risk-Return-US-Stock`
+* **Repository Name:** `us-tech-giants-market-analytics`
 * **Short Description:**
-  > Comprehensive historical risk-return analysis, volatility modeling, and portfolio dynamics of US Tech Giants (AAPL, MSFT, NVDA, GOOGL, AMZN) from IPO to present.
+  > 📊 Comprehensive historical market analytics, risk-return profiling, and portfolio dynamics of US Tech Giants (AAPL, MSFT, NVDA, GOOGL, AMZN) from IPO to present.
 * **Website:** *(Link to your LinkedIn or Portfolio website)*
 * **Topics / Tags:**
-  `financial-analysis`, `risk-return`, `quantitative-finance`, `stock-market`, `portfolio-optimization`, `data-analytics`, `python`, `yfinance`, `pandas`, `eda`, `modern-portfolio-theory`
+  `financial-analysis`, `stock-market-analytics`, `risk-return`, `quantitative-finance`, `portfolio-optimization`, `data-analytics`, `python`, `yfinance`, `pandas`, `eda`, `modern-portfolio-theory`
 
 ---
 
