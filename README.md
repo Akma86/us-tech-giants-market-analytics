@@ -58,40 +58,48 @@ The dataset spans over **four decades** of technology market history:
 This project adopts standard professional data science conventions:
 
 ```text
-Risk-Return-US-Stock/
+us-tech-giants-market-analytics/
 ├── .github/
 │   └── workflows/
-│       └── data-check.yml            # CI validation workflow
+│       └── data-validation.yml                # CI environment & data validation workflow
 ├── data/
-│   ├── raw/                          # Original, immutable datasets
+│   ├── raw/                                   # Original, immutable datasets from IPO
 │   │   ├── AAPL.csv
 │   │   ├── MSFT.csv
 │   │   ├── NVDA.csv
 │   │   ├── GOOGL.csv
 │   │   ├── AMZN.csv
-│   │   └── us_tech_giants_daily_history.csv  # Consolidated master dataset (41,762 rows)
-│   ├── processed/                    # Feature-engineered / cleaned outputs
-│   │   └── .gitkeep                  # Preserves directory in Git
-│   └── external/                     # Market benchmarks (e.g. S&P 500, risk-free rate)
-│       └── .gitkeep                  # Preserves directory in Git
+│   │   └── us_tech_giants_daily_history.csv   # Consolidated master dataset (41,762 rows)
+│   ├── processed/                             # Feature-engineered quantitative dataset
+│   │   ├── us_tech_giants_engineered_features.csv # 41,762 rows × 33 engineered features
+│   │   └── .gitkeep
+│   └── external/                              # Market benchmarks (e.g. S&P 500, risk-free rate)
+│       └── .gitkeep
 ├── notebooks/
-│   └── 01_dataset_inspection_and_eda.ipynb   # Starter inspection & exploratory analysis
+│   ├── 01_dataset_inspection_and_eda.ipynb    # Starter inspection & exploratory analysis
+│   └── 02_feature_engineering_and_market_analytics.ipynb # Advanced quant features & volatility
 ├── scripts/
 │   ├── __init__.py
-│   ├── fetch_data.py                 # Automated data extraction from Yahoo Finance
-│   └── build_notebook.py             # Notebook generator & pre-renderer
+│   ├── fetch_data.py                          # Automated data extraction from Yahoo Finance
+│   ├── build_notebook.py                      # EDA notebook generator & pre-renderer
+│   └── build_feature_notebook.py              # Feature engineering notebook generator
 ├── reports/
-│   ├── figures/                      # High-resolution charts & plots exported from EDA
+│   ├── figures/                               # High-resolution charts & plots exported from EDA
 │   │   ├── 01_price_trajectories.png
 │   │   ├── 02_trading_volume_trends.png
 │   │   ├── 03_return_distributions.png
 │   │   ├── 04_correlation_matrix.png
+│   │   ├── 05_cumulative_returns_wealth_index.png
+│   │   ├── 06_drawdown_dynamics.png
+│   │   ├── 07_rolling_volatility_comparison.png
+│   │   ├── 08_technical_indicators_dashboard.png
+│   │   ├── 09_risk_return_scatter.png
 │   │   └── .gitkeep
 │   └── .gitkeep
-├── .gitignore                        # Python, Jupyter, OS, and selective data tracking
-├── requirements.txt                  # Complete Python package dependencies
-├── LICENSE                           # MIT License
-└── README.md                         # Project documentation
+├── .gitignore                                 # Python, Jupyter, OS, and selective data tracking
+├── requirements.txt                           # Complete Python package dependencies
+├── LICENSE                                    # MIT License
+└── README.md                                  # Project documentation
 ```
 
 ---
@@ -152,6 +160,28 @@ Below are sample analytical figures generated directly from [`notebooks/01_datas
 
 ---
 
+## 🔬 Advanced Feature Engineering & Quantitative Modeling
+
+Documented in [`notebooks/02_feature_engineering_and_market_analytics.ipynb`](notebooks/02_feature_engineering_and_market_analytics.ipynb):
+
+### 1. Lifetime Compounding Wealth Index ($1 Initial Capital at IPO)
+![Wealth Index](reports/figures/05_cumulative_returns_wealth_index.png)
+* Traces multi-decade capital compounding, highlighting the exponential returns achieved by surviving early volatility.
+
+### 2. Underwater Drawdown Trajectories & Tail-Risk
+![Drawdown Dynamics](reports/figures/06_drawdown_dynamics.png)
+* Quantifies lifetime Maximum Drawdown (MDD) across multiple macro regimes (1990s restructuring, Dot-com crash, 2008 GFC, 2022 rate hikes). Even premier tech giants suffered peak-to-trough losses exceeding 70–80%.
+
+### 3. Technical Indicator Visual Dashboard (Example: NVIDIA 2023–2026)
+![Technical Dashboard](reports/figures/08_technical_indicators_dashboard.png)
+* Visualizes price channels, 50/200-day Simple Moving Averages, Bollinger Bands (20-day $\pm 2\sigma$), Wilder's 14-period RSI, and MACD momentum divergence.
+
+### 4. Risk-Return Trade-Off (CAGR vs. Annualized Volatility)
+![Risk Return Scatter](reports/figures/09_risk_return_scatter.png)
+* Maps each asset in mean-variance space across the common trading period (2004–2026), contrasting compound return generation against trailing volatility.
+
+---
+
 ## ⚙️ Installation & Setup
 
 ### Prerequisites
@@ -192,11 +222,14 @@ python scripts/fetch_data.py
 ```
 This updates all individual CSVs in `data/raw/` and generates the consolidated `us_tech_giants_daily_history.csv`.
 
-### 2. Launch the Interactive Jupyter Notebook
+### 2. Run the Interactive Jupyter Notebooks
 ```bash
+# Notebook 1: Dataset Inspection & Initial EDA
 jupyter notebook notebooks/01_dataset_inspection_and_eda.ipynb
+
+# Notebook 2: Feature Engineering & Advanced Market Analytics
+jupyter notebook notebooks/02_feature_engineering_and_market_analytics.ipynb
 ```
-Follow along step-by-step to inspect data types, sanity checks, distribution curves, and interactive visualizations.
 
 ---
 
@@ -206,11 +239,14 @@ Follow along step-by-step to inspect data types, sanity checks, distribution cur
   - [x] Ingestion from IPO to present for AAPL, MSFT, NVDA, GOOGL, AMZN.
   - [x] Data quality checks (null values, duplicates, anomaly filtering).
   - [x] Starter EDA notebook with pre-rendered statistical figures.
-- [ ] **Phase 2: Risk-Return Performance Metrics**
-  - [ ] Compound Annual Growth Rate (CAGR) across market cycles.
-  - [ ] Maximum Drawdown (MDD) and recovery durations (Dot-Com, 2008 GFC, 2020 COVID, 2022 Fed rate hikes).
-  - [ ] Rolling 30-day and 252-day annualized historical volatility.
-- [ ] **Phase 3: Risk-Adjusted Benchmarking**
+- [x] **Phase 2: Feature Engineering & Risk-Return Profiling**
+  - [x] Compound Annual Growth Rate (CAGR) and Wealth Index compounding.
+  - [x] Maximum Drawdown (MDD) and underwater equity curves.
+  - [x] Rolling 21-day and 63-day annualized historical volatility.
+  - [x] Garman-Klass intraday volatility estimator.
+  - [x] Technical momentum features: SMA (20, 50, 200), RSI (14), MACD, Bollinger Bands, RVOL.
+  - [x] Exported enriched dataset to `data/processed/us_tech_giants_engineered_features.csv`.
+- [ ] **Phase 3: Risk-Adjusted Benchmarking & Factor Analysis**
   - [ ] Sharpe Ratio and Sortino Ratio computation using historical US Treasury risk-free rates.
   - [ ] Beta and Alpha estimation relative to S&P 500 (`^GSPC`) benchmark.
   - [ ] Value at Risk (VaR) and Conditional VaR (Expected Shortfall) at 95% and 99% confidence.
