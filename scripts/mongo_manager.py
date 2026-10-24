@@ -171,9 +171,9 @@ class MongoStockDatabase:
         return {
             "database_name": self.db.name,
             "tickers_count": self.db.tickers.count_documents({}),
-            "daily_prices_count": self.db.daily_prices.count_documents({}),
+            "daily_prices_count": self.db.daily_prices.estimated_document_count(),
             "earnings_count": self.db.earnings.count_documents({}),
-            "distinct_stocks_with_prices": len(self.db.daily_prices.distinct("symbol")),
+            "distinct_stocks_with_prices": self.db.tickers.count_documents({}),
         }
 
 

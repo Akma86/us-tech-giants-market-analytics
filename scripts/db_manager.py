@@ -158,17 +158,36 @@ class USStockDatabase:
 
         return len(records)
 
-    def update_ticker_metadata(self):
+    def update_ticker_metadata(self, symbols: Optional[List[str]] = None):
         """Refreshes first_date, last_date, and total_records in tickers table."""
         with self.get_connection() as conn:
-            conn.execute("""
-            UPDATE tickers
-            SET
-                first_date = (SELECT MIN(date) FROM daily_prices WHERE daily_prices.symbol = tickers.symbol),
-                last_date = (SELECT MAX(date) FROM daily_prices WHERE daily_prices.symbol = tickers.symbol),
-                total_records = (SELECT COUNT(*) FROM daily_prices WHERE daily_prices.symbol = tickers.symbol)
-            WHERE symbol IN (SELECT DISTINCT symbol FROM daily_prices);
-            """)
+            if symbols:
+                placeholders = ",".join("?" for _ in symbols)
+                conn.execute(f"""
+                UPDATE tickers
+                SET
+                    first_date = (SELECT MIN(date) FROM daily_prices WHERE daily_prices.symbol = tickers.symbol),
+                    last_date = (SELECT MAX(date) FROM daily_prices WHERE daily_prices.symbol = tickers.symbol),
+                    total_records = (SELECT COUNT(*) FROM daily_prices WHERE daily_prices.symbol = tickers.symbol)
+                WHERE symbol IN ({placeholders});
+                """, [s.upper() for s in symbols])
+            else:
+                conn.execute("DROP TABLE IF EXISTS _temp_meta;")
+                conn.execute("""
+                CREATE TEMP TABLE _temp_meta AS
+                SELECT symbol, MIN(date) AS f_date, MAX(date) AS l_date, COUNT(*) AS cnt
+                FROM daily_prices
+                GROUP BY symbol;
+                """)
+                conn.execute("""
+                UPDATE tickers
+                SET
+                    first_date = (SELECT f_date FROM _temp_meta WHERE _temp_meta.symbol = tickers.symbol),
+                    last_date = (SELECT l_date FROM _temp_meta WHERE _temp_meta.symbol = tickers.symbol),
+                    total_records = (SELECT cnt FROM _temp_meta WHERE _temp_meta.symbol = tickers.symbol)
+                WHERE symbol IN (SELECT symbol FROM _temp_meta);
+                """)
+                conn.execute("DROP TABLE IF EXISTS _temp_meta;")
 
     def get_latest_dates_all(self) -> Dict[str, str]:
         """Returns a mapping of symbol -> MAX(date) in the database."""
@@ -226,9 +245,11 @@ class USStockDatabase:
         """Returns summary statistics about the database."""
         with self.get_connection() as conn:
             total_tickers = conn.execute("SELECT COUNT(*) FROM tickers;").fetchone()[0]
-            tickers_with_data = conn.execute("SELECT COUNT(DISTINCT symbol) FROM daily_prices;").fetchone()[0]
+            tickers_with_data = conn.execute("SELECT COUNT(*) FROM tickers WHERE total_records > 0;").fetchone()[0]
+            if tickers_with_data == 0:
+                tickers_with_data = conn.execute("SELECT COUNT(DISTINCT symbol) FROM daily_prices;").fetchone()[0]
             total_rows = conn.execute("SELECT COUNT(*) FROM daily_prices;").fetchone()[0]
-            dates = conn.execute("SELECT MIN(date), MAX(date) FROM daily_prices;").fetchone()
+            dates = conn.execute("SELECT (SELECT MIN(date) FROM daily_prices), (SELECT MAX(date) FROM daily_prices);").fetchone()
 
         file_size_mb = self.db_path.stat().st_size / (1024 * 1024) if self.db_path.exists() else 0.0
 
