@@ -1,0 +1,2 @@
+# .gitkeep
+# Preserves data/database directory in Git while ignoring local SQLite binary files (*.db).

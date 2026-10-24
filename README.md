@@ -63,6 +63,9 @@ us-tech-giants-market-analytics/
 │   └── workflows/
 │       └── data-validation.yml                # CI environment & data validation workflow
 ├── data/
+│   ├── database/                              # High-performance local SQLite database
+│   │   ├── us_equities.db                     # Indexed database (2,200+ tickers, millions of bars)
+│   │   └── .gitkeep
 │   ├── raw/                                   # Original, immutable datasets from IPO
 │   │   ├── AAPL.csv
 │   │   ├── MSFT.csv
@@ -85,14 +88,20 @@ us-tech-giants-market-analytics/
 ├── notebooks/
 │   ├── 01_dataset_inspection_and_eda.ipynb    # Starter inspection & exploratory analysis
 │   ├── 02_feature_engineering_and_market_analytics.ipynb # Advanced quant features & volatility
-│   └── 03_earnings_impact_and_event_study.ipynb # PEAD event study & earnings dashboards
+│   ├── 03_earnings_impact_and_event_study.ipynb # PEAD event study & earnings dashboards
+│   └── 04_database_and_universe_analytics.ipynb # 2,200+ stocks SQL database & market screener
 ├── scripts/
 │   ├── __init__.py
-│   ├── fetch_data.py                          # Automated price extraction from Yahoo Finance
+│   ├── db_manager.py                          # High-performance SQLite database client
+│   ├── init_universe.py                       # Downloads 2,200+ clean US stock universe from NASDAQ
+│   ├── download_bulk_universe.py              # Parallel bulk lifetime history downloader
+│   ├── daily_update.py                        # Automated incremental daily market updater
+│   ├── fetch_data.py                          # Automated price extraction for Big 5
 │   ├── fetch_earnings_dates.py                # Automated earnings calendar extractor
 │   ├── build_notebook.py                      # EDA notebook generator & pre-renderer
 │   ├── build_feature_notebook.py              # Feature engineering notebook generator
-│   └── build_earnings_notebook.py             # Earnings event study notebook generator
+│   ├── build_earnings_notebook.py             # Earnings event study notebook generator
+│   └── build_database_notebook.py             # Database analytics notebook generator
 ├── reports/
 │   ├── figures/                               # High-resolution charts & plots exported from EDA
 │   │   ├── 01_price_trajectories.png
@@ -110,6 +119,7 @@ us-tech-giants-market-analytics/
 │   │   ├── 10_earnings_dashboard_googl.png
 │   │   ├── 10_earnings_dashboard_amzn.png
 │   │   ├── 11_cross_asset_earnings_drift.png
+│   │   ├── 12_market_breadth_distribution.png
 │   │   └── .gitkeep
 │   └── .gitkeep
 ├── .gitignore                                 # Python, Jupyter, OS, and selective data tracking
@@ -219,6 +229,25 @@ Documented in [`notebooks/03_earnings_impact_and_event_study.ipynb`](notebooks/0
 
 ---
 
+## 🏛️ Large-Scale US Equities Database & Automated Daily Pipeline
+
+Documented in [`notebooks/04_database_and_universe_analytics.ipynb`](notebooks/04_database_and_universe_analytics.ipynb):
+
+### 1. Embedded SQLite Market Database Architecture
+* **File Location:** `data/database/us_equities.db`
+* **Performance Optimizations:** SQLite configured with Write-Ahead Logging (`PRAGMA journal_mode = WAL`), memory-cached pragmas, and composite indexing on `(symbol, date)` for sub-millisecond multi-asset queries.
+* **Universe Capacity:** Tracks **2,200+ clean US common equities** sourced directly from the official NASDAQ traded directory.
+
+### 2. Market Breadth & Screener
+![Market Breadth](reports/figures/12_market_breadth_distribution.png)
+* Write pure SQL queries to compute daily advancers vs. decliners, 52-week breakout highs, and volume surges (RVOL) across thousands of stocks simultaneously.
+
+### 3. Automated Incremental Daily Updater
+* **Script:** `python scripts/daily_update.py`
+* **Workflow:** Automatically scans the database for `MAX(date)` per ticker and fetches only the newly closed trading sessions, updating the entire universe in **under 60 seconds**.
+
+---
+
 ## ⚙️ Installation & Setup
 
 ### Prerequisites
@@ -252,13 +281,16 @@ pip install -r requirements.txt
 
 ## 🚀 Usage & Workflow
 
-### 1. Refresh Historical Data
+### 1. Initialize Database & Run Incremental Updates
 ```bash
-# Fetch latest prices from IPO to present
-python scripts/fetch_data.py
+# Step 1: Initialize 2,200+ stock universe from NASDAQ
+python scripts/init_universe.py
 
-# Fetch historical earnings announcement calendars
-python scripts/fetch_earnings_dates.py
+# Step 2: Ingest historical prices from IPO (Parallel multi-threaded batches)
+python scripts/download_bulk_universe.py --limit 2200 --chunk-size 50 --period max
+
+# Step 3: Run daily incremental updater (Runs in <60s every evening)
+python scripts/daily_update.py
 ```
 
 ### 2. Run the Interactive Jupyter Notebooks
@@ -271,6 +303,9 @@ jupyter notebook notebooks/02_feature_engineering_and_market_analytics.ipynb
 
 # Notebook 3: Earnings Impact & PEAD Event Study
 jupyter notebook notebooks/03_earnings_impact_and_event_study.ipynb
+
+# Notebook 4: Large-Scale Database & Universe Market Screener
+jupyter notebook notebooks/04_database_and_universe_analytics.ipynb
 ```
 
 ---

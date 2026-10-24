@@ -54,3 +54,11 @@ desktop.ini
 # Uncomment if processed files become large (>50MB):
 # data/processed/*
 # !data/processed/.gitkeep
+
+# SQLite database files (local repository database)
+*.db
+*.sqlite
+*.sqlite3
+*.db-wal
+*.db-shm
+!data/database/.gitkeep
