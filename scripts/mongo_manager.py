@@ -167,13 +167,12 @@ class MongoStockDatabase:
         return df
 
     def get_stats(self) -> Dict[str, Any]:
-        """Returns collection counts and statistics."""
+        """Returns collection counts and statistics fast."""
         return {
             "database_name": self.db.name,
-            "tickers_count": self.db.tickers.count_documents({}),
+            "tickers_count": self.db.tickers.estimated_document_count(),
             "daily_prices_count": self.db.daily_prices.estimated_document_count(),
-            "earnings_count": self.db.earnings.count_documents({}),
-            "distinct_stocks_with_prices": self.db.tickers.count_documents({}),
+            "earnings_count": self.db.earnings.estimated_document_count(),
         }
 
 

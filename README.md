@@ -289,9 +289,13 @@ python scripts/init_universe.py
 # Step 2: Ingest historical prices from IPO (Parallel multi-threaded batches)
 python scripts/download_bulk_universe.py --limit 2200 --chunk-size 50 --period max
 
-# Step 3: Run daily incremental updater (Runs in <60s every evening)
-python scripts/daily_update.py
+# Step 3: Run daily incremental updater (Runs in <60s every evening, syncing SQLite + MongoDB)
+python scripts/daily_update.py --mongo
 ```
+
+> [!TIP]
+> For a full operations guide, MongoDB setup (port 27018), and automated Windows Task Scheduler instructions, see the **[Command Cheatsheet & Operations Guide](docs/COMMAND_CHEATSHEET.md)**.
+
 
 ### 2. Run the Interactive Jupyter Notebooks
 ```bash

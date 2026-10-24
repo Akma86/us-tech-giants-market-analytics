@@ -21,14 +21,7 @@ def chunk_list(lst, chunk_size):
         yield lst[i:i + chunk_size]
 
 
-def run_daily_update(
-    chunk_size: int = 100,
-    lookback_days: int = 7,
-    sync_mongo: bool = False,
-    mongo_db=None,
-    symbols: list = None,
-    limit: int = None
-):
+def run_daily_update(chunk_size: int = 100, lookback_days: int = 7, sync_mongo: bool = False, mongo_db=None):
     print("=" * 75)
     print("RUNNING INCREMENTAL DAILY MARKET UPDATE PIPELINE")
     print("=" * 75)
@@ -43,17 +36,11 @@ def run_daily_update(
         return
 
     # Find the earliest required start date across tickers
+    # To be safe against weekend adjustments, fetch from lookback_days ago
     cutoff_date = (datetime.now() - timedelta(days=lookback_days)).strftime("%Y-%m-%d")
     
-    # Identify tickers to update
-    if symbols:
-        tickers_to_update = [s.strip().upper() for s in symbols if s.strip().upper() in all_tickers or s.strip().upper() in latest_dates]
-    else:
-        tickers_to_update = [t for t in all_tickers if t in latest_dates]
-
-    if limit:
-        tickers_to_update = tickers_to_update[:limit]
-
+    # Identify tickers to update (all active tickers in universe)
+    tickers_to_update = [t for t in all_tickers if t in latest_dates]
     print(f"[+] Total active tickers to update: {len(tickers_to_update):,}")
     print(f"[+] Fetching incremental bars since: {cutoff_date}...")
 
@@ -139,7 +126,7 @@ def run_daily_update(
         time.sleep(0.5)
 
     # Refresh metadata in database
-    db.update_ticker_metadata(symbols=tickers_to_update if len(tickers_to_update) <= 100 else None)
+    db.update_ticker_metadata()
     elapsed = time.time() - start_time
     db.log_pipeline_event("DAILY_UPDATE", updated_tickers_count, total_new_rows, "SUCCESS", f"Elapsed: {elapsed:.1f}s")
 
@@ -167,8 +154,6 @@ if __name__ == "__main__":
     parser.add_argument("--chunk-size", type=int, default=100, help="Batch size for downloads")
     parser.add_argument("--lookback", type=int, default=7, help="Lookback days to synchronize")
     parser.add_argument("--mongo", action="store_true", default=False, help="Also synchronize to local MongoDB")
-    parser.add_argument("--symbols", type=str, default=None, help="Comma-separated ticker list to update (e.g. AAPL,MSFT,NVDA)")
-    parser.add_argument("--limit", type=int, default=None, help="Limit number of tickers to update")
     args = parser.parse_args()
 
     mongo_inst = None
@@ -176,16 +161,8 @@ if __name__ == "__main__":
         try:
             from mongo_manager import MongoStockDatabase
             mongo_inst = MongoStockDatabase()
-            print("[+] MongoDB integration enabled: mongodb://localhost:27018")
+            print("[+] MongoDB integration enabled: mongodb://localhost:27018/")
         except Exception as e:
             print(f"[!] Warning: Could not connect to MongoDB: {e}")
 
-    symbols_list = [s.strip().upper() for s in args.symbols.split(",")] if args.symbols else None
-    run_daily_update(
-        chunk_size=args.chunk_size,
-        lookback_days=args.lookback,
-        sync_mongo=args.mongo,
-        mongo_db=mongo_inst,
-        symbols=symbols_list,
-        limit=args.limit
-    )
+    run_daily_update(chunk_size=args.chunk_size, lookback_days=args.lookback, sync_mongo=args.mongo, mongo_db=mongo_inst)
