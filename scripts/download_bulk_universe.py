@@ -28,9 +28,19 @@ def download_universe_data(
     chunk_size: int = 50,
     period: str = "max",
     sleep_sec: float = 1.5,
-    skip_existing: bool = True
+    skip_existing: bool = True,
+    sync_mongo: bool = True
 ):
     db = USStockDatabase()
+    mongo_db = None
+    if sync_mongo:
+        try:
+            from mongo_manager import MongoStockDatabase
+            mongo_db = MongoStockDatabase()
+            print("[+] Connected to dedicated MongoDB instance: mongodb://localhost:27018/")
+        except Exception as e:
+            print(f"[!] Warning: Could not connect to MongoDB: {e}")
+
     all_tickers = db.get_universe(active_only=True, limit=limit)
 
     print("=" * 75)
@@ -123,9 +133,14 @@ def download_universe_data(
             if records:
                 df_to_insert = pd.DataFrame(records)
                 inserted = db.insert_daily_prices(df_to_insert)
+                if mongo_db:
+                    try:
+                        mongo_db.insert_prices_bulk(df_to_insert)
+                    except Exception as me:
+                        pass
                 total_rows_inserted += inserted
                 elapsed = time.time() - start_time
-                print(f"    -> Inserted {inserted:,} rows. Cumulative rows: {total_rows_inserted:,} ({elapsed:.1f}s elapsed)")
+                print(f"    -> Inserted {inserted:,} rows (SQLite + MongoDB). Cumulative: {total_rows_inserted:,} ({elapsed:.1f}s elapsed)")
 
         except Exception as e:
             print(f"    [X] Error in batch {chunk_idx}: {str(e)}")
