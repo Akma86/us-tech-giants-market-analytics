@@ -1,0 +1,18 @@
+# Core Data Processing and Analysis
+pandas>=2.0.0
+numpy>=1.24.0
+scipy>=1.10.0
+
+# Market Data Retrieval
+yfinance>=1.7.0
+curl_cffi>=0.15.0
+
+# Data Visualization
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Interactive Notebook Environment
+jupyter>=1.0.0
+notebook>=7.0.0
+ipykernel>=6.20.0
+nbformat>=5.9.0
