@@ -69,7 +69,14 @@ us-tech-giants-market-analytics/
 │   │   ├── NVDA.csv
 │   │   ├── GOOGL.csv
 │   │   ├── AMZN.csv
-│   │   └── us_tech_giants_daily_history.csv   # Consolidated master dataset (41,762 rows)
+│   │   ├── us_tech_giants_daily_history.csv   # Consolidated master daily dataset (41,762 rows)
+│   │   ├── us_tech_giants_earnings_history.csv# Historical earnings announcements (485 quarters)
+│   │   └── earnings/                          # Individual per-stock earnings histories
+│   │       ├── AAPL_earnings_history.csv
+│   │       ├── MSFT_earnings_history.csv
+│   │       ├── NVDA_earnings_history.csv
+│   │       ├── GOOGL_earnings_history.csv
+│   │       └── AMZN_earnings_history.csv
 │   ├── processed/                             # Feature-engineered quantitative dataset
 │   │   ├── us_tech_giants_engineered_features.csv # 41,762 rows × 33 engineered features
 │   │   └── .gitkeep
@@ -77,12 +84,15 @@ us-tech-giants-market-analytics/
 │       └── .gitkeep
 ├── notebooks/
 │   ├── 01_dataset_inspection_and_eda.ipynb    # Starter inspection & exploratory analysis
-│   └── 02_feature_engineering_and_market_analytics.ipynb # Advanced quant features & volatility
+│   ├── 02_feature_engineering_and_market_analytics.ipynb # Advanced quant features & volatility
+│   └── 03_earnings_impact_and_event_study.ipynb # PEAD event study & earnings dashboards
 ├── scripts/
 │   ├── __init__.py
-│   ├── fetch_data.py                          # Automated data extraction from Yahoo Finance
+│   ├── fetch_data.py                          # Automated price extraction from Yahoo Finance
+│   ├── fetch_earnings_dates.py                # Automated earnings calendar extractor
 │   ├── build_notebook.py                      # EDA notebook generator & pre-renderer
-│   └── build_feature_notebook.py              # Feature engineering notebook generator
+│   ├── build_feature_notebook.py              # Feature engineering notebook generator
+│   └── build_earnings_notebook.py             # Earnings event study notebook generator
 ├── reports/
 │   ├── figures/                               # High-resolution charts & plots exported from EDA
 │   │   ├── 01_price_trajectories.png
@@ -94,6 +104,12 @@ us-tech-giants-market-analytics/
 │   │   ├── 07_rolling_volatility_comparison.png
 │   │   ├── 08_technical_indicators_dashboard.png
 │   │   ├── 09_risk_return_scatter.png
+│   │   ├── 10_earnings_dashboard_nvda.png
+│   │   ├── 10_earnings_dashboard_aapl.png
+│   │   ├── 10_earnings_dashboard_msft.png
+│   │   ├── 10_earnings_dashboard_googl.png
+│   │   ├── 10_earnings_dashboard_amzn.png
+│   │   ├── 11_cross_asset_earnings_drift.png
 │   │   └── .gitkeep
 │   └── .gitkeep
 ├── .gitignore                                 # Python, Jupyter, OS, and selective data tracking
@@ -182,6 +198,27 @@ Documented in [`notebooks/02_feature_engineering_and_market_analytics.ipynb`](no
 
 ---
 
+## 🎯 Earnings Impact & Post-Earnings Announcement Drift (PEAD)
+
+Documented in [`notebooks/03_earnings_impact_and_event_study.ipynb`](notebooks/03_earnings_impact_and_event_study.ipynb):
+
+### 1. NVIDIA (`NVDA`) Comprehensive Earnings Impact Dashboard
+![NVDA Earnings Dashboard](reports/figures/10_earnings_dashboard_nvda.png)
+* **Panel A:** Post-Earnings Announcement Drift ($T-5$ to $T+20$ days) comparing Beat trajectories (Green) vs. Misses (Red).
+* **Panel B:** Wall Street EPS Surprise (%) vs. immediate Day 1 price reactions.
+* **Panel C:** Historical chronological timeline of every earnings gap from 2002 to 2026.
+* **Panel D:** Return distribution, win rate (positive Day 1 reaction %), and average gain/loss statistics.
+
+### 2. Apple (`AAPL`) Earnings Impact Dashboard
+![AAPL Earnings Dashboard](reports/figures/10_earnings_dashboard_aapl.png)
+* Examines Apple's corporate reporting consistency and post-announcement drift dynamics across 99 quarters.
+
+### 3. Cross-Asset Post-Earnings Cumulative Drift Curves (Beats)
+![Cross Asset Drift](reports/figures/11_cross_asset_earnings_drift.png)
+* Side-by-side comparison of multi-day upward price drift following positive EPS beats across all five technology leaders.
+
+---
+
 ## ⚙️ Installation & Setup
 
 ### Prerequisites
@@ -215,12 +252,14 @@ pip install -r requirements.txt
 
 ## 🚀 Usage & Workflow
 
-### 1. Refresh or Download Historical Market Data
-To re-fetch the latest live prices from IPO to today:
+### 1. Refresh Historical Data
 ```bash
+# Fetch latest prices from IPO to present
 python scripts/fetch_data.py
+
+# Fetch historical earnings announcement calendars
+python scripts/fetch_earnings_dates.py
 ```
-This updates all individual CSVs in `data/raw/` and generates the consolidated `us_tech_giants_daily_history.csv`.
 
 ### 2. Run the Interactive Jupyter Notebooks
 ```bash
@@ -229,6 +268,9 @@ jupyter notebook notebooks/01_dataset_inspection_and_eda.ipynb
 
 # Notebook 2: Feature Engineering & Advanced Market Analytics
 jupyter notebook notebooks/02_feature_engineering_and_market_analytics.ipynb
+
+# Notebook 3: Earnings Impact & PEAD Event Study
+jupyter notebook notebooks/03_earnings_impact_and_event_study.ipynb
 ```
 
 ---
@@ -246,10 +288,11 @@ jupyter notebook notebooks/02_feature_engineering_and_market_analytics.ipynb
   - [x] Garman-Klass intraday volatility estimator.
   - [x] Technical momentum features: SMA (20, 50, 200), RSI (14), MACD, Bollinger Bands, RVOL.
   - [x] Exported enriched dataset to `data/processed/us_tech_giants_engineered_features.csv`.
-- [ ] **Phase 3: Risk-Adjusted Benchmarking & Factor Analysis**
-  - [ ] Sharpe Ratio and Sortino Ratio computation using historical US Treasury risk-free rates.
-  - [ ] Beta and Alpha estimation relative to S&P 500 (`^GSPC`) benchmark.
-  - [ ] Value at Risk (VaR) and Conditional VaR (Expected Shortfall) at 95% and 99% confidence.
+- [x] **Phase 3: Earnings Event Study & Momentum Drift**
+  - [x] Extracted 485 historical quarterly earnings releases with EPS estimates & surprise %.
+  - [x] Event window synchronization ($T_{-5}$ to $T_{+20}$) for AMC and BMO releases.
+  - [x] Dedicated 4-panel visual dashboards per stock (AAPL, MSFT, NVDA, GOOGL, AMZN).
+  - [x] Post-Earnings Announcement Drift (PEAD) empirical validation.
 - [ ] **Phase 4: Modern Portfolio Theory & Optimization**
   - [ ] Markowitz Mean-Variance Portfolio Optimization.
   - [ ] Monte Carlo simulation (100,000 portfolio combinations).
