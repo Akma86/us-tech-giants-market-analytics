@@ -99,6 +99,7 @@ Register-ScheduledTask -TaskName "US_Stock_Daily_Update" -Action $Action -Trigge
 
 | Script | Purpose | Command |
 | :--- | :--- | :--- |
+| **Web Dashboard** | (Local explorer) Launch US Equity Atlas | `python website/market_server.py --port 8000` |
 | **Check Database Stats** | Instant health check of SQLite & MongoDB records | `python -c "import sys; sys.path.append('scripts'); from db_manager import USStockDatabase; print(USStockDatabase().get_database_stats())"` |
 | **Check Mongo Stats** | Verify MongoDB Port 27018 collections | `python -c "import sys; sys.path.append('scripts'); from mongo_manager import MongoStockDatabase; print(MongoStockDatabase().get_stats())"` |
 | **Daily Market Update** | Incrementally sync missing bars (<60s) | `python scripts/daily_update.py --mongo` |

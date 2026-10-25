@@ -300,9 +300,9 @@ pip install -r requirements.txt
 ## 🚀 Usage & Workflow
 
 ### 1. Launch the Interactive Web Dashboard (US Equity Atlas)
-Explore the complete universe of 2,200+ equities, 11 market sectors, interactive charts, and risk metrics via the local web app:
+Explore the complete universe of 2,200+ equities, 11 market sectors, interactive charts, and risk metrics via the local web app (kept local in `website/`):
 ```bash
-python market_server.py --port 8000
+python website/market_server.py --port 8000
 ```
 Then open **[http://127.0.0.1:8000](http://127.0.0.1:8000)** in your browser.
 

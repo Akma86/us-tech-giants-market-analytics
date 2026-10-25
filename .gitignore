@@ -67,3 +67,9 @@ desktop.ini
 data/database/mongodb_market_data/*
 !data/database/mongodb_market_data/.gitkeep
 data/database/mongod_27018.log
+
+# Website / Local Explorer (files kept locally, directory tracked via .gitkeep)
+website/*
+!website/.gitkeep
+market_server.py
+
