@@ -8,6 +8,24 @@
 
 A comprehensive financial data analytics and quantitative research repository investigating the historical risk-return dynamics, volatility profiles, and multi-asset correlation structures of the five leading US technology corporations (**Apple, Microsoft, NVIDIA, Alphabet, and Amazon**) from their respective **Initial Public Offerings (IPO)** to the present day.
 
+## Interactive stock explorer
+
+The repository now includes **US Equity Atlas**, a browser dashboard for the complete local SQLite universe. It lets you search all stocks with price history, switch among the eleven US market sectors, and inspect an individual ticker's price history, return, volatility, drawdown, and price range.
+
+The database stores price history separately from sector metadata. Refresh sector and industry classifications from Nasdaq's public screener whenever you update the universe:
+
+```bash
+python scripts/sector_metadata.py
+```
+
+Then run the local API server (opening `index.html` directly cannot query the SQLite database):
+
+```bash
+python market_server.py
+```
+
+Open [`http://127.0.0.1:8000`](http://127.0.0.1:8000). The dashboard uses only the Python standard library at runtime; no JavaScript build step is required.
+
 ---
 
 ## 📌 Table of Contents
@@ -281,7 +299,16 @@ pip install -r requirements.txt
 
 ## 🚀 Usage & Workflow
 
-### 1. Initialize Database & Run Incremental Updates
+### 1. Launch the Interactive Web Dashboard (US Equity Atlas)
+Explore the complete universe of 2,200+ equities, 11 market sectors, interactive charts, and risk metrics via the local web app:
+```bash
+python market_server.py --port 8000
+```
+Then open **[http://127.0.0.1:8000](http://127.0.0.1:8000)** in your browser.
+
+![US Equity Atlas Interactive Web Dashboard](reports/figures/us_equity_atlas_web_dashboard.png)
+
+### 2. Initialize Database & Run Incremental Updates
 ```bash
 # Step 1: Initialize 2,200+ stock universe from NASDAQ
 python scripts/init_universe.py
@@ -297,7 +324,7 @@ python scripts/daily_update.py --mongo
 > For a full operations guide, MongoDB setup (port 27018), and automated Windows Task Scheduler instructions, see the **[Command Cheatsheet & Operations Guide](docs/COMMAND_CHEATSHEET.md)**.
 
 
-### 2. Run the Interactive Jupyter Notebooks
+### 3. Run the Interactive Jupyter Notebooks
 ```bash
 # Notebook 1: Dataset Inspection & Initial EDA
 jupyter notebook notebooks/01_dataset_inspection_and_eda.ipynb

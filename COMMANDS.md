@@ -10,6 +10,7 @@ A quick reference manual for managing the **2,000+ US Stock Analytics Platform**
 
 | Action | Command | Purpose |
 | :--- | :--- | :--- |
+| **Launch Web Dashboard** | `python market_server.py --port 8000` | Opens interactive US Equity Atlas web dashboard at `http://127.0.0.1:8000` |
 | **Start Dedicated MongoDB** | `.\scripts\start_market_mongo.bat` | Starts MongoDB on port **27018** (isolated from port 27017) |
 | **Run Daily Update** | `python scripts/daily_update.py --mongo` | Fetches new daily price bars for 2,200 stocks (<60s) |
 | **Check SQLite Stats** | `python -c "import sys; sys.path.append('scripts'); from db_manager import USStockDatabase; print(USStockDatabase().get_database_stats())"` | Shows total records, coverage, date range |
