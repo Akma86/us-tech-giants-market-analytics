@@ -60,6 +60,8 @@ co_pld,Company,Prologis Inc.,PLD,NYSE,US,60,CIK_0001045609
 co_eqix,Company,Equinix Inc.,EQIX,NASDAQ,US,60,CIK_0001101239
 co_fcx,Company,Freeport-McMoRan Inc.,FCX,NYSE,US,15,CIK_0000831259
 co_lin,Company,Linde plc,LIN,NASDAQ,US,15,CIK_0001707925
+co_asml,Company,ASML Holding N.V.,ASML,NASDAQ,NL,45,CIK_0000937966
+co_tsm,Company,Taiwan Semiconductor Manufacturing,TSM,NYSE,TW,45,CIK_0001046179
 commodity_wti,Commodity,Crude Oil WTI Benchmark,,NYMEX,US,10,TICKER_CL_F
 commodity_brent,Commodity,Crude Oil Brent Benchmark,,ICE,GLOBAL,10,TICKER_BZ_F
 commodity_gas,Commodity,Natural Gas Henry Hub,,NYMEX,US,10,TICKER_NG_F

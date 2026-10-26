@@ -70,3 +70,7 @@ rel_068,co_googl,co_msft,COMPETES_WITH,verified,2008-01-01,,0.90,sec_msft_10k_20
 rel_069,co_amzn,co_msft,COMPETES_WITH,verified,2006-01-01,,0.90,sec_msft_10k_2024,AWS vs Azure enterprise cloud infrastructure competition
 rel_070,commodity_wti,commodity_jet_fuel,PRODUCES,verified,1970-01-01,,0.95,eia_energy_series,Refining crack spread yields aviation kerosene from light sweet crude
 rel_071,commodity_jet_fuel,co_dal,TRANSMITS_COST_TO,verified,2007-01-01,,0.95,sec_dal_10k_2024,Direct fuel expense represents 28-32% of total commercial airline operating costs
+rel_072,co_asml,co_tsm,SUPPLIES_TO,verified,1995-01-01,,0.98,sec_asml_20f_2024,Extreme Ultraviolet (EUV) and DUV lithography systems required for advanced sub-3nm node fabrication
+rel_073,co_tsm,co_nvda,SUPPLIES_TO,verified,1998-01-01,,0.98,sec_nvda_10k_2025,Exclusive foundry partner manufacturing Hopper and Blackwell AI accelerator chips
+rel_074,co_tsm,co_amd,SUPPLIES_TO,verified,2018-01-01,,0.95,sec_amd_10k_2024,Primary wafer foundry partner manufacturing Zen CPUs and Instinct MI300 accelerators
+rel_075,co_tsm,co_aapl,SUPPLIES_TO,verified,2014-01-01,,0.98,sec_aapl_10k_2024,Exclusive foundry partner manufacturing Apple A-series and M-series Silicon
