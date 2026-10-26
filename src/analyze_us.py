@@ -59,7 +59,7 @@ class FinancialAnalyticsEngine:
         WHERE ticker IN ({placeholders}) AND date >= '{start_date}' {end_date_filter}
         ORDER BY ticker, date ASC;
         """
-        df = con.execute(query).df()
+        df = con.cursor().execute(query).df()
         if df.empty:
             return pd.DataFrame()
 
