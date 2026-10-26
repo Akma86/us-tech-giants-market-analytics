@@ -73,3 +73,8 @@ website/*
 !website/.gitkeep
 market_server.py
 
+# DuckDB database binaries
+*.duckdb
+*.duckdb.wal
+
+

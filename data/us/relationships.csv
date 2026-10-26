@@ -1,0 +1,66 @@
+relationship_id,source_entity_id,target_entity_id,relationship_type,evidence_status,valid_from,valid_to,confidence,source_id,notes
+rel_001,co_aapl,sector_it,BELONGS_TO,verified,1980-12-12,,1.0,gics_standard_2023,GICS Information Technology - Technology Hardware
+rel_002,co_msft,sector_it,BELONGS_TO,verified,1986-03-13,,1.0,gics_standard_2023,GICS Information Technology - Software
+rel_003,co_nvda,sector_it,BELONGS_TO,verified,1999-01-22,,1.0,gics_standard_2023,GICS Information Technology - Semiconductors
+rel_004,co_amd,sector_it,BELONGS_TO,verified,1979-10-15,,1.0,gics_standard_2023,GICS Information Technology - Semiconductors
+rel_005,co_avgo,sector_it,BELONGS_TO,verified,2009-08-06,,1.0,gics_standard_2023,GICS Information Technology - Semiconductors
+rel_006,co_googl,sector_comm,BELONGS_TO,verified,2004-08-19,,1.0,gics_standard_2023,GICS Communication Services - Interactive Media & Services
+rel_007,co_meta,sector_comm,BELONGS_TO,verified,2012-05-18,,1.0,gics_standard_2023,GICS Communication Services - Interactive Media & Services
+rel_008,co_nflx,sector_comm,BELONGS_TO,verified,2002-05-23,,1.0,gics_standard_2023,GICS Communication Services - Movies & Entertainment
+rel_009,co_amzn,sector_disc,BELONGS_TO,verified,1997-05-15,,1.0,gics_standard_2023,GICS Consumer Discretionary - Broadline Retail
+rel_010,co_tsla,sector_disc,BELONGS_TO,verified,2010-06-29,,1.0,gics_standard_2023,GICS Consumer Discretionary - Automobile Manufacturers
+rel_011,co_nke,sector_disc,BELONGS_TO,verified,1980-12-02,,1.0,gics_standard_2023,GICS Consumer Discretionary - Footwear & Apparel
+rel_012,co_hd,sector_disc,BELONGS_TO,verified,1981-09-22,,1.0,gics_standard_2023,GICS Consumer Discretionary - Home Improvement Retail
+rel_013,co_wmt,sector_staples,BELONGS_TO,verified,1972-08-25,,1.0,gics_standard_2023,GICS Consumer Staples - Consumer Staples Merchandise Retail
+rel_014,co_cost,sector_staples,BELONGS_TO,verified,1985-12-05,,1.0,gics_standard_2023,GICS Consumer Staples - Consumer Staples Merchandise Retail
+rel_015,co_pg,sector_staples,BELONGS_TO,verified,1970-01-02,,1.0,gics_standard_2023,GICS Consumer Staples - Household Products
+rel_016,co_lly,sector_health,BELONGS_TO,verified,1970-01-02,,1.0,gics_standard_2023,GICS Health Care - Pharmaceuticals
+rel_017,co_jnj,sector_health,BELONGS_TO,verified,1970-01-02,,1.0,gics_standard_2023,GICS Health Care - Pharmaceuticals
+rel_018,co_pfe,sector_health,BELONGS_TO,verified,1970-01-02,,1.0,gics_standard_2023,GICS Health Care - Pharmaceuticals
+rel_019,co_jpm,sector_fin,BELONGS_TO,verified,1970-01-02,,1.0,gics_standard_2023,GICS Financials - Diversified Banks
+rel_020,co_bac,sector_fin,BELONGS_TO,verified,1973-01-02,,1.0,gics_standard_2023,GICS Financials - Diversified Banks
+rel_021,co_v,sector_fin,BELONGS_TO,verified,2008-03-19,,1.0,gics_standard_2023,GICS Financials - Transaction & Payment Processing
+rel_022,co_xom,sector_energy,BELONGS_TO,verified,1970-01-02,,1.0,gics_standard_2023,GICS Energy - Integrated Oil & Gas
+rel_023,co_cvx,sector_energy,BELONGS_TO,verified,1970-01-02,,1.0,gics_standard_2023,GICS Energy - Integrated Oil & Gas
+rel_024,co_cat,sector_ind,BELONGS_TO,verified,1970-01-02,,1.0,gics_standard_2023,GICS Industrials - Construction Machinery & Heavy Trucks
+rel_025,co_ba,sector_ind,BELONGS_TO,verified,1970-01-02,,1.0,gics_standard_2023,GICS Industrials - Aerospace & Defense
+rel_026,co_dal,sector_ind,BELONGS_TO,verified,2007-05-01,,1.0,gics_standard_2023,GICS Industrials - Passenger Airlines
+rel_027,co_nee,sector_util,BELONGS_TO,verified,1973-01-02,,1.0,gics_standard_2023,GICS Utilities - Multi-Utilities & Renewable Electric Power
+rel_028,co_pld,sector_real,BELONGS_TO,verified,1997-11-25,,1.0,gics_standard_2023,GICS Real Estate - Industrial REITs
+rel_029,co_eqix,sector_real,BELONGS_TO,verified,2000-08-11,,1.0,gics_standard_2023,GICS Real Estate - Data Center REITs
+rel_030,co_fcx,sector_mat,BELONGS_TO,verified,1995-05-10,,1.0,gics_standard_2023,GICS Materials - Copper Mining
+rel_031,co_lin,sector_mat,BELONGS_TO,verified,2018-10-31,,1.0,gics_standard_2023,GICS Materials - Industrial Gases
+rel_032,co_nvda,prod_gpu,PRODUCES,verified,1999-01-01,,1.0,sec_nvda_10k_2025,NVIDIA designs Hopper H100 and Blackwell B200 GPU architectures
+rel_033,co_msft,prod_cloud_compute,PRODUCES,verified,2010-02-01,,1.0,sec_msft_10k_2024,Microsoft Azure hyperscale infrastructure and OpenAI API platform
+rel_034,co_googl,prod_cloud_compute,PRODUCES,verified,2008-04-01,,1.0,sec_meta_10k_2024,Google Cloud Platform (GCP) compute and TPU infrastructure
+rel_035,co_amzn,prod_cloud_compute,PRODUCES,verified,2006-03-01,,1.0,sec_msft_10k_2024,Amazon Web Services (AWS) EC2 compute and AI Bedrock
+rel_036,co_aapl,prod_smartphones,PRODUCES,verified,2007-06-29,,1.0,sec_aapl_10k_2024,iPhone hardware accounting for over 50% of net company revenues
+rel_037,co_tsla,prod_ev_batteries,PRODUCES,verified,2016-01-01,,1.0,sec_tsla_10k_2024,Gigafactory structural battery pack production
+rel_038,co_dal,prod_jet_transport,PRODUCES,verified,2007-01-01,,1.0,sec_dal_10k_2024,Commercial airline passenger flight operations
+rel_039,co_lly,prod_glp1,PRODUCES,verified,2022-05-13,,1.0,sec_lly_10k_2024,Tirzepatide molecule marketed as Mounjaro and Zepbound
+rel_040,co_xom,prod_refined_fuels,PRODUCES,verified,1970-01-01,,1.0,sec_xom_10k_2024,"Refining capacity generating gasoline, diesel, and aviation kerosene"
+rel_041,co_fcx,prod_copper_cathode,PRODUCES,verified,1995-01-01,,1.0,sec_fcx_10k_2024,Grasberg and Morenci copper mine extraction and smelting
+rel_042,prod_gpu,commodity_copper,USES_MATERIAL,supported_inference,2020-01-01,,0.85,sec_nvda_10k_2025,High-density printed circuit boards and heatsinks require high-purity copper
+rel_043,prod_gpu,commodity_silicon,USES_MATERIAL,verified,1999-01-01,,0.95,sec_nvda_10k_2025,Silicon substrate wafers for advanced fab packaging
+rel_044,prod_ev_batteries,commodity_lithium,USES_MATERIAL,verified,2015-01-01,,0.95,sec_tsla_10k_2024,Lithium carbonate and hydroxide cathode active materials
+rel_045,prod_jet_transport,commodity_jet_fuel,USES_MATERIAL,verified,2007-01-01,,1.0,sec_dal_10k_2024,Direct kerosene jet fuel consumption for fleet operations
+rel_046,prod_refined_fuels,commodity_wti,USES_MATERIAL,verified,1970-01-01,,1.0,sec_xom_10k_2024,Crude oil distillation refinery feedstock
+rel_047,commodity_jet_fuel,commodity_wti,USES_MATERIAL,supported_inference,1970-01-01,,0.9,eia_energy_series,Jet fuel is cracked from intermediate distillate cut of light sweet crude
+rel_048,co_msft,co_nvda,BUYS_FROM,verified,2022-01-01,,0.95,sec_msft_10k_2024,Azure cloud capex purchases billions in NVIDIA Hopper/Blackwell accelerators
+rel_049,co_meta,co_nvda,BUYS_FROM,verified,2023-01-01,,0.95,sec_meta_10k_2024,"Meta deployed 350,000+ NVIDIA H100 GPUs for Llama training clusters"
+rel_050,co_googl,co_nvda,BUYS_FROM,verified,2023-01-01,,0.9,sec_nvda_10k_2025,GCP offers NVIDIA H100 instances alongside in-house TPUs
+rel_051,co_amzn,co_nvda,BUYS_FROM,verified,2023-01-01,,0.9,sec_nvda_10k_2025,AWS UltraClusters utilize NVIDIA GPU server blades
+rel_052,co_tsla,co_nvda,BUYS_FROM,verified,2023-01-01,,0.9,sec_tsla_10k_2024,Dojo cluster and Cortex AI training clusters utilize NVIDIA GPUs
+rel_053,co_nvda,co_msft,SELLS_TO,verified,2022-01-01,,0.95,sec_nvda_10k_2025,Microsoft is disclosed as one of NVIDIA's largest top-tier customers
+rel_054,co_dal,commodity_jet_fuel,HAS_EXPOSURE_TO,verified,2007-01-01,,0.95,sec_dal_10k_2024,Aircraft fuel expense is 28-32% of total operational cost structure
+rel_055,co_xom,commodity_wti,HAS_EXPOSURE_TO,verified,1970-01-01,,0.95,sec_xom_10k_2024,Upstream oil revenues directly correlate with benchmark crude realizations
+rel_056,co_fcx,commodity_copper,HAS_EXPOSURE_TO,verified,1995-01-01,,0.95,sec_fcx_10k_2024,Each $0.10/lb change in copper impacts annual EBITDA by ~$425 million
+rel_057,co_jpm,macro_us10y,HAS_EXPOSURE_TO,verified,1970-01-01,,0.9,sec_jpm_10k_2024,Steeper 2Y-10Y Treasury curve widens Net Interest Margin (NIM)
+rel_058,co_tsla,commodity_lithium,HAS_EXPOSURE_TO,verified,2018-01-01,,0.85,sec_tsla_10k_2024,Battery cell procurement pricing tracks global lithium carbonate indices
+rel_059,co_nee,commodity_gas,HAS_EXPOSURE_TO,supported_inference,1990-01-01,,0.8,eia_energy_series,Natural gas fuels significant portion of Florida Power & Light thermal generation
+rel_060,co_eqix,sector_util,HAS_EXPOSURE_TO,supported_inference,2015-01-01,,0.85,sec_meta_10k_2024,High-density IBX data centers require guaranteed multi-megawatt power capacity
+rel_061,sector_it,sector_util,HAS_EXPOSURE_TO,supported_inference,2022-01-01,,0.8,gics_standard_2023,AI compute expansion drives unprecedented electricity demand on electric grids
+rel_062,sector_ind,sector_energy,HAS_EXPOSURE_TO,supported_inference,1970-01-01,,0.85,gics_standard_2023,"Transportation fleets (airlines, trucking, railroads) consume diesel and jet fuel"
+rel_063,sector_disc,sector_mat,HAS_EXPOSURE_TO,supported_inference,1970-01-01,,0.8,gics_standard_2023,"Automobile manufacturing consumes steel, aluminum, and battery minerals"
+rel_064,sector_fin,sector_real,HAS_EXPOSURE_TO,supported_inference,1970-01-01,,0.85,gics_standard_2023,Commercial bank loan portfolios contain substantial commercial and residential mortgages
+rel_065,sector_comm,sector_it,HAS_EXPOSURE_TO,supported_inference,2010-01-01,,0.85,gics_standard_2023,Social media and streaming services run on semiconductor processors and cloud servers

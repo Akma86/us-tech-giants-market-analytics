@@ -28,9 +28,41 @@ Open [`http://127.0.0.1:8000`](http://127.0.0.1:8000). The dashboard uses only t
 
 ---
 
+## 🕸️ StockLens US — Financial Knowledge Graph & Market Intelligence
+
+StockLens US transforms multi-decade price histories into an institutional-grade cross-asset intelligence suite connecting **11 GICS Sectors, 31 Blue-Chip Equities, Commodities, and Macro Indicators** grounded in verified **SEC Form 10-K regulatory disclosures**.
+
+```bash
+# Launch the Streamlit Institutional Dashboard
+streamlit run app/Home.py --server.port 8501
+```
+
+### Core Architecture & Analytical Modules:
+* **Heterogeneous Financial Knowledge Graph (`src/graph_builder.py`):** 82 nodes and 65 directed relationships implemented on NetworkX, mapping supply chain dependencies, product hierarchies, and macro commodity exposures.
+* **SEC Form 10-K Evidence Grounding (`data/us/evidence.csv`):** 13 authoritative regulatory filings from US SEC EDGAR (e.g. MSFT Azure GPU procurement, DAL 30% fuel operational cost structure, TSLA battery mineral exposures).
+* **High-Speed Columnar Engine (`src/ingest_us.py`):** 58,230+ price observations loaded into DuckDB (`data/us/stocklens.duckdb`) and compressed Parquet (`data/us/prices.parquet`).
+* **Econometric Analytics Engine (`src/analyze_us.py`):**
+  - **Market Model OLS:** Estimates systematic $\beta$, annualized $\alpha$, $R^2$, and idiosyncratic volatility $\sigma_\varepsilon$ against the S&P 500 (`^GSPC`).
+  - **Event Study Lab:** Calculates Abnormal Returns ($AR$) and Cumulative Abnormal Returns ($CAR$) with statistical significance tests ($t$-stat, $p$-value).
+  - **Lead/Lag Macro Transmission:** Computes cross-correlation spectra across $\pm 20$ trading day lags between commodities and equities.
+* **Pre-rendered Research Notebook:** [`notebooks/05_financial_knowledge_graph_analytics.ipynb`](notebooks/05_financial_knowledge_graph_analytics.ipynb) demonstrating the end-to-end analytical pipeline.
+* **Test Suite:** [`tests/test_stocklens.py`](tests/test_stocklens.py) covering graph topology, DuckDB queries, and econometric formulas with 100% test pass rate.
+
+---
+
 ## 📌 Table of Contents
-1. [Project Overview](#-project-overview)
-2. [Target Equities & Inception Timeline](#-target-equities--inception-timeline)
+1. [StockLens US Knowledge Graph](#️-stocklens-us--financial-knowledge-graph--market-intelligence)
+2. [Project Overview](#-project-overview)
+3. [Target Equities & Inception Timeline](#-target-equities--inception-timeline)
+4. [Repository Directory Structure](#-repository-directory-structure)
+5. [Role of `.gitkeep` in This Repository](#-role-of-gitkeep-in-this-repository)
+6. [Dataset Architecture & Data Dictionary](#-dataset-architecture--data-dictionary)
+7. [Initial Exploratory Insights](#-initial-exploratory-insights)
+8. [Installation & Setup](#-installation--setup)
+9. [Usage & Workflow](#-usage--workflow)
+10. [Quantitative Analysis Roadmap](#-quantitative-analysis-roadmap)
+11. [GitHub Repository Configuration](#-github-repository-configuration)
+12. [Author & License](#-author--license)
 3. [Repository Directory Structure](#-repository-directory-structure)
 4. [Role of `.gitkeep` in This Repository](#-role-of-gitkeep-in-this-repository)
 5. [Dataset Architecture & Data Dictionary](#-dataset-architecture--data-dictionary)

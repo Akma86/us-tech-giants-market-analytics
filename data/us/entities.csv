@@ -1,0 +1,83 @@
+entity_id,entity_type,canonical_name,ticker,exchange,country,sector_code,external_id
+sector_it,Sector,Information Technology,,,US,45,GICS_45
+sector_health,Sector,Health Care,,,US,35,GICS_35
+sector_fin,Sector,Financials,,,US,40,GICS_40
+sector_disc,Sector,Consumer Discretionary,,,US,25,GICS_25
+sector_staples,Sector,Consumer Staples,,,US,30,GICS_30
+sector_energy,Sector,Energy,,,US,10,GICS_10
+sector_ind,Sector,Industrials,,,US,20,GICS_20
+sector_util,Sector,Utilities,,,US,55,GICS_55
+sector_real,Sector,Real Estate,,,US,60,GICS_60
+sector_mat,Sector,Materials,,,US,15,GICS_15
+sector_comm,Sector,Communication Services,,,US,50,GICS_50
+ind_semis,Industry,Semiconductors & Semiconductor Equipment,,,US,4530,GICS_4530
+ind_software,Industry,Software & Cloud Infrastructure,,,US,4510,GICS_4510
+ind_hardware,Industry,Technology Hardware & Equipment,,,US,4520,GICS_4520
+ind_biotech_pharma,Industry,Pharmaceuticals & Biotechnology,,,US,3520,GICS_3520
+ind_banks,Industry,Diversified Banks & Consumer Finance,,,US,4010,GICS_4010
+ind_payments,Industry,Financial Transaction & Payment Systems,,,US,4020,GICS_4020
+ind_auto_ev,Industry,Automobile Manufacturers & Electric Vehicles,,,US,2510,GICS_2510
+ind_ecommerce_retail,Industry,Broadline Retail & E-Commerce,,,US,2550,GICS_2550
+ind_consumer_staples,Industry,Food & Beverage Products & Retail,,,US,3010,GICS_3010
+ind_oil_gas_ep,Industry,Oil & Gas Exploration & Production,,,US,1010,GICS_1010
+ind_oil_gas_refining,Industry,Oil & Gas Refining & Marketing,,,US,1020,GICS_1020
+ind_aerospace_defense,Industry,Aerospace & Defense Equipment,,,US,2010,GICS_2010
+ind_airlines,Industry,Passenger Airlines & Air Freight,,,US,2030,GICS_2030
+ind_machinery,Industry,Industrial Heavy Machinery & Equipment,,,US,2020,GICS_2020
+ind_electric_utilities,Industry,Electric Power Utilities & Clean Generation,,,US,5510,GICS_5510
+ind_industrial_reit,Industry,Industrial & Logistics Real Estate,,,US,6010,GICS_6010
+ind_data_center_reit,Industry,Data Center & Telecommunication Infrastructure REITs,,,US,6020,GICS_6020
+ind_metals_mining,Industry,Metals Mining & Industrial Processing,,,US,1510,GICS_1510
+ind_digital_media,Industry,"Interactive Media, Digital Advertising & Content",,,US,5020,GICS_5020
+co_aapl,Company,Apple Inc.,AAPL,NASDAQ,US,45,CIK_0000320193
+co_msft,Company,Microsoft Corporation,MSFT,NASDAQ,US,45,CIK_0000789019
+co_nvda,Company,NVIDIA Corporation,NVDA,NASDAQ,US,45,CIK_0001045810
+co_amd,Company,Advanced Micro Devices Inc.,AMD,NASDAQ,US,45,CIK_0000002488
+co_avgo,Company,Broadcom Inc.,AVGO,NASDAQ,US,45,CIK_0001730168
+co_googl,Company,Alphabet Inc.,GOOGL,NASDAQ,US,50,CIK_0001652044
+co_meta,Company,Meta Platforms Inc.,META,NASDAQ,US,50,CIK_0001326801
+co_nflx,Company,Netflix Inc.,NFLX,NASDAQ,US,50,CIK_0001065280
+co_amzn,Company,Amazon.com Inc.,AMZN,NASDAQ,US,25,CIK_0001018724
+co_tsla,Company,Tesla Inc.,TSLA,NASDAQ,US,25,CIK_0001318605
+co_nke,Company,NIKE Inc.,NKE,NYSE,US,25,CIK_0000320187
+co_hd,Company,The Home Depot Inc.,HD,NYSE,US,25,CIK_0000354950
+co_wmt,Company,Walmart Inc.,WMT,NYSE,US,30,CIK_0000104169
+co_cost,Company,Costco Wholesale Corporation,COST,NASDAQ,US,30,CIK_0000909832
+co_pg,Company,The Procter & Gamble Company,PG,NYSE,US,30,CIK_0000080424
+co_lly,Company,Eli Lilly and Company,LLY,NYSE,US,35,CIK_0000059478
+co_jnj,Company,Johnson & Johnson,JNJ,NYSE,US,35,CIK_0000200406
+co_pfe,Company,Pfizer Inc.,PFE,NYSE,US,35,CIK_0000078003
+co_jpm,Company,JPMorgan Chase & Co.,JPM,NYSE,US,40,CIK_0000019617
+co_bac,Company,Bank of America Corporation,BAC,NYSE,US,40,CIK_0000070858
+co_v,Company,Visa Inc.,V,NYSE,US,40,CIK_0001403161
+co_xom,Company,Exxon Mobil Corporation,XOM,NYSE,US,10,CIK_0000034088
+co_cvx,Company,Chevron Corporation,CVX,NYSE,US,10,CIK_0000093410
+co_cat,Company,Caterpillar Inc.,CAT,NYSE,US,20,CIK_0000018230
+co_ba,Company,The Boeing Company,BA,NYSE,US,20,CIK_0000012927
+co_dal,Company,Delta Air Lines Inc.,DAL,NYSE,US,20,CIK_0000027904
+co_nee,Company,NextEra Energy Inc.,NEE,NYSE,US,55,CIK_0000753308
+co_pld,Company,Prologis Inc.,PLD,NYSE,US,60,CIK_0001045609
+co_eqix,Company,Equinix Inc.,EQIX,NASDAQ,US,60,CIK_0001101239
+co_fcx,Company,Freeport-McMoRan Inc.,FCX,NYSE,US,15,CIK_0000831259
+co_lin,Company,Linde plc,LIN,NASDAQ,US,15,CIK_0001707925
+commodity_wti,Commodity,Crude Oil WTI Benchmark,,NYMEX,US,10,TICKER_CL_F
+commodity_brent,Commodity,Crude Oil Brent Benchmark,,ICE,GLOBAL,10,TICKER_BZ_F
+commodity_gas,Commodity,Natural Gas Henry Hub,,NYMEX,US,10,TICKER_NG_F
+commodity_copper,Commodity,Copper COMEX Benchmark,,COMEX,US,15,TICKER_HG_F
+commodity_aluminum,Commodity,Aluminum Benchmark,,LME,GLOBAL,15,TICKER_ALI_F
+commodity_lithium,Commodity,Lithium Carbonate Benchmark,,FASTMARKETS,GLOBAL,15,FAST_LITH
+commodity_jet_fuel,Commodity,US Gulf Coast Kerosene Jet Fuel,,NYMEX,US,10,EIA_JET
+commodity_silicon,Commodity,High-Purity Polysilicon/Wafer Index,,ENERGYTREND,GLOBAL,45,ET_SILICON
+macro_fed_funds,MacroIndicator,Federal Funds Effective Rate,,FED,US,40,FRED_FEDFUNDS
+macro_us10y,MacroIndicator,10-Year US Treasury Constant Maturity Yield,,CBOE,US,40,TICKER_TNX
+macro_cpi,MacroIndicator,Consumer Price Index (Headline YoY Inflation),,BLS,US,,FRED_CPIAUCSL
+macro_sp500,MacroIndicator,S&P 500 Market Benchmark Index,^GSPC,S&P,US,,TICKER_GSPC
+macro_vix,MacroIndicator,CBOE Volatility Index,^VIX,CBOE,US,,TICKER_VIX
+prod_gpu,Product,AI Accelerators & Enterprise GPUs,,,US,45,PROD_NVIDIA_GPU
+prod_cloud_compute,Product,Hyperscale Cloud Compute & AI Clusters,,,US,45,PROD_CLOUD_IAAS
+prod_smartphones,Product,Smartphones & Personal Hardware Ecosystems,,,US,45,PROD_IPHONE_MAC
+prod_ev_batteries,Product,Lithium-ion Battery Packs & Energy Storage,,,US,25,PROD_TESLA_BATTERY
+prod_jet_transport,Product,Commercial Air Passenger Transportation,,,US,20,PROD_AIRLINE_PAX
+prod_glp1,Product,Incretin / GLP-1 Weight Loss & Diabetes Therapies,,,US,35,PROD_GLP1_ZEPBOUND
+prod_refined_fuels,Product,Transportation Diesel & Refined Petroleum Fuels,,,US,10,PROD_REFINED_DISTILLATES
+prod_copper_cathode,Product,Refined Copper Cathode & Concentrates,,,US,15,PROD_COPPER_CATHODE

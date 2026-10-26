@@ -10,6 +10,10 @@ A quick reference manual for managing the **2,000+ US Stock Analytics Platform**
 
 | Action | Command | Purpose |
 | :--- | :--- | :--- |
+| **Launch Streamlit Dashboard** | `streamlit run app/Home.py --server.port 8501` | **StockLens US** Institutional Financial Knowledge Graph & Analytics |
+| **Run StockLens Tests** | `python tests/test_stocklens.py` | Runs 8 unit & integration tests (Graph, DuckDB, OLS, Event Study) |
+| **Run Ingestion (DuckDB/Parquet)** | `python src/ingest_us.py` | Ingests equities, commodities, and macro series into DuckDB & Parquet |
+| **Re-build Notebook 05** | `python scripts/build_research_notebook.py` | Generates & executes `05_financial_knowledge_graph_analytics.ipynb` |
 | **Launch Web Dashboard** | `python website/market_server.py --port 8000` | (Local explorer) Opens US Equity Atlas web dashboard at `http://127.0.0.1:8000` |
 | **Start Dedicated MongoDB** | `.\scripts\start_market_mongo.bat` | Starts MongoDB on port **27018** (isolated from port 27017) |
 | **Run Daily Update** | `python scripts/daily_update.py --mongo` | Fetches new daily price bars for 2,200 stocks (<60s) |
@@ -78,3 +82,41 @@ from mongo_manager import MongoStockDatabase
 mongo = MongoStockDatabase()
 df_mongo = mongo.get_price_history(symbols=["MSFT"], start_date="2024-01-01")
 ```
+
+---
+
+## 5. StockLens US: Financial Knowledge Graph & Columnar Analytics
+
+### Menjalankan Streamlit Dashboard
+```powershell
+streamlit run app/Home.py --server.port 8501
+```
+Akses dashboard di browser melalui: `http://localhost:8501`
+Fitur dashboard:
+- **Interactive Knowledge Graph:** Filter sektor GICS, node centrality, pencarian entitas.
+- **Economic Transmission Path Finder:** Menelusuri rantai transmisi guncangan komoditas ke emiten saham beserta kutipan SEC 10-K.
+- **Market Model OLS:** Estimasi Alpha, Beta, R-squared, Idiosyncratic Risk terhadap S&P 500 (`^GSPC`).
+- **Event Study Lab:** Evaluasi Abnormal Returns (AR) dan Cumulative Abnormal Returns (CAR) di sekitar event katalis.
+- **Lead/Lag Macro Spectrum:** Analisis korelasi silang lag $\pm 20$ hari (minyak/yields memimpin pergerakan saham).
+- **SEC 10-K Evidence Drawer:** Katalog kutipan resmi Form 10-K dari US SEC EDGAR.
+
+### Menjalankan Unit & Integration Tests
+```powershell
+python tests/test_stocklens.py
+```
+
+### Menjalankan Script Ingest & Analytics
+```powershell
+# Pipeline ingest Parquet & DuckDB
+python src/ingest_us.py
+
+# Query graph & path tracing via CLI
+python src/graph_builder.py
+
+# Quantitative regressions & lead-lag via CLI
+python src/analyze_us.py
+
+# Re-render research notebook 05
+python scripts/build_research_notebook.py
+```
+
