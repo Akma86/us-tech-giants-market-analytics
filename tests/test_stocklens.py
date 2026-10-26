@@ -120,6 +120,21 @@ class TestStockLensUS(unittest.TestCase):
         self.assertGreater(coincident["correlation"], 0.20, "XOM vs WTI 0d correlation should be positive (> 0.20)")
         self.assertLess(coincident["p_value"], 0.001, "Correlation must be statistically significant (p < 0.001)")
 
+    def test_universe_lead_lag(self):
+        """Validates cross-sectional universe-wide lead-lag ripple engine."""
+        res = self.engine.run_universe_lead_lag(trigger_ticker="NVDA", threshold=0.025, horizon_days=5)
+        self.assertEqual(res["trigger"]["ticker"], "NVDA")
+        self.assertGreaterEqual(res["trigger"]["shock_count"], 100)
+        self.assertGreater(len(res["top_followers"]), 10)
+        top = res["top_followers"][0]
+        self.assertIn("ticker", top)
+        self.assertIn("peak_lag_day", top)
+        self.assertIn("cum_return_at_horizon", top)
+        self.assertIn("impulse_curve", top)
+        self.assertGreaterEqual(len(top["impulse_curve"]), 5)
+        self.assertGreater(len(res["sector_summary"]), 3)
+
 
 if __name__ == "__main__":
     unittest.main()
+

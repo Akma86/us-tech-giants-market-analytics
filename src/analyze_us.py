@@ -285,6 +285,256 @@ class FinancialAnalyticsEngine:
             "lag_matrix": lag_results
         }
 
+    def run_universe_lead_lag(
+        self,
+        trigger_ticker: str = "NVDA",
+        threshold: float = 0.025,
+        horizon_days: int = 5,
+        start_date: str = "2020-01-01",
+        top_k: int = 30
+    ) -> dict:
+        """
+        Cross-sectional Universe Multi-Horizon Lead-Lag Information Diffusion Engine.
+        Scans across the entire universe to identify which stocks and sectors consistently
+        follow a trigger shock across T+1, T+2, T+3, T+5 (1 week), T+10, T+20 (1 month) horizons.
+        """
+        trig = trigger_ticker.strip().upper()
+        con = self.get_connection()
+
+        # 1. Load universe prices from DuckDB parquet
+        query = f"""
+        SELECT ticker, date, adj_close
+        FROM '{self.parquet_path}'
+        WHERE (series_type = 'Equity' OR ticker IN ('^GSPC', 'CL=F', 'HG=F'))
+          AND date >= '{start_date}'
+        ORDER BY date ASC;
+        """
+        df_univ = con.cursor().execute(query).df()
+        if df_univ.empty:
+            raise ValueError("No price data available in parquet for universe scan")
+
+        df_univ["date"] = pd.to_datetime(df_univ["date"])
+
+        # 2. Check if trigger is present in parquet; if not, pull from SQLite
+        if trig not in df_univ["ticker"].unique():
+            import sqlite3
+            sqlite_db = PROJECT_ROOT / "data" / "database" / "us_equities.db"
+            if sqlite_db.exists():
+                with sqlite3.connect(sqlite_db) as sq_conn:
+                    sq_cur = sq_conn.cursor()
+                    sq_cur.execute(
+                        "SELECT symbol, date, adj_close FROM daily_prices WHERE symbol = ? AND date >= ? ORDER BY date ASC",
+                        (trig, start_date)
+                    )
+                    rows = sq_cur.fetchall()
+                    if rows:
+                        df_trig = pd.DataFrame(rows, columns=["ticker", "date", "adj_close"])
+                        df_trig["date"] = pd.to_datetime(df_trig["date"])
+                        df_univ = pd.concat([df_univ, df_trig], ignore_index=True)
+
+        if trig not in df_univ["ticker"].unique():
+            raise ValueError(f"Trigger ticker {trig} not found in database")
+
+        # 3. Pivot table
+        piv = df_univ.pivot(index="date", columns="ticker", values="adj_close")
+        returns = piv.pct_change(fill_method=None).iloc[1:]
+
+        trig_returns = returns[trig]
+        shock_mask = trig_returns >= threshold
+        shock_dates = returns.index[shock_mask]
+        n_shocks = len(shock_dates)
+
+        if n_shocks < 5:
+            fallback_thresh = 0.015
+            shock_mask = trig_returns >= fallback_thresh
+            shock_dates = returns.index[shock_mask]
+            n_shocks = len(shock_dates)
+            threshold = fallback_thresh
+
+        # 4. Load metadata from SQLite tickers & Knowledge Graph
+        metadata_map = {}
+        import sqlite3
+        sqlite_db = PROJECT_ROOT / "data" / "database" / "us_equities.db"
+        if sqlite_db.exists():
+            with sqlite3.connect(sqlite_db) as sq_conn:
+                c = sq_conn.cursor()
+                for r in c.execute("SELECT symbol, security_name, sector, industry FROM tickers").fetchall():
+                    metadata_map[r[0]] = {
+                        "name": r[1] or r[0],
+                        "sector": r[2] or "Unclassified",
+                        "industry": r[3] or "Other"
+                    }
+
+        # Knowledge Graph edges lookup
+        kg_edges_map = {}
+        try:
+            from src.graph_builder import FinancialKnowledgeGraph
+            kg = FinancialKnowledgeGraph()
+            trig_node = None
+            for n, d in kg.graph.nodes(data=True):
+                if d.get("ticker", "").upper() == trig:
+                    trig_node = n
+                    break
+            if not trig_node:
+                trig_node = f"co_{trig.lower()}"
+
+            if trig_node in kg.graph:
+                for u, _, d in kg.graph.in_edges(trig_node, data=True):
+                    u_tick = kg.graph.nodes[u].get("ticker")
+                    if u_tick:
+                        kg_edges_map[u_tick.upper()] = d.get("rel_type", "CONNECTED_TO")
+                for _, v, d in kg.graph.out_edges(trig_node, data=True):
+                    v_tick = kg.graph.nodes[v].get("ticker")
+                    if v_tick:
+                        kg_edges_map[v_tick.upper()] = d.get("rel_type", "CONNECTED_TO")
+        except Exception:
+            pass
+
+        # 5. Scan across all candidate tickers
+        test_lags = [1, 2, 3, 5, 10, 20]
+        followers = []
+        candidate_tickers = [c for c in returns.columns if c != trig]
+
+        for ticker in candidate_tickers:
+            stock_ret = returns[ticker]
+            base_up_rate = float((stock_ret > 0).mean())
+            price_series = piv[ticker].reindex(returns.index)
+
+            lags_detail = {}
+            best_lag = 1
+            best_hit_rate = 0.0
+            best_avg_ret = 0.0
+            best_lift = 1.0
+
+            # Compute impulse trajectory: Day 0 to Day 20
+            impulse_curve = []
+            for k in [0, 1, 2, 3, 4, 5, 7, 10, 15, 20]:
+                if k == 0:
+                    day_ret = float(stock_ret[shock_mask].dropna().mean())
+                    cum_ret = day_ret
+                    hit_rate = float((stock_ret[shock_mask] > 0).mean())
+                else:
+                    shifted_ret = stock_ret.shift(-k)
+                    post_k = shifted_ret[shock_mask].dropna()
+                    day_ret = float(post_k.mean()) if len(post_k) else 0.0
+                    hit_rate = float((post_k > 0).mean()) if len(post_k) else 0.0
+                    cum_series = (price_series.shift(-k) / price_series - 1.0)
+                    cum_k = cum_series[shock_mask].dropna()
+                    cum_ret = float(cum_k.mean()) if len(cum_k) else 0.0
+
+                impulse_curve.append({
+                    "day": k,
+                    "avg_return": round(day_ret * 100, 2),
+                    "cum_return": round(cum_ret * 100, 2),
+                    "hit_rate": round(hit_rate * 100, 1)
+                })
+
+            for k in test_lags:
+                shifted = stock_ret.shift(-k)
+                shock_post_returns = shifted[shock_mask].dropna()
+                if len(shock_post_returns) >= 5:
+                    avg_ret = float(shock_post_returns.mean())
+                    hit_rate = float((shock_post_returns > 0).mean())
+                    lift = float(hit_rate / base_up_rate if base_up_rate > 0 else 1.0)
+
+                    cum_series = (price_series.shift(-k) / price_series - 1.0)
+                    cum_vals = cum_series[shock_mask].dropna()
+                    cum_ret = float(cum_vals.mean()) if len(cum_vals) else 0.0
+                    cum_hit = float((cum_vals > 0).mean()) if len(cum_vals) else 0.0
+
+                    lags_detail[f"lag_{k}d"] = {
+                        "avg_ret": round(avg_ret * 100, 2),
+                        "hit_rate": round(hit_rate * 100, 1),
+                        "cum_ret": round(cum_ret * 100, 2),
+                        "cum_hit_rate": round(cum_hit * 100, 1),
+                        "lift": round(lift, 2)
+                    }
+
+                    if hit_rate > best_hit_rate and k <= horizon_days:
+                        best_hit_rate = hit_rate
+                        best_lag = k
+                        best_avg_ret = avg_ret
+                        best_lift = lift
+
+            # Specific metrics at requested horizon
+            horizon_cum_series = (price_series.shift(-horizon_days) / price_series - 1.0)
+            horizon_cum_vals = horizon_cum_series[shock_mask].dropna()
+            cum_ret_at_horizon = float(horizon_cum_vals.mean()) if len(horizon_cum_vals) else 0.0
+            cum_hit_at_horizon = float((horizon_cum_vals > 0).mean()) if len(horizon_cum_vals) else 0.0
+
+            # Knowledge graph badge
+            meta = metadata_map.get(ticker, {"name": ticker, "sector": "Other"})
+            trig_meta = metadata_map.get(trig, {"sector": "Trigger"})
+            kg_rel = kg_edges_map.get(ticker)
+            if kg_rel:
+                graph_badge = f"Verified {kg_rel.replace('_', ' ').title()}"
+                is_graph_verified = True
+            elif meta.get("sector") == trig_meta.get("sector") and meta.get("sector") != "Other":
+                graph_badge = f"Intra-Sector ({meta.get('sector')})"
+                is_graph_verified = False
+            else:
+                graph_badge = "Cross-Sector Ripple"
+                is_graph_verified = False
+
+            followers.append({
+                "ticker": ticker,
+                "name": meta.get("name", ticker),
+                "sector": meta.get("sector", "Other"),
+                "base_up_rate": round(base_up_rate * 100, 1),
+                "peak_lag_day": best_lag,
+                "peak_hit_rate": round(best_hit_rate * 100, 1),
+                "peak_avg_return": round(best_avg_ret * 100, 2),
+                "cum_return_at_horizon": round(cum_ret_at_horizon * 100, 2),
+                "cum_hit_rate": round(cum_hit_at_horizon * 100, 1),
+                "lift_factor": round(best_lift, 2),
+                "graph_badge": graph_badge,
+                "is_graph_verified": is_graph_verified,
+                "lags_detail": lags_detail,
+                "impulse_curve": impulse_curve
+            })
+
+        # 6. Sort followers by cumulative return at chosen horizon & lift
+        followers.sort(key=lambda x: (x["cum_return_at_horizon"], x["lift_factor"]), reverse=True)
+
+        # 7. Sector breakdown summary
+        sector_agg = {}
+        for f in followers:
+            sec = f["sector"]
+            if sec not in sector_agg:
+                sector_agg[sec] = {"returns": [], "hit_rates": [], "count": 0}
+            sector_agg[sec]["returns"].append(f["cum_return_at_horizon"])
+            sector_agg[sec]["hit_rates"].append(f["cum_hit_rate"])
+            sector_agg[sec]["count"] += 1
+
+        sector_summary = []
+        for sec, data in sector_agg.items():
+            sector_summary.append({
+                "sector": sec,
+                "avg_cum_return": round(float(np.mean(data["returns"])), 2),
+                "avg_hit_rate": round(float(np.mean(data["hit_rates"])), 1),
+                "stock_count": data["count"]
+            })
+        sector_summary.sort(key=lambda x: x["avg_cum_return"], reverse=True)
+
+        trig_meta = metadata_map.get(trig, {"name": trig, "sector": "Equity"})
+
+        return {
+            "trigger": {
+                "ticker": trig,
+                "name": trig_meta.get("name", trig),
+                "sector": trig_meta.get("sector", "Equity"),
+                "threshold_pct": round(threshold * 100, 1),
+                "shock_count": n_shocks,
+                "total_trading_days": len(returns),
+                "sample_start": str(returns.index.min().date()),
+                "sample_end": str(returns.index.max().date())
+            },
+            "horizon_days": horizon_days,
+            "followers_count": len(followers),
+            "top_followers": followers[:top_k],
+            "sector_summary": sector_summary
+        }
+
 
 if __name__ == "__main__":
     engine = FinancialAnalyticsEngine()

@@ -36,7 +36,7 @@ Trace **documented relationships and testable exposures** from US-listed compani
 | --- | --- | --- |
 | `Sector` | Information Technology, Energy | classification system, code |
 | `Industry` / `SubIndustry` | Semiconductors, Airlines | classification code, parent sector |
-| `Company` | NVIDIA, Tesla, BBCA | ticker, exchange, country, identifiers |
+| `Company` | NVIDIA, Tesla, JPM | ticker, exchange, country, identifiers |
 | `Product` / `Service` | Battery, cloud service, jet fuel | category, unit |
 | `Commodity` / `Material` | Copper, lithium, natural gas | price benchmark, unit, currency |
 | `Facility` | Refinery, mine, data center | geography, capacity |
@@ -286,6 +286,209 @@ The following lists are **industry-level research targets**, not assertions that
 **Other sectors:** Technology (chips/cloud); Utilities (power); Discretionary (advertiser demand); Financials (ads/payments); Real Estate (towers/data centers); Industrials (equipment/construction).
 
 **Classification note:** Alphabet and Meta are commonly categorized under GICS Communication Services rather than Information Technology.
+
+
+## Deep relationship paths — US sector-by-sector
+
+> **Interpretation:** Each path is an **economic mechanism to investigate**, not a verified company-specific supply chain or a guaranteed direction for stock returns. Arrow labels describe mechanisms; stock-price effects require testing. For every edge store `relationship_type`, `source_url`, `as_of`, `valid_from`, `valid_to`, `mechanism`, `expected_operating_sign`, `lag_hypothesis`, `confidence` and `status=HYPOTHESIS|VERIFIED`. Market prices incorporate expectations, so even a clearly beneficial operating shock can coincide with a falling stock.
+
+### How to read a path
+
+`SHOCK → input cost/demand → company unit economics → earnings expectations → possible stock reaction`.
+
+Separate **physical** edges (uses, buys, sells), **financial** edges (funds, insures, hedges), **information** edges (announces, mentions), and **statistical** edges (co-moves, leads, conditional dependence). Do not turn correlation into a `SUPPLIES_TO` edge.
+
+### Information Technology: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| AI training investment expands | cloud capex rises → GPU/server orders rise → chip designer revenue opportunity increases → fabrication/packaging capacity bottlenecks → data-center electricity and cooling demand rises | NVDA, AMD; test infrastructure providers separately | cloud capex, semiconductor sales, orders, gross margin, power load | demand ↑ for chips; equipment and power impacts heterogeneous |
+| Copper and electricity costs increase | power distribution/cabling and cooling infrastructure costs rise → new data-center total cost rises → potential project-delay or price-pass-through | MSFT, AMZN, EQIX | copper, power tariffs, capex, datacenter backlog | ambiguous; demand growth may dominate cost |
+| Export controls tighten | eligible chip end-market shrinks or shifts → inventory/revenue mix changes → supplier/foundry exposure changes | NVDA, AMD, semiconductor equipment stocks | rule effective date, geographic sales, guidance revisions | company- and product-specific |
+| Memory prices rise | DRAM/NAND input costs rise → device/server BOM increases → hardware margins affected unless pricing adjusts | DELL, HPQ, AAPL | memory pricing, unit shipments, gross margin | negative for some buyers; potentially positive for memory producers |
+
+### Health Care: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| Drug trial succeeds | probability of regulatory approval rises → future revenue expectations change → developer rerates → rival therapeutic expectations may change | LLY, MRK, PFE | trial timestamp, endpoint, analyst estimates, competitor pipelines | developer possibly positive; rivals mixed |
+| Medicare reimbursement changes | provider service economics change → procedure profitability shifts → hospital demand for devices changes | HCA, UNH, ABT | CMS publication, payer mix, procedure volumes | depends on reimbursement and mix |
+| Resin and medical-grade plastic price rises | disposable device and packaging costs rise → manufacturing costs change → manufacturer pricing and margins respond | ABT, BDX | resin indices, device segment margin | possible buyer cost pressure |
+| Nursing wage inflation accelerates | hospital labor expense rises → unit cost increases → margins pressured unless reimbursement/pricing offsets | HCA | wage series, staffing expense, operating margin | potential negative for labor-intensive operators |
+
+### Financials: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| Short rates rise unexpectedly | asset yields reprice vs deposits → net interest margin changes → loan demand and credit risk shift | JPM, BAC, WFC | SOFR/Fed rate, deposit beta, NIM, provision | ambiguous across business models |
+| Credit spreads widen | funding costs rise → borrowers refinance at worse terms → default risk increases → lenders and insurers reprice risk | JPM, GS, insurers | HY spread, CDS, charge-offs | often risk-off, not universal |
+| Housing transactions fall | mortgage origination volumes fall → fee income decreases → title insurers and mortgage lenders affected | WFC, mortgage originators | existing home sales, mortgage applications, fee income | negative volume exposure |
+| Trading volatility spikes | exchange turnover and dealer trading opportunities rise → brokerage volumes increase while inventory and counterparty risk grow | CME, ICE, GS | VIX, volumes, fee revenue | exchanges may benefit; banks ambiguous |
+
+### Consumer Discretionary: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| Lithium carbonate becomes cheaper | battery cell input cost may fall with contract lag → EV cost per vehicle may fall → pricing competition and gross margin may change | TSLA, GM, F | lithium benchmark, battery costs, vehicle price, margins | automaker benefit not automatic |
+| Auto loan APR rises | monthly payments increase → affordability declines → demand/inventory pressure → auto suppliers affected | GM, F, TSLA, auto suppliers | auto loan rates, vehicle sales, days inventory | potential demand headwind |
+| Jet fuel prices surge | airline unit fuel cost rises → ticket price response constrained by demand → earnings revisions → aircraft demand may change | DAL, UAL, LUV, BA | jet fuel, CASM fuel, ticket yields, load factors | airlines often cost pressure; hedges matter |
+| Cotton prices rise | apparel input cost increases → sourcing contracts, pricing, inventories, and brand margins react | NKE, apparel retailers | cotton, inventory, margins | timing/hedging sensitive |
+
+### Consumer Staples: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| Cocoa prices rise | chocolate input cost rises → product price increases or margin compression → volume elasticity appears | HSY, MDLZ | cocoa futures/spot, price mix, volume, gross margin | producer cost pressure; inventory lag |
+| Coffee prices rise | coffee input cost rises → roasting margins/retail pricing changes → consumer price response | SBUX, KDP | arabica/robusta, COGS, price/volume | depends on forward purchasing |
+| Diesel prices jump | store replenishment cost rises → distribution expense increases → grocery profitability may respond | WMT, KR, COST | diesel, transport expense, same-store sales | may be small relative to sales |
+| Corn and wheat harvest declines | agricultural supply tightens → grain price rises → food manufacturer input costs change → consumer inflation follows | GIS, K, CAG | USDA crop reports, grain prices, margin | mixed depending on grain sourcing |
+
+### Energy: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| Brent oil rises | producer realized prices rise → upstream cash flow may improve; refinery input costs rise → refining crack spread decides outcome | XOM, CVX, COP, VLO | Brent/WTI, output, crack spread, realized price | upstream vs downstream diverge |
+| Natural gas prices rise | producer revenues potentially improve → gas power generators fuel costs rise → chemicals/fertilizer feedstocks become costlier | EQT, LNG, NEE, CF | Henry Hub, utilization, contracts, gas input intensity | different signs for producers and consumers |
+| Oilfield spending declines | producer capex reduced → rig orders and drilling services revenue falls with delay | SLB, HAL, BKR | rig counts, upstream capex, services backlog | lagged negative demand exposure |
+| Pipeline outage occurs | transport capacity tightens → regional basis spreads change → producers, refiners and logistics adjust | WMB, KMI, local producers | outage timestamp, basis differentials, volumes | location-specific, not generic oil effect |
+
+### Industrials: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| Diesel prices increase | trucking fuel expense rises → fuel surcharge pass-through may lag → operating ratio changes → shippers may see freight increases | UPS, FDX, logistics firms | diesel, surcharge rules, operating ratio | cost risk partly passed on |
+| Copper rises | electrical-equipment raw material cost rises but grid orders may be strong → margin outcome depends on pricing and backlog | ETN, HUBB | copper, backlog, segment margins | cost pressure or strong-demand signal |
+| Government infrastructure spending accelerates | construction projects advance → machinery orders rise → steel/cement suppliers and freight benefit | CAT, URI, NUE | appropriations, construction starts, orders | positive demand conditional on delivery |
+| Aircraft deliveries slow | airline fleet expansions delayed → aerospace supplier revenue and working capital affected | BA, GE, aerospace suppliers | delivery schedules, backlog, supplier inventory | manufacturer and airline effects differ |
+
+### Utilities: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| Gas price rises | gas-fired generation fuel cost rises → merchant power margins or regulated tariff recovery changes | SO, DUK, merchant generators | Henry Hub, dispatch mix, tariffs, PPAs | regulatory structure determines sign |
+| Long bond yields rise | financing costs rise → long-lived regulated asset valuation discount rates change → capex plans affected | NEE, DUK, SO | 10y yield, debt maturities, allowed ROE | financing headwind often but not always |
+| Data center electricity load jumps | new capacity and grid connections needed → rate-base investments and contract demand increase → equipment suppliers benefit | NEE, SO, ETN | load forecasts, interconnection queues, utility capex | benefit offset by execution/financing |
+| Extreme heat | air conditioning load increases → demand/peak prices rise but outages and maintenance risks increase | regional utilities | temperature, load, outages | benefit vs reliability costs |
+
+### Real Estate: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| Treasury yields rise | cap rates/discount rates can rise → property valuations fall → refinancing and REIT FFO sensitivity changes | PLD, O, SPG | 10y yield, cap rates, debt ladder, FFO | often adverse valuation pressure |
+| Online commerce grows | warehouse utilization and logistics demand rise → industrial property leasing increases → construction suppliers benefit | PLD, AMZN | warehouse absorption, rent growth, occupancy | regional variation |
+| Data center demand accelerates | colocation capacity tightens → rent/pricing improves → electricity and construction bottlenecks emerge | EQIX, DLR | MW bookings, occupancy, power, capex | growth vs capex tension |
+| Office hiring weakens | office occupancy and rent prospects deteriorate → tenant credit and CRE lender exposure shifts | office REITs, regional banks | office vacancy, leases, bank CRE portfolios | heterogeneous geographic impacts |
+
+### Materials: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| Copper price rises | miners may earn higher realized prices while wiring, motor and construction customers pay more | FCX, SCCO, ETN | copper, volumes, costs, buyer input ratios | opposite operating exposures |
+| Natural gas rises | ammonia/fertilizer feedstock cost rises → producer margins change depending on fertilizer sale prices | CF, MOS | Henry Hub, ammonia, urea spreads | spread matters more than gas alone |
+| Construction demand accelerates | steel/cement orders rise → mills increase utilization and pricing → machinery/mining transport demand grows | NUE, MLM, VMC | construction spending, steel prices, volume | cyclical positive-demand mechanism |
+| Gold rises as real yields fall | gold producer revenue opportunity grows while financial markets discount higher/lower future rates | NEM, AEM | gold, TIPS real yields, output and AISC | miners not one-for-one gold proxies |
+
+### Communication Services: expanded transmission chains
+
+| Shock / trigger | Multi-hop path to test | Example tickers / industry | Data series | Operating direction hypothesis |
+|---|---|---|---|---|
+| Advertising budgets contract | ad auction demand softens → CPM/revenue falls → content/platform margins respond | GOOGL, META | ad-spend indices, ad revenue, CPM | negative ad exposure |
+| AI compute demand spikes | GPU/cloud spend and electricity costs rise → better products may improve engagement or ads → net margin uncertain | GOOGL, META | capex, inference cost, engagement, margins | two-sided cost/benefit |
+| Wireless capex rises | operators order radio, fiber and tower capacity → telecom equipment and tower landlords receive demand | VZ, T, AMT, CCI | wireless capex, tower lease additions | network capex vs near-term cash flow |
+| Content hit emerges | subscriber acquisition and retention may rise → production/amortization economics and distribution partners change | NFLX, DIS | viewership, subscriber additions, churn, ARPU | hit effect varies |
+
+
+## Stock-to-stock mathematical relationship engine
+
+### Four distinct questions (never confuse them)
+
+1. **Co-movement:** Did A and B go up/down in the same sessions? (`Pearson`, `Spearman`, rolling correlation.)
+2. **Conditional response:** Among days A rose sharply, how often did B rise, fall, or remain nearly unchanged **that same day**? (Conditional probabilities; not a forecast.)
+3. **Lead/lag association:** After observing A today, is B's **next available trading session** return different from baseline? (Lagged conditional means, regression, event studies; avoid simultaneous information leakage.)
+4. **Transmission mechanism:** Can a documented supplier, customer, input-cost, credit, or competition channel explain the association? (Cite sources, examine releases and financial reports; statistical association is not causality.)
+
+### Core formulas
+
+For adjusted close prices \(P_{i,t}\):
+
+- Simple return: \(r_{i,t}=P_{i,t}/P_{i,t-1}-1\). Use **returns**, not raw price levels, to avoid spurious price-level correlation.
+- Pearson correlation: \(
+ho_{ij}=\operatorname{Corr}(r_i,r_j)\). Calculate full-sample and rolling windows (e.g., 60 trading days).
+- Market model: \(r_{i,t}=\alpha_i+\beta_i r_{m,t}+\epsilon_{i,t}\). Compare residual co-movement \(\operatorname{Corr}(\epsilon_i,\epsilon_j)\) to raw correlation; shared market beta can create apparent links.
+- Same-session up/up: \(\Pr(r_{B,t}>0\mid r_{A,t}>q_A)\), with threshold \(q_A\) pre-specified or estimated on a training period.
+- Same-session up/down: \(\Pr(r_{B,t}<0\mid r_{A,t}>q_A)\).
+- Next-session: \(\operatorname{E}[r_{B,t+1}\mid r_{A,t}>q_A]\); also compare to \(\operatorname{E}[r_{B,t+1}]\).
+- Conditional lift: \(\Pr(B\uparrow\mid A\uparrow)/\Pr(B\uparrow)\); estimate confidence intervals and sample size.
+- Multi-factor exposure: \(r_{i,t}=\alpha+\beta_m r_{m,t}+\beta_s r_{sector,t}+\beta_o\Delta oil_t+\beta_y\Delta yield_t+u_t\). Align factors by public availability. Price changes and rate changes must use economically appropriate units.
+- Event abnormal return: \(AR_{i,t}=r_{i,t}-\hat r_{i,t}\); cumulative abnormal return \(CAR_{i,[a,b]}=\sum_{t=a}^{b}AR_{i,t}\).
+
+**Graph edge weights should be typed**, not combined indiscriminately:
+
+| Layer | Edge example | Weight | Directional? | Key caveat |
+|---|---|---|---|---|
+| Structural | Product uses copper | quantity/intensity if sourced | Yes (input dependence) | May not identify actual supplier |
+| Contractual | Supplier sells to OEM | share of purchases/sales if disclosed | Yes | Validity interval and confidentiality |
+| Market | Stock A co-moves with B | 60d return correlation | No | Common market factor |
+| Residual market | A/B unexplained co-movement | residual correlation | No | Omitted common factors |
+| Conditional same-day | B down given A up | empirical probability, CI, N | Condition A → outcome B, **not causal** | Simultaneity |
+| Conditional future | B next-day up given A shock | lift/return, CI, N | Predictive direction only | Leakage and instability |
+| Economic hypothesis | oil ↑ → airline fuel cost ↑ | modeled sensitivity | Yes, hypothesis | Hedges, timing, pass-through |
+
+### Interpret example outputs
+
+Suppose a hypothetical analysis finds 100 days where A returned over +2%. Among those sessions, B rose on 65 days and fell on 35 days. Then \(\hat P(B\uparrow\mid A>2\%)=65\%\), but if B normally rises 63% of sessions, the *lift* is only about 1.03—not compelling. Also, none of this means A made B rise. Observe **sample size, unconditional base rate, confidence interval, stability across periods, and after-market-factor adjustment**.
+
+### Analytical safeguards
+
+- Keep timestamps and use exact exchange calendars; same-session analysis is descriptive, not necessarily tradable.
+- Never calculate a threshold using later data if evaluating past forecasting decisions.
+- Adjust prices for splits and dividend policy consistently; confirm whether `auto_adjust` treats dividends as desired.
+- For splits/mergers/ticker changes and delistings, avoid survivorship bias where possible.
+- Do not forward-fill stock returns across holidays; avoid mixing missing data with 0% returns.
+- For volatile regimes, correlations can change sign. Report rolling correlations and subperiod results.
+- Many stock pairs mean many false positives. Adjust p-values or hold out a test period and use false discovery rate controls.
+- For leads and lags: test out of sample (walk-forward), use HAC/block bootstrap uncertainty when appropriate.
+- Granger predictive tests measure incremental predictability, **not true economic causation**.
+- Test regime dependence: high VIX, recession, rising yields, commodities shocks and earnings days.
+- A stock trading in the same sector may rise with competitors due to shared demand, **or fall** due to competitive share changes. Don't hard-code a sign.
+
+### Candidate stock-pair hypotheses (investigate, not promises)
+
+| Hypothesis | Expected economic mechanism | Direction to TEST | Controls / falsification |
+|---|---|---|---|
+| XOM vs COP when crude prices rise | Both have upstream exposure | Often shared revenue tailwind | Crude moves, market beta, production mix |
+| COP vs DAL under crude shock | Producer benefits; airline fuel cost rises | Potentially opposite operating impact | Fuel hedges, airline demand, market shock |
+| FCX vs ETN under copper shock | Miner revenue vs electrical input costs | Possible divergence | Grid demand, pricing power, contract lags |
+| NVDA vs AMD on AI capex shock | Shared end-market; competing products | May co-move or diverge | Earnings surprises, customer mix, relative products |
+| JPM vs regional banks on rate shock | Loan repricing vs deposits and credit | Heterogeneous | Deposit beta, AOCI, CRE exposure |
+| PLD vs UPS on e-commerce growth | Warehouse occupancy vs shipment demand | May share demand driver | Geography, leasing cycles, costs |
+| GOOGL vs META on ad spending change | Both exposed to advertising budgets | Possible co-movement | Platform mix, share shifts |
+| DUK vs ETN on grid capex | Utility asset expansion vs equipment backlog | Related business activity | Financing and rate recovery |
+| HSY vs cocoa commodity changes | Higher chocolate input cost | Possible margin headwind | Hedging, retail price, cocoa inventory |
+| NEM vs gold price changes | Producer realized prices | Possible upside | Real yields, AISC, mine output |
+
+### Implementation phases and deliverables
+
+**Day 1:** Download US adjusted daily prices for 20–30 liquid stocks representing 11 sectors, plus `SPY` benchmark; validate timestamps, prices, delistings caveat, common session overlap. Create a first `pairwise_correlations.csv` and network with edges limited to correlations above chosen absolute threshold.
+
+**Day 2:** Calculate rolling correlations, residual correlations after regressing each return on `SPY`, conditional same-day up/down frequencies (with minimum sample threshold), next-day event tests, and bootstrap or Wilson intervals. Compare results across train/test date windows.
+
+**Day 3:** Enrich top statistically interesting pairs with **documented** business mechanisms, financial exposures and dated sources. Render a 3-layer interactive graph (structural, market, conditional), with a sidebar giving N, base rate, window, formula, p-value/uncertainty, source and limitations.
+
+**Deliverable data model:** `statistical_edges.csv` with `ticker_a,ticker_b,window_start,window_end,metric,lag_sessions,value,n_obs,base_rate,confidence_low,confidence_high,model,controls,p_value,adjusted_p_value,calculated_at`. Build structural edges separately as `business_edges.csv` with source links and validity dates.
+
+**Runnable starter script:** see [`src/stock_relationships.py`](src/stock_relationships.py). It downloads example US equities, calculates pairwise returns and conditional same-/next-session outcomes, and exports `pairwise_correlations.csv` plus `conditional_relationships.csv`. Its output is empirical and must not be interpreted as proof of causation.
+
+### Public research and data references
+
+- [MSCI/S&P GICS classification](https://www.spglobal.com/spdji/en/landing/topic/gics/)
+- [Kenneth French Data Library — factor and industry returns](https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html)
+- [SEC EDGAR company facts and filing API](https://www.sec.gov/search-filings/edgar-application-programming-interfaces)
+- [BEA industry input-output accounts](https://www.bea.gov/industry/input-output-accounts-data)
+- [FRED and ALFRED macroeconomic vintage data](https://fred.stlouisfed.org/)
+- [EIA open energy data](https://www.eia.gov/opendata/)
+- [World Bank commodity price data](https://www.worldbank.org/en/research/commodity-markets)
+
 
 ## Cross-sector dependency map
 
