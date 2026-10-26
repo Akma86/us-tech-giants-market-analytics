@@ -33,8 +33,9 @@ Open [`http://127.0.0.1:8000`](http://127.0.0.1:8000). The dashboard uses only t
 StockLens US transforms multi-decade price histories into an institutional-grade cross-asset intelligence suite connecting **11 GICS Sectors, 31 Blue-Chip Equities, Commodities, and Macro Indicators** grounded in verified **SEC Form 10-K regulatory disclosures**.
 
 ```bash
-# Launch the Streamlit Institutional Dashboard
-streamlit run app/Home.py --server.port 8501
+# Launch the Unified Web Dashboard (Equity Atlas & StockLens US)
+python website/market_server.py --port 8000
+# Open http://127.0.0.1:8000 in your browser
 ```
 
 ### Core Architecture & Analytical Modules:

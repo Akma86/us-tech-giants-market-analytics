@@ -10,11 +10,10 @@ A quick reference manual for managing the **2,000+ US Stock Analytics Platform**
 
 | Action | Command | Purpose |
 | :--- | :--- | :--- |
-| **Launch Streamlit Dashboard** | `streamlit run app/Home.py --server.port 8501` | **StockLens US** Institutional Financial Knowledge Graph & Analytics |
+| **Launch Unified Web Platform** | `python website/market_server.py --port 8000` | Opens **US Equity Atlas & StockLens US** dashboard at `http://127.0.0.1:8000` |
 | **Run StockLens Tests** | `python tests/test_stocklens.py` | Runs 8 unit & integration tests (Graph, DuckDB, OLS, Event Study) |
 | **Run Ingestion (DuckDB/Parquet)** | `python src/ingest_us.py` | Ingests equities, commodities, and macro series into DuckDB & Parquet |
 | **Re-build Notebook 05** | `python scripts/build_research_notebook.py` | Generates & executes `05_financial_knowledge_graph_analytics.ipynb` |
-| **Launch Web Dashboard** | `python website/market_server.py --port 8000` | (Local explorer) Opens US Equity Atlas web dashboard at `http://127.0.0.1:8000` |
 | **Start Dedicated MongoDB** | `.\scripts\start_market_mongo.bat` | Starts MongoDB on port **27018** (isolated from port 27017) |
 | **Run Daily Update** | `python scripts/daily_update.py --mongo` | Fetches new daily price bars for 2,200 stocks (<60s) |
 | **Check SQLite Stats** | `python -c "import sys; sys.path.append('scripts'); from db_manager import USStockDatabase; print(USStockDatabase().get_database_stats())"` | Shows total records, coverage, date range |
@@ -87,18 +86,20 @@ df_mongo = mongo.get_price_history(symbols=["MSFT"], start_date="2024-01-01")
 
 ## 5. StockLens US: Financial Knowledge Graph & Columnar Analytics
 
-### Menjalankan Streamlit Dashboard
+### Menjalankan Web Platform Terpadu
 ```powershell
-streamlit run app/Home.py --server.port 8501
+python website/market_server.py --port 8000
 ```
-Akses dashboard di browser melalui: `http://localhost:8501`
-Fitur dashboard:
-- **Interactive Knowledge Graph:** Filter sektor GICS, node centrality, pencarian entitas.
-- **Economic Transmission Path Finder:** Menelusuri rantai transmisi guncangan komoditas ke emiten saham beserta kutipan SEC 10-K.
-- **Market Model OLS:** Estimasi Alpha, Beta, R-squared, Idiosyncratic Risk terhadap S&P 500 (`^GSPC`).
-- **Event Study Lab:** Evaluasi Abnormal Returns (AR) dan Cumulative Abnormal Returns (CAR) di sekitar event katalis.
-- **Lead/Lag Macro Spectrum:** Analisis korelasi silang lag $\pm 20$ hari (minyak/yields memimpin pergerakan saham).
-- **SEC 10-K Evidence Drawer:** Katalog kutipan resmi Form 10-K dari US SEC EDGAR.
+Akses platform di browser melalui: `http://127.0.0.1:8000`
+Semua fitur terintegrasi langsung dalam tab navigasi website:
+- **📊 Equity Atlas:** Explorer 2.200 saham AS, histori harga interaktif, volatilitas, drawdown, dan chip Big 5.
+- **🕸️ Financial Knowledge Graph:** Visualisasi graf kanvas interaktif, filter tipe entitas, inspector relasi, dan tabel sentralitas PageRank.
+- **⚡ Transmission Paths:** Simulator rute transmisi guncangan komoditas/makro ke emiten saham beserta bukti kutipan SEC Form 10-K.
+- **📈 Quantitative Models:** 
+  - *Market Model OLS:* Estimasi Alpha, Beta, R-squared, Risiko Idiosinkratik terhadap S&P 500 (`^GSPC`) dengan scatter plot & garis regresi.
+  - *Event Study Lab:* Evaluasi Abnormal Returns (AR) dan CAR di sekitar event katalis dengan timeline chart & uji signifikansi.
+  - *Macro Lead/Lag Spectrum:* Spektrum korelasi silang lag $\pm 20$ hari transmisi komoditas ke return saham.
+- **📑 SEC 10-K Evidence Drawer:** Katalog kutipan regulasi resmi dari US SEC EDGAR dengan tautan langsung.
 
 ### Menjalankan Unit & Integration Tests
 ```powershell
