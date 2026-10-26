@@ -64,3 +64,9 @@ rel_062,sector_ind,sector_energy,HAS_EXPOSURE_TO,supported_inference,1970-01-01,
 rel_063,sector_disc,sector_mat,HAS_EXPOSURE_TO,supported_inference,1970-01-01,,0.8,gics_standard_2023,"Automobile manufacturing consumes steel, aluminum, and battery minerals"
 rel_064,sector_fin,sector_real,HAS_EXPOSURE_TO,supported_inference,1970-01-01,,0.85,gics_standard_2023,Commercial bank loan portfolios contain substantial commercial and residential mortgages
 rel_065,sector_comm,sector_it,HAS_EXPOSURE_TO,supported_inference,2010-01-01,,0.85,gics_standard_2023,Social media and streaming services run on semiconductor processors and cloud servers
+rel_066,co_amd,co_nvda,COMPETES_WITH,verified,1999-01-01,,0.95,sec_nvda_10k_2025,Direct semiconductor GPU and AI datacenter accelerator competition
+rel_067,co_nvda,co_amd,COMPETES_WITH,verified,1999-01-01,,0.95,sec_nvda_10k_2025,Direct semiconductor GPU and AI datacenter accelerator competition
+rel_068,co_googl,co_msft,COMPETES_WITH,verified,2008-01-01,,0.90,sec_msft_10k_2024,Hyperscale cloud and enterprise generative AI competition
+rel_069,co_amzn,co_msft,COMPETES_WITH,verified,2006-01-01,,0.90,sec_msft_10k_2024,AWS vs Azure enterprise cloud infrastructure competition
+rel_070,commodity_wti,commodity_jet_fuel,PRODUCES,verified,1970-01-01,,0.95,eia_energy_series,Refining crack spread yields aviation kerosene from light sweet crude
+rel_071,commodity_jet_fuel,co_dal,TRANSMITS_COST_TO,verified,2007-01-01,,0.95,sec_dal_10k_2024,Direct fuel expense represents 28-32% of total commercial airline operating costs

@@ -62,6 +62,21 @@ class FinancialKnowledgeGraph:
 
         self.entities_df = pd.read_csv(ent_file)
         self.relationships_df = pd.read_csv(rel_file)
+
+        # Check for dynamic relationships in SQLite
+        db_file = PROJECT_ROOT / "data" / "database" / "us_equities.db"
+        if db_file.exists():
+            try:
+                import sqlite3
+                with sqlite3.connect(db_file) as conn:
+                    tbl_check = conn.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='dynamic_relationships'").fetchone()
+                    if tbl_check:
+                        dyn_df = pd.read_sql_query("SELECT * FROM dynamic_relationships", conn)
+                        if not dyn_df.empty:
+                            self.relationships_df = pd.concat([self.relationships_df, dyn_df], ignore_index=True)
+            except Exception as e:
+                pass
+
         if ev_file.exists():
             self.evidence_df = pd.read_csv(ev_file)
             id_col = "source_id" if "source_id" in self.evidence_df.columns else "citation_key"
@@ -98,16 +113,22 @@ class FinancialKnowledgeGraph:
             weight = float(row.get("confidence") or row.get("weight", 1.0))
             raw_citations = str(row.get("source_id") if "source_entity_id" in row else row.get("citation_keys", ""))
             citations = [c.strip() for c in raw_citations.split(";") if c.strip()]
+            valid_from = str(row.get("valid_from", "")) if pd.notna(row.get("valid_from")) else ""
+            valid_to = str(row.get("valid_to", "")) if pd.notna(row.get("valid_to")) else ""
             
             edge_attrs = {
-                "rel_id": str(row.get("relationship_id", f"rel_{idx}")),
+                "rel_id": str(row.get("relationship_id") or row.get("rel_id", f"rel_{idx}")),
                 "rel_type": rel_type,
                 "weight": weight,
                 "direction": str(row.get("direction", "forward")),
                 "lag_days": int(row.get("lag_days", 0)) if pd.notna(row.get("lag_days")) else 0,
                 "evidence_status": str(row.get("evidence_status", "hypothesis")),
+                "valid_from": valid_from,
+                "valid_to": valid_to,
                 "citation_keys": citations,
                 "notes": str(row.get("notes", "")),
+                "source_url": str(row.get("source_url", "")) if pd.notna(row.get("source_url")) else "",
+                "headline": str(row.get("headline", "")) if pd.notna(row.get("headline")) else "",
                 "color": RELATIONSHIP_COLORS.get(rel_type, "#64748B")
             }
             self.graph.add_edge(source, target, key=edge_attrs["rel_type"], **edge_attrs)
