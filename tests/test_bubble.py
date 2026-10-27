@@ -78,6 +78,20 @@ class TestAIBubbleSuite(unittest.TestCase):
         self.assertGreater(len(res["dotcom_cycle"]["data"]), 50)
         self.assertGreater(len(res["modern_ai_cycle"]["data"]), 50)
 
+    def test_safe_haven_rotation_matrix(self):
+        """Verifies empirical Safe Haven and Capital Rotation matrix."""
+        res = self.dotcom_engine.get_safe_haven_rotation_matrix()
+        self.assertIn("assets", res)
+        self.assertIn("benchmark_comparison", res)
+        self.assertGreaterEqual(len(res["assets"]), 10)
+        symbols = [a["symbol"] for a in res["assets"]]
+        self.assertIn("BRK-B", symbols)
+        self.assertIn("XOM", symbols)
+        self.assertIn("JNJ", symbols)
+        for a in res["assets"]:
+            self.assertGreater(a["resilience_score"], 0)
+            self.assertGreater(a["dotcom_return_pct"], 0)
+
     # --- 3. FRAGILITY INDEX TESTS ---
     def test_fragility_index_calculation(self):
         """Validates 0-100 composite Fragility Index and 6 sub-indicators."""
