@@ -41,24 +41,48 @@ SAFE_HAVEN_UNIVERSE: Dict[str, Dict[str, Any]] = {
         "sector": "Financials & Conglomerates",
         "theme": "Fortress Cash Pile & Deep Value",
         "dotcom_return_pct": 43.2,
-        "resilience_tier": "Ultra Defensive",
-        "why_it_rises": "Memiliki cadangan kas >$300 miliar untuk menyerap aset diskon saat kepanikan pasar, tanpa eksposur belanja modal AI spekulatif."
+        "resilience_tier": "Fortress Cash Pile",
+        "why_it_rises": "Memiliki cadangan kas likuid >$300 miliar untuk memborong aset diskon saat pasar panik, tanpa risiko belanja modal AI spekulatif."
     },
-    "XOM": {
-        "name": "Exxon Mobil Corp.",
-        "sector": "Energy & Real Commodities",
-        "theme": "Physical Cash Flows & High Dividend",
-        "dotcom_return_pct": 28.5,
-        "resilience_tier": "Commodity Safe Haven",
-        "why_it_rises": "Valuasi rendah (P/E ~12x), dividen >3.5%, dan arus kas berbasis komoditas fisik riil yang tidak bergantung pada adopsi cloud/AI."
+    "LMT": {
+        "name": "Lockheed Martin Corp.",
+        "sector": "Defense & Aerospace",
+        "theme": "US Defense Budget & Pentagon Backlog",
+        "dotcom_return_pct": 75.3,
+        "resilience_tier": "Defense & Gov Contracts",
+        "why_it_rises": "Monopoli jet tempur F-35 & rudal Patriot; pendapatan dijamin anggaran pertahanan federal AS ($850B+), beta 0.10 kebal dari siklus chip AI."
     },
-    "CVX": {
-        "name": "Chevron Corp.",
-        "sector": "Energy & Integrated Oil",
-        "theme": "Free Cash Flow & Tangible Assets",
-        "dotcom_return_pct": 22.8,
-        "resilience_tier": "Commodity Safe Haven",
-        "why_it_rises": "Neraca kuat dengan dividen konsisten lebih dari 3 dekade; tempat parkir modal institusi saat valuasi tech terkompresi."
+    "RTX": {
+        "name": "RTX Corporation",
+        "sector": "Defense & Aerospace",
+        "theme": "Missile Defense & Commercial Engines",
+        "dotcom_return_pct": 31.2,
+        "resilience_tier": "Defense & Gov Contracts",
+        "why_it_rises": "Backlog pesanan militer & aviasi rekor >$200 miliar; kontrak pertahanan multi-tahun memberikan visibilitas arus kas independen dari teknologi."
+    },
+    "WM": {
+        "name": "Waste Management, Inc.",
+        "sector": "Essential Waste & Sanitation",
+        "theme": "Landfill Disposal Monopoly",
+        "dotcom_return_pct": 42.0,
+        "resilience_tier": "Essential Waste & Water",
+        "why_it_rises": "Monopoli tempat pembuangan sampah legal & sanitasi kota di Amerika Utara; masyarakat dan pabrik selalu membuang sampah setiap hari."
+    },
+    "UNH": {
+        "name": "UnitedHealth Group Inc.",
+        "sector": "Healthcare & Managed Care",
+        "theme": "US Healthcare & Insurance Monopoly",
+        "dotcom_return_pct": 82.5,
+        "resilience_tier": "Healthcare Monopoly",
+        "why_it_rises": "Konglomerat asuransi & layanan kesehatan terbesar di AS; premi kesehatan wajib dibayar bulanan terlepas dari apakah saham teknologi naik atau jatuh."
+    },
+    "ABBV": {
+        "name": "AbbVie Inc.",
+        "sector": "Healthcare & Pharmaceuticals",
+        "theme": "Immunology & Oncology Cash Cow",
+        "dotcom_return_pct": 34.5,
+        "resilience_tier": "Healthcare Monopoly",
+        "why_it_rises": "Portofolio terapi onkologi & imunologi bernilai miliaran dolar; dividen tinggi konsisten dengan beta sangat rendah (0.23)."
     },
     "JNJ": {
         "name": "Johnson & Johnson",
@@ -66,7 +90,15 @@ SAFE_HAVEN_UNIVERSE: Dict[str, Dict[str, Any]] = {
         "theme": "Non-Cyclical Inelastic Healthcare",
         "dotcom_return_pct": 32.1,
         "resilience_tier": "Ultra Defensive",
-        "why_it_rises": "Permintaan obat, terapi medis, dan produk kesehatan memiliki korelasi 0 terhadap belanja server GPU; laba stabil di segala siklus ekonomi."
+        "why_it_rises": "Permintaan obat esensial dan peralatan bedah rumah sakit memiliki korelasi 0 terhadap belanja server GPU; laba stabil di segala krisis."
+    },
+    "MDT": {
+        "name": "Medtronic plc",
+        "sector": "Healthcare & Medical Devices",
+        "theme": "Critical Medical Devices & Implants",
+        "dotcom_return_pct": 18.2,
+        "resilience_tier": "Healthcare Monopoly",
+        "why_it_rises": "Peralatan medis kritis (pacemaker, pompa insulin, bedah robotik) dibutuhkan rumah sakit di seluruh dunia tanpa terpengaruh siklus belanja IT."
     },
     "PG": {
         "name": "Procter & Gamble Co.",
@@ -74,7 +106,15 @@ SAFE_HAVEN_UNIVERSE: Dict[str, Dict[str, Any]] = {
         "theme": "Essential Goods & Pricing Power",
         "dotcom_return_pct": 34.6,
         "resilience_tier": "Ultra Defensive",
-        "why_it_rises": "Barang kebutuhan pokok (kebersihan, perawatan) tetap dibeli setiap hari; pricing power kuat menjaga laba saat rotasi modal terjadi."
+        "why_it_rises": "Barang kebutuhan primer (Pampers, Gillette, Tide) dibeli harian; pricing power kuat menjaga margin laba saat rotasi modal terjadi."
+    },
+    "CL": {
+        "name": "Colgate-Palmolive Co.",
+        "sector": "Consumer Staples",
+        "theme": "Global Oral Care Inelasticity",
+        "dotcom_return_pct": 29.4,
+        "resilience_tier": "Ultra Defensive",
+        "why_it_rises": "Monopoli pasta gigi & perawatan tubuh global dengan penetrasi >60% populasi dunia; beta super rendah (0.32) tahan guncangan pasar."
     },
     "KO": {
         "name": "Coca-Cola Co.",
@@ -82,7 +122,7 @@ SAFE_HAVEN_UNIVERSE: Dict[str, Dict[str, Any]] = {
         "theme": "Global Beverage Cash Cow",
         "dotcom_return_pct": 18.7,
         "resilience_tier": "Defensive Cash Machine",
-        "why_it_rises": "Jaringan distribusi global dan perputaran kas harian yang sangat likuid; dividen stabil selama 62 tahun berturut-turut."
+        "why_it_rises": "Jaringan distribusi minuman terluas di bumi; arus kas harian likuid dengan dividen naik selama 62 tahun berturut-turut."
     },
     "PEP": {
         "name": "PepsiCo, Inc.",
@@ -90,23 +130,39 @@ SAFE_HAVEN_UNIVERSE: Dict[str, Dict[str, Any]] = {
         "theme": "Snacks & Beverages Inelasticity",
         "dotcom_return_pct": 26.3,
         "resilience_tier": "Defensive Cash Machine",
-        "why_it_rises": "Portofolio makanan ringan dan minuman yang tahan banting terhadap guncangan makroekonomi dan krisis teknologi."
+        "why_it_rises": "Portofolio camilan (Lay's, Doritos) dan minuman kebal resesi; dividen tinggi (4.3%) menjadi bantalan pengaman modal."
     },
     "WMT": {
         "name": "Walmart Inc.",
         "sector": "Consumer Staples & Discount Retail",
-        "theme": "Value Retail & Consumer Flight to Frugality",
+        "theme": "Flight to Consumer Frugality",
         "dotcom_return_pct": 12.4,
-        "resilience_tier": "Defensive Retail Anchor",
-        "why_it_rises": "Saat bubble meletus atau ekonomi bergejolak, konsumen beralih ke diskon ritel untuk berhemat, mendongkrak penjualan supermarket."
+        "resilience_tier": "Defensive Cash Machine",
+        "why_it_rises": "Saat bubble meletus atau ekonomi bergejolak, konsumen bermigrasi ke supermarket diskon untuk berhemat, mendongkrak penjualan grosir."
+    },
+    "COST": {
+        "name": "Costco Wholesale Corp.",
+        "sector": "Consumer Staples & Wholesale Club",
+        "theme": "Membership Fee Recurring Cash Engine",
+        "dotcom_return_pct": 15.0,
+        "resilience_tier": "Defensive Cash Machine",
+        "why_it_rises": "Model pendapatan iuran keanggotaan dengan renewal rate 93%+ menghasilkan kas muka yang dapat diprediksi dengan neraca kuat."
+    },
+    "KR": {
+        "name": "The Kroger Co.",
+        "sector": "Consumer Staples & Food Retail",
+        "theme": "Discount Supermarket & Low Multiples",
+        "dotcom_return_pct": 23.8,
+        "resilience_tier": "Super High Yield Safe Haven",
+        "why_it_rises": "Valuasi sangat murah (P/E 12x, EV/EBITDA 7.7x) berbasis kebutuhan pangan pokok sehari-hari; beta 0.35 kebal dari kejatuhan sektor tech."
     },
     "CAT": {
         "name": "Caterpillar Inc.",
         "sector": "Industrials & Heavy Machinery",
         "theme": "Physical Old Economy Infrastructure",
         "dotcom_return_pct": 38.4,
-        "resilience_tier": "Old Economy Tangible Value",
-        "why_it_rises": "Pabrik fisik, alat berat pertambangan dan konstruksi; penerima utama perputaran dana dari 'perangkat lunak maya' ke 'aset fisik nyata'."
+        "resilience_tier": "Ultra Defensive",
+        "why_it_rises": "Pabrik fisik & alat berat tambang riil; penerima limpahan dana utama saat modal beralih dari 'software maya' ke 'aset fisik nyata'."
     },
     "MO": {
         "name": "Altria Group, Inc.",
@@ -114,23 +170,71 @@ SAFE_HAVEN_UNIVERSE: Dict[str, Dict[str, Any]] = {
         "theme": "Deep Inelastic Demand & High Dividend",
         "dotcom_return_pct": 116.8,
         "resilience_tier": "Super High Yield Safe Haven",
-        "why_it_rises": "Juara bertahan saat Dot-Com pecah (meroket +116%). Permintaan inelastis ekstrem dengan dividend yield >8% menarik arus modal pencari dividen tunai pasti."
+        "why_it_rises": "Pemenang nomor satu Dot-Com crash (meroket +116%). Permintaan inelastis ekstrem dengan dividend yield >6% menjadi magnet dana tunai."
     },
     "SO": {
         "name": "Southern Company",
         "sector": "Regulated Utilities",
         "theme": "Regulated Monopolistic Power Utility",
         "dotcom_return_pct": 41.5,
-        "resilience_tier": "Ultra Defensive",
-        "why_it_rises": "Utilitas listrik dengan tarif yang diatur dan dijamin regulator pemerintah; imbal hasil dividen stabil dan kebal terhadap pembatalan proyek data center."
+        "resilience_tier": "Essential Waste & Water",
+        "why_it_rises": "Utilitas listrik dengan tarif yang diatur dan dijamin pemerintah daerah; dividen stabil 3.3% kebal dari pembatalan belanja AI."
     },
     "DUK": {
         "name": "Duke Energy Corp.",
         "sector": "Regulated Utilities",
         "theme": "Regulated Energy Infrastructure",
         "dotcom_return_pct": 24.0,
-        "resilience_tier": "Ultra Defensive",
-        "why_it_rises": "Monopoli transmisi energi regional dengan arus kas yang dapat diprediksi hingga puluhan tahun ke depan."
+        "resilience_tier": "Essential Waste & Water",
+        "why_it_rises": "Monopoli transmisi energi regional dengan arus kas yang dapat diprediksi puluhan tahun ke depan, 100% terlindungi regulasi."
+    },
+    "ED": {
+        "name": "Consolidated Edison, Inc.",
+        "sector": "Regulated Utilities",
+        "theme": "New York City Power & Steam Monopoly",
+        "dotcom_return_pct": 38.6,
+        "resilience_tier": "Essential Waste & Water",
+        "why_it_rises": "Monopoli transmisi energi New York City; beta super rendah (0.25) dan imbal hasil dividen >3% menjadikannya obligasi versi ekuitas."
+    },
+    "AWK": {
+        "name": "American Water Works Co.",
+        "sector": "Regulated Utilities",
+        "theme": "Regulated Clean Water Infrastructure",
+        "dotcom_return_pct": 25.0,
+        "resilience_tier": "Essential Waste & Water",
+        "why_it_rises": "Penyedia air minum publik terbesar di AS; kebutuhan hidup paling primer yang tidak dapat dihentikan oleh krisis ekonomi apa pun."
+    },
+    "XOM": {
+        "name": "Exxon Mobil Corp.",
+        "sector": "Energy & Real Commodities",
+        "theme": "Physical Cash Flows & High Dividend",
+        "dotcom_return_pct": 28.5,
+        "resilience_tier": "Commodity Safe Haven",
+        "why_it_rises": "Valuasi rendah (P/E 15x, EV/EBITDA <8x), dividen tunai, dan arus kas berbasis energi fisik yang tidak bergantung pada adopsi AI."
+    },
+    "CVX": {
+        "name": "Chevron Corp.",
+        "sector": "Energy & Integrated Oil",
+        "theme": "Free Cash Flow & Tangible Assets",
+        "dotcom_return_pct": 22.8,
+        "resilience_tier": "Commodity Safe Haven",
+        "why_it_rises": "Neraca bebas utang dengan dividen konsisten 37 tahun; tempat parkir modal raksasa saat valuasi tech terkompresi."
+    },
+    "PGR": {
+        "name": "The Progressive Corp.",
+        "sector": "Financials & Insurance",
+        "theme": "Underwriting Float & Yield Beneficiary",
+        "dotcom_return_pct": 68.4,
+        "resilience_tier": "Fortress Cash Pile",
+        "why_it_rises": "Premi asuransi kendaraan wajib mengalirkan puluhan miliar float kas tunai yang diinvestasikan pada yield obligasi tinggi, beta 0.24."
+    },
+    "NEM": {
+        "name": "Newmont Corp.",
+        "sector": "Precious Metals & Gold Mining",
+        "theme": "World's #1 Gold Producer",
+        "dotcom_return_pct": 65.2,
+        "resilience_tier": "Monetary Safe Haven",
+        "why_it_rises": "Produsen emas terbesar di dunia dengan cadangan emas terbukti; P/E rendah (11x) dan EV/EBITDA 6.3x menjadi lindung nilai moneter saat tech goyah."
     },
     "GLD": {
         "name": "SPDR Gold Shares (ETF)",
@@ -138,7 +242,7 @@ SAFE_HAVEN_UNIVERSE: Dict[str, Dict[str, Any]] = {
         "theme": "Monetary Hedge & Counter-Bubble Asset",
         "dotcom_return_pct": 21.4,
         "resilience_tier": "Monetary Safe Haven",
-        "why_it_rises": "Emas secara historis selalu menjadi tempat pelarian terakhir modal dunia saat kepercayaan terhadap valuasi saham teknologi dan inflasi fiat terguncang."
+        "why_it_rises": "Emas fisik secara historis selalu menjadi tempat pelarian terakhir saat kepercayaan terhadap valuasi saham teknologi dan inflasi fiat terguncang."
     }
 }
 
@@ -385,15 +489,29 @@ class DotComComparisonEngine:
                     
             pe_ratio = info.get("trailingPE")
             forward_pe = info.get("forwardPE")
+            div_rate = info.get("dividendRate")
             raw_div = info.get("dividendYield")
-            if raw_div is not None:
+            if div_rate and current_price > 0:
+                dividend_yield = round((float(div_rate) / float(current_price)) * 100, 2)
+            elif raw_div is not None:
                 div_f = float(raw_div)
-                dividend_yield = round(div_f if div_f > 0.3 else div_f * 100, 2)
+                dividend_yield = round(div_f if div_f >= 1.0 or div_f == 0.0 else div_f * 100, 2)
             beta = round(float(info.get("beta", 0.5)), 2)
             market_cap = float(info.get("marketCap", 0.0))
             fcf = float(info.get("freeCashflow", 0.0))
             if market_cap > 0 and fcf > 0:
                 fcf_yield = round((fcf / market_cap) * 100, 2)
+            ev_to_ebitda = info.get("enterpriseToEbitda")
+            if ev_to_ebitda is not None:
+                ev_to_ebitda = round(float(ev_to_ebitda), 2)
+            profit_margins = info.get("profitMargins")
+            if profit_margins is not None:
+                profit_margins = round(float(profit_margins) * 100, 1)
+            operating_margins = info.get("operatingMargins")
+            if operating_margins is not None:
+                operating_margins = round(float(operating_margins) * 100, 1)
+            high_52 = info.get("fiftyTwoWeekHigh")
+            low_52 = info.get("fiftyTwoWeekLow")
         except Exception as e:
             logger.debug("yfinance metrics error for %s: %s", ticker, e)
 
@@ -424,9 +542,14 @@ class DotComComparisonEngine:
             "market_cap_billions": round(market_cap / 1e9, 2) if market_cap > 0 else 0.0,
             "trailing_pe": round(float(pe_ratio), 2) if pe_ratio and pe_ratio > 0 else None,
             "forward_pe": round(float(forward_pe), 2) if forward_pe and forward_pe > 0 else None,
+            "ev_to_ebitda": ev_to_ebitda,
             "dividend_yield_pct": dividend_yield,
             "beta": beta,
             "fcf_yield_pct": fcf_yield,
+            "profit_margin_pct": profit_margins,
+            "operating_margin_pct": operating_margins,
+            "fifty_two_week_high": round(float(high_52), 2) if high_52 else None,
+            "fifty_two_week_low": round(float(low_52), 2) if low_52 else None,
             "resilience_score": resilience_score,
             "is_realtime": True
         }
@@ -441,7 +564,7 @@ class DotComComparisonEngine:
             return self._cached_safe_havens
 
         items: List[Dict[str, Any]] = []
-        with concurrent.futures.ThreadPoolExecutor(max_workers=8) as executor:
+        with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:
             futures = {
                 executor.submit(self._fetch_single_safe_haven, sym, meta): sym
                 for sym, meta in SAFE_HAVEN_UNIVERSE.items()
@@ -457,11 +580,11 @@ class DotComComparisonEngine:
         items.sort(key=lambda x: x.get("resilience_score", 0.0), reverse=True)
 
         # Aggregate benchmarks: Safe Haven Basket vs AI Universe vs Dot-Com Tech Crash
-        avg_beta = round(float(np.mean([x["beta"] for x in items if x.get("beta")])), 2) if items else 0.48
-        avg_div = round(float(np.mean([x["dividend_yield_pct"] for x in items if x.get("dividend_yield_pct")])), 2) if items else 3.1
+        avg_beta = round(float(np.mean([x["beta"] for x in items if x.get("beta")])), 2) if items else 0.45
+        avg_div = round(float(np.mean([x["dividend_yield_pct"] for x in items if x.get("dividend_yield_pct")])), 2) if items else 2.8
         valid_pes = [x["forward_pe"] for x in items if x.get("forward_pe")]
-        avg_fwd_pe = round(float(np.mean(valid_pes)), 1) if valid_pes else 16.8
-        avg_dotcom_ret = round(float(np.mean([x["dotcom_return_pct"] for x in items])), 1) if items else 36.5
+        avg_fwd_pe = round(float(np.mean(valid_pes)), 1) if valid_pes else 18.2
+        avg_dotcom_ret = round(float(np.mean([x["dotcom_return_pct"] for x in items])), 1) if items else 38.5
 
         payload = {
             "title": "Flight-to-Safety & Capital Rotation Radar",
@@ -469,7 +592,7 @@ class DotComComparisonEngine:
             "as_of": time.strftime("%Y-%m-%d %H:%M:%S UTC", time.gmtime()),
             "benchmark_comparison": {
                 "safe_haven_basket": {
-                    "label": "Safe Haven & Old Economy Basket (13 Assets)",
+                    "label": f"Anti-Crash & Safe Haven Basket ({len(items)} Assets)",
                     "avg_forward_pe": avg_fwd_pe,
                     "avg_dividend_yield": f"{avg_div}%",
                     "avg_market_beta": avg_beta,

@@ -83,14 +83,14 @@ class TestAIBubbleSuite(unittest.TestCase):
         res = self.dotcom_engine.get_safe_haven_rotation_matrix()
         self.assertIn("assets", res)
         self.assertIn("benchmark_comparison", res)
-        self.assertGreaterEqual(len(res["assets"]), 10)
+        self.assertGreaterEqual(len(res["assets"]), 20)
         symbols = [a["symbol"] for a in res["assets"]]
-        self.assertIn("BRK-B", symbols)
-        self.assertIn("XOM", symbols)
-        self.assertIn("JNJ", symbols)
+        for sym in ["BRK-B", "XOM", "JNJ", "LMT", "WM", "UNH", "ABBV", "NEM"]:
+            self.assertIn(sym, symbols)
         for a in res["assets"]:
             self.assertGreater(a["resilience_score"], 0)
             self.assertGreater(a["dotcom_return_pct"], 0)
+            self.assertIn("ev_to_ebitda", a)
 
     # --- 3. FRAGILITY INDEX TESTS ---
     def test_fragility_index_calculation(self):
