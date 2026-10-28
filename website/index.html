@@ -1,0 +1,1244 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Institutional Market Intelligence & Financial Knowledge Graph for US Equities, Commodities, and Macro Indicators." />
+    <title>US Equity Atlas · Financial Knowledge Graph & Market Intelligence</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="assets/dashboard.css?v=4.0" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+    <header class="topbar shell">
+      <a class="brand" href="#top" aria-label="US Equity Atlas home"><span class="brand-mark"><i></i><i></i><i></i></span><span>US<span>ATLAS</span></span></a>
+      <div class="topbar-actions">
+        <a href="https://github.com/Akma86/us-tech-giants-market-analytics" target="_blank" rel="noopener" class="topbar-link">GitHub Repository ↗</a>
+        <div class="market-status"><span class="pulse"></span><span id="header-status">Local market database</span></div>
+      </div>
+    </header>
+
+    <!-- Top Platform Navigation Tabs -->
+    <div class="shell">
+      <nav class="app-nav-tabs" role="tablist" aria-label="Platform Views">
+        <button type="button" class="nav-tab is-active" data-view="atlas">📊 Equity Atlas (2,200 Stocks)</button>
+        <button type="button" class="nav-tab" data-view="graph">🕸️ Financial Knowledge Graph</button>
+        <button type="button" class="nav-tab" data-view="paths">⚡ Transmission Paths</button>
+        <button type="button" class="nav-tab" data-view="quant">📈 Quantitative Models</button>
+        <button type="button" class="nav-tab" data-view="bubble">⚠️ AI Bubble & Contagion Radar</button>
+        <button type="button" class="nav-tab" data-view="evidence">📑 SEC 10-K Evidence</button>
+      </nav>
+    </div>
+
+    <main id="top" class="shell">
+      <!-- ===================================================================== -->
+      <!-- VIEW 1: US EQUITY ATLAS (2,200 STOCKS & SECTOR TAXONOMY) -->
+      <!-- ===================================================================== -->
+      <div id="view-atlas" class="view-panel">
+        <section class="hero" aria-labelledby="page-title">
+          <div><p class="eyebrow">US EQUITIES · QUANTITATIVE MARKET UNIVERSE</p><h1 id="page-title">Every stock.<br /><em>One clear market map.</em></h1></div>
+          <p class="hero-copy">Explore 2,200+ US equities across eleven sectors with complete lifetime price histories dating back to 1962, high-frequency volatility models, and drawdown profiles.</p>
+        </section>
+        <section class="market-strip" aria-label="Universe snapshot">
+          <div><p class="metric-label">Equities in database</p><strong id="total-stocks">—</strong></div><div><p class="metric-label">Market sectors</p><strong>11</strong></div><div><p class="metric-label">Historical inception</p><strong id="earliest-date">—</strong></div><div><p class="metric-label">Latest trading session</p><strong id="latest-date">Loading…</strong></div>
+        </section>
+        <section class="sector-nav-section" aria-labelledby="sector-nav-title">
+          <div class="section-intro"><div><p class="eyebrow">SECTOR TAXONOMY</p><h2 id="sector-nav-title">Select a sector to explore</h2></div><p>Standard GICS sector classifications covering active NYSE and NASDAQ listings. All unclassified and special-purpose listings remain fully searchable.</p></div>
+          <div id="sector-chips" class="sector-chips" aria-label="Sector filters"></div>
+        </section>
+        <section class="explorer" aria-label="US stock explorer">
+          <aside class="stock-list-panel">
+            <div class="panel-heading"><div><p id="active-sector-label" class="eyebrow">ALL EQUITIES</p><strong id="results-count">—</strong></div><span id="page-count">—</span></div>
+            <div class="quick-picks" aria-label="Featured Big 5 Tech Giants">
+              <span class="quick-picks-label">BIG 5:</span>
+              <button type="button" class="quick-chip" data-quick="AAPL">AAPL</button>
+              <button type="button" class="quick-chip" data-quick="MSFT">MSFT</button>
+              <button type="button" class="quick-chip" data-quick="NVDA">NVDA</button>
+              <button type="button" class="quick-chip" data-quick="GOOGL">GOOGL</button>
+              <button type="button" class="quick-chip" data-quick="AMZN">AMZN</button>
+            </div>
+            <label class="search-box" for="stock-search"><span aria-hidden="true">⌕</span><input id="stock-search" type="search" autocomplete="off" placeholder="Search ticker or company (e.g. AAPL, Tesla)" /></label>
+            <div id="stock-list" class="stock-list" role="list" aria-live="polite"><div class="list-message">Loading equities catalog…</div></div>
+            <nav class="pagination" aria-label="Stock list pages"><button id="previous-page" type="button" aria-label="Previous page">←</button><span id="pagination-label">—</span><button id="next-page" type="button" aria-label="Next page">→</button></nav>
+          </aside>
+          <div class="content-panel">
+            <div id="detail-empty" class="detail-empty" hidden>Select an equity from the directory to inspect historical analytics.</div>
+            <div id="stock-detail">
+              <div class="stock-heading"><div><p id="selected-sector" class="eyebrow">LOADING DATA</p><h2><span id="selected-ticker">—</span><span id="selected-company">Loading…</span></h2><p id="selected-industry" class="industry-label">—</p></div><div class="last-price"><span class="metric-label">LATEST CLOSE</span><strong id="last-price">—</strong><span id="day-change" class="change">—</span></div></div>
+              <div class="chart-controls"><div class="range-switcher" role="group" aria-label="Chart date range"><button type="button" data-range="1M">1M</button><button type="button" data-range="6M">6M</button><button type="button" data-range="1Y" class="is-active">1Y</button><button type="button" data-range="5Y">5Y</button><button type="button" data-range="ALL">ALL</button></div><p id="chart-summary" class="chart-summary">Adjusted close · —</p></div>
+              <div id="chart-wrap" class="chart-wrap" tabindex="0" aria-label="Interactive historical price chart"><div id="price-chart" class="price-chart" aria-live="polite"><div class="chart-loading">Loading price history…</div></div><div id="chart-tooltip" class="chart-tooltip" hidden></div></div>
+              <div class="stat-grid" aria-label="Selected stock metrics">
+                <article><p class="metric-label">PERIOD RETURN</p><strong id="period-return">—</strong><span id="period-return-note">—</span></article>
+                <article><p class="metric-label">ANNUALIZED VOLATILITY</p><strong id="volatility">—</strong><span>Based on daily log returns</span></article>
+                <article><p class="metric-label">MAX DRAWDOWN</p><strong id="drawdown">—</strong><span>Within selected timeframe</span></article>
+                <article><p class="metric-label">TRADING RANGE</p><strong id="trading-range">—</strong><span id="trading-range-note">—</span></article>
+                <article><p class="metric-label">VOLUME & COVERAGE</p><strong id="trading-volume">—</strong><span id="trading-sessions">—</span></article>
+              </div>
+
+              <!-- Live Market News Feed for Selected Stock -->
+              <section class="stock-news-section" aria-labelledby="news-section-title">
+                <div class="news-section-header">
+                  <div>
+                    <p class="eyebrow">MARKET INTELLIGENCE & GRAPH-AUGMENTED NEWS</p>
+                    <h3 id="news-section-title">Latest Intelligence & Disclosures for <span id="news-stock-ticker">AAPL</span></h3>
+                  </div>
+                  <div class="news-provider-badge">
+                    <span class="live-dot"></span>
+                    <span id="news-source-badge">Finnhub Live Feed</span>
+                  </div>
+                </div>
+
+                <!-- News Navigation Bar: Direct vs Spillover & SQLite Backfill -->
+                <div class="news-nav-bar">
+                  <div class="news-tab-group" role="tablist">
+                    <button id="btn-news-direct" type="button" class="news-tab-btn is-active">📰 Direct Company News</button>
+                    <button id="btn-news-spillover" type="button" class="news-tab-btn">🌐 Supply Chain & Spillover News</button>
+                  </div>
+                  <div class="news-actions">
+                    <span id="news-db-counter" class="news-db-counter" title="Total articles archived in SQLite">💾 0 archived</span>
+                    <button id="btn-news-backfill" type="button" class="news-backfill-btn" title="Backfill past 1 year of news into local SQLite database">📥 Backfill 1Y News</button>
+                  </div>
+                </div>
+
+                <!-- Spillover Partners Strip (Shown when Spillover tab is active) -->
+                <div id="spillover-partners-strip" class="spillover-partners-strip" hidden>
+                  <span class="temporal-label">GRAPH-CONNECTED ENTITIES:</span>
+                  <div id="spillover-partners-chips" class="spillover-chips"></div>
+                </div>
+
+                <div id="stock-news-feed" class="stock-news-feed" aria-live="polite">
+                  <div class="news-loading-skeleton">Loading latest market news…</div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </section>
+        <section class="sector-overview" aria-labelledby="sector-overview-title">
+          <div class="section-intro"><div><p class="eyebrow">MARKET LANDSCAPE</p><h2 id="sector-overview-title">11 Sectors Across US Equities</h2></div><p>Click any sector card to filter the catalog. Search operates across company names and tickers inside the selected sector.</p></div>
+          <div id="sector-grid" class="sector-grid" aria-live="polite"></div>
+        </section>
+        <section class="methodology"><span class="method-number">01</span><div><p class="eyebrow">QUANTITATIVE METHODOLOGY</p><h2>Price gives the headline.<br />Risk explains the ride.</h2></div><p>Returns utilize <strong>split and dividend-adjusted closing prices</strong> to accurately compound shareholder wealth. Volatility estimates annualize standard deviation across 252 trading sessions. Maximum Drawdown reflects the deepest peak-to-trough drop over the chosen window. Data is powered by our local high-performance SQLite WAL engine and synchronized MongoDB cluster.</p></section>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 2: FINANCIAL KNOWLEDGE GRAPH EXPLORER -->
+      <!-- ===================================================================== -->
+      <div id="view-graph" class="view-panel" hidden>
+        <section class="hero-stocklens">
+          <div>
+            <p class="eyebrow">STOCKLENS US · FINANCIAL KNOWLEDGE GRAPH</p>
+            <h1>Cross-Asset<br /><em>Economic Topology.</em></h1>
+          </div>
+          <p class="hero-copy">Interconnecting 11 GICS Sectors, 31 Blue-Chip Equities, Commodities, and Macro Indicators grounded in verified SEC Form 10-K regulatory disclosures.</p>
+        </section>
+
+        <!-- KPI Strip for Graph -->
+        <div class="stocklens-strip">
+          <div><p class="metric-label">Total Nodes</p><strong id="kg-total-nodes">82</strong><span>6 Entity Classes</span></div>
+          <div><p class="metric-label">Directed Relationships</p><strong id="kg-total-edges">65</strong><span>Verified & Inferred</span></div>
+          <div><p class="metric-label">SEC 10-K Citations</p><strong id="kg-total-evidence">13</strong><span>Official Filings</span></div>
+          <div><p class="metric-label">Storage Architecture</p><strong>DuckDB + Parquet</strong><span>58k+ Price Bars</span></div>
+        </div>
+
+        <!-- Temporal & Mode Control Bar -->
+        <div class="kg-temporal-bar">
+          <div class="kg-range-group" role="group" aria-label="Temporal Horizon">
+            <span class="temporal-label">TIMEFRAME:</span>
+            <button type="button" class="kg-range-btn" data-kg-range="1W">1W</button>
+            <button type="button" class="kg-range-btn" data-kg-range="1M">1M</button>
+            <button type="button" class="kg-range-btn" data-kg-range="1Y">1Y</button>
+            <button type="button" class="kg-range-btn" data-kg-range="5Y">5Y</button>
+            <button type="button" class="kg-range-btn is-active" data-kg-range="ALL">ALL</button>
+          </div>
+          <div class="kg-slider-wrap">
+            <span class="temporal-label">HISTORICAL YEAR:</span>
+            <input id="kg-year-slider" type="range" min="1980" max="2026" value="2026" step="1" class="custom-slider" />
+            <strong id="kg-year-display">2026</strong>
+          </div>
+          <div class="kg-mode-switcher">
+            <button id="kg-mode-topology" type="button" class="kg-mode-btn is-active">🌐 Taxonomy</button>
+            <button id="kg-mode-contagion" type="button" class="kg-mode-btn">🔴 2-Color Shock</button>
+          </div>
+          <button id="kg-sync-btn" type="button" class="kg-sync-btn" title="Scan live news and extract new relationships using AI">
+            <span class="sync-icon">⚡</span> Scan News via AI
+          </button>
+        </div>
+
+        <!-- Contagion Simulation Presets Bar (Shown in 2-Color Mode) -->
+        <div id="kg-contagion-panel" class="kg-contagion-panel" hidden>
+          <div class="contagion-presets">
+            <span class="temporal-label">PRESET SHOCKS:</span>
+            <button type="button" class="shock-preset-btn" data-shock-node="co_nvda" data-shock-type="negative">🔴 NVDA Chip Shortage</button>
+            <button type="button" class="shock-preset-btn" data-shock-node="commodity_wti" data-shock-type="negative">🔴 WTI Oil Price Surge</button>
+            <button type="button" class="shock-preset-btn" data-shock-node="macro_us10y" data-shock-type="negative">🔴 Yield Curve Spike</button>
+            <button type="button" class="shock-preset-btn" data-shock-node="co_tsla" data-shock-type="negative">🔴 TSLA Supply Disruption</button>
+          </div>
+          <div class="contagion-status-bar">
+            <span id="contagion-status-msg">Click any node on canvas or choose a preset above to simulate shock contagion.</span>
+            <button id="kg-reset-shock-btn" type="button" class="kg-action-btn">Reset Simulation</button>
+          </div>
+        </div>
+
+        <!-- Graph Controls Bar -->
+        <div class="kg-controls-bar">
+          <div class="kg-filter-group" role="group" aria-label="Filter entity types">
+            <button type="button" class="kg-filter-btn is-active" data-kg-filter="All">All Entities</button>
+            <button type="button" class="kg-filter-btn" data-kg-filter="Sector">Sectors (11)</button>
+            <button type="button" class="kg-filter-btn" data-kg-filter="Company">Companies (31)</button>
+            <button type="button" class="kg-filter-btn" data-kg-filter="Commodity">Commodities (8)</button>
+            <button type="button" class="kg-filter-btn" data-kg-filter="Product">Products (8)</button>
+            <button type="button" class="kg-filter-btn" data-kg-filter="MacroIndicator">Macro</button>
+          </div>
+          <div class="kg-search-wrap">
+            <span aria-hidden="true">⌕</span>
+            <input id="kg-search-input" type="search" placeholder="Search node (e.g. NVDA, Oil, Azure, Copper)" autocomplete="off" />
+          </div>
+          <button id="kg-reset-btn" type="button" class="kg-action-btn">Reset View</button>
+        </div>
+
+        <!-- Graph Workspace: Canvas + Inspector Drawer -->
+        <div class="kg-workspace">
+          <div class="kg-canvas-container">
+            <canvas id="kg-canvas" width="840" height="600"></canvas>
+            <div id="kg-tooltip" class="kg-tooltip" hidden></div>
+            <div class="kg-legend" id="kg-legend">
+              <span><i style="background:#6366F1"></i> Sector</span>
+              <span><i style="background:#8B5CF6"></i> Industry</span>
+              <span><i style="background:#10B981"></i> Company</span>
+              <span><i style="background:#F59E0B"></i> Commodity</span>
+              <span><i style="background:#EF4444"></i> Macro</span>
+              <span><i style="background:#06B6D4"></i> Product</span>
+            </div>
+          </div>
+          <aside class="kg-inspector" id="kg-inspector">
+            <div class="inspector-header">
+              <p class="eyebrow" id="insp-type">ENTITY INSPECTOR</p>
+              <h3 id="insp-name">Select a node</h3>
+              <p class="insp-sub" id="insp-ticker">—</p>
+            </div>
+            <div class="insp-stats">
+              <div><span class="metric-label">IN-DEGREE</span><strong id="insp-in-deg">0</strong></div>
+              <div><span class="metric-label">OUT-DEGREE</span><strong id="insp-out-deg">0</strong></div>
+              <div><span class="metric-label">TOTAL DEGREE</span><strong id="insp-tot-deg">0</strong></div>
+            </div>
+            <div class="insp-relations">
+              <h4>CONNECTED RELATIONSHIPS</h4>
+              <div id="insp-rel-list" class="insp-rel-list">
+                <p class="empty-hint">Click on any node in the graph above to inspect its incoming supply dependencies and outgoing exposures.</p>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Contagion Impact Leaderboard (Shown in 2-Color Mode) -->
+        <section id="kg-impact-leaderboard" class="kg-impact-leaderboard" hidden>
+          <div class="leaderboard-grid">
+            <div class="leaderboard-col vulnerable-col">
+              <div class="leaderboard-header">
+                <h4>🔴 TOP VULNERABLE EQUITIES (DOWN / HIT)</h4>
+                <span class="metric-label">Supply Bottlenecks & Margin Compression</span>
+              </div>
+              <div id="vulnerable-list" class="leaderboard-list">
+                <p class="empty-hint">Choose a shock preset or click any node to simulate negative contagion.</p>
+              </div>
+            </div>
+            <div class="leaderboard-col beneficiary-col">
+              <div class="leaderboard-header">
+                <h4>🟢 TOP BENEFICIARY EQUITIES (UP / GAIN)</h4>
+                <span class="metric-label">Competitor Substitution & Windfall Revenue</span>
+              </div>
+              <div id="beneficiary-list" class="leaderboard-list">
+                <p class="empty-hint">Entities benefiting from substitute demand or commodity windfalls will appear here.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Centrality Table -->
+        <section class="centrality-section">
+          <div class="section-intro">
+            <div><p class="eyebrow">GRAPH ALGORITHMS</p><h2>Systemic Centrality & Influence Rankings</h2></div>
+            <p>PageRank measures structural importance in macro-economic propagation. Betweenness centrality identifies vital transmission bottlenecks.</p>
+          </div>
+          <div class="table-wrap">
+            <table class="data-table" id="centrality-table">
+              <thead>
+                <tr>
+                  <th>Entity ID</th>
+                  <th>Canonical Name</th>
+                  <th>Type</th>
+                  <th>Ticker</th>
+                  <th>PageRank</th>
+                  <th>Betweenness</th>
+                  <th>Degree</th>
+                </tr>
+              </thead>
+              <tbody id="centrality-tbody">
+                <tr><td colspan="7" class="loading-td">Loading centrality metrics…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 3: ECONOMIC TRANSMISSION PATHS -->
+      <!-- ===================================================================== -->
+      <div id="view-paths" class="view-panel" hidden>
+        <section class="hero-stocklens">
+          <div>
+            <p class="eyebrow">STOCKLENS US · MULTI-HOP PATH FINDER</p>
+            <h1>Trace Economic<br /><em>Transmission Paths.</em></h1>
+          </div>
+          <p class="hero-copy">Follow the propagation of supply shocks, input price surges, and operating cost passthroughs from raw commodities or macro benchmarks to individual equities.</p>
+        </section>
+
+        <!-- Path Selector Form -->
+        <div class="path-controls-card">
+          <div class="path-field">
+            <label for="path-source-select" class="metric-label">ORIGIN SHOCK (SOURCE)</label>
+            <select id="path-source-select" class="custom-select"></select>
+          </div>
+          <div class="path-arrow-symbol">&rarr;</div>
+          <div class="path-field">
+            <label for="path-target-select" class="metric-label">EXPOSED TARGET ENTITY</label>
+            <select id="path-target-select" class="custom-select"></select>
+          </div>
+          <div class="path-field path-field-sm">
+            <label for="path-hops-slider" class="metric-label">MAX HOPS: <span id="hops-value">4</span></label>
+            <input type="range" id="path-hops-slider" min="1" max="6" value="4" class="custom-slider" />
+          </div>
+          <button id="find-paths-btn" type="button" class="btn-primary">🚀 Trace Paths</button>
+        </div>
+
+        <!-- Quick Preset Path Buttons -->
+        <div class="quick-path-bar">
+          <span class="metric-label">PRESET TRANSMISSIONS:</span>
+          <button type="button" class="quick-path-btn" data-src="commodity_wti" data-tgt="co_dal">Crude Oil &rarr; Delta Air Lines</button>
+          <button type="button" class="quick-path-btn" data-src="commodity_copper" data-tgt="co_msft">Copper &rarr; Microsoft Azure</button>
+          <button type="button" class="quick-path-btn" data-src="commodity_lithium" data-tgt="co_tsla">Lithium &rarr; Tesla EV Batteries</button>
+          <button type="button" class="quick-path-btn" data-src="macro_us10y" data-tgt="co_jpm">10Y Yield &rarr; JPMorgan Chase</button>
+        </div>
+
+        <!-- Path Results Container -->
+        <div id="paths-output" class="paths-output">
+          <div class="empty-paths-state">Select an origin commodity and target entity above, then click <strong>Trace Paths</strong>.</div>
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 4: QUANTITATIVE MODELS (OLS, EVENT STUDY, LEAD/LAG) -->
+      <!-- ===================================================================== -->
+      <div id="view-quant" class="view-panel" hidden>
+        <section class="hero-stocklens">
+          <div>
+            <p class="eyebrow">STOCKLENS US · ECONOMETRIC LAB</p>
+            <h1>Quantitative Models<br /><em>Risk & Factor Dynamics.</em></h1>
+          </div>
+          <p class="hero-copy">Institutional OLS Market Model regressions, Event Study Abnormal Returns (AR & CAR), and Cross-Asset Lead/Lag transmission spectra.</p>
+        </section>
+
+        <!-- Sub-Navigation for Models -->
+        <div class="subnav-pills" role="tablist">
+          <button type="button" class="subnav-pill is-active" data-quant-tab="market-model">📈 Market Model (OLS)</button>
+          <button type="button" class="subnav-pill" data-quant-tab="event-study">🎯 Event Study Lab</button>
+          <button type="button" class="subnav-pill" data-quant-tab="lead-lag">🔄 Macro Lead/Lag Spectrum</button>
+          <button type="button" class="subnav-pill" data-quant-tab="universe-lead-lag">⚡ Universe Lead/Lag Ripple Engine</button>
+        </div>
+
+        <!-- SUBTAB 1: MARKET MODEL OLS -->
+        <div id="quant-market-model" class="quant-subpanel">
+          <div class="quant-controls-bar">
+            <div class="quant-field">
+              <label for="mm-stock-select" class="metric-label">EQUITY TICKER</label>
+              <select id="mm-stock-select" class="custom-select">
+                <option value="NVDA">NVDA · NVIDIA Corporation</option>
+                <option value="MSFT">MSFT · Microsoft Corporation</option>
+                <option value="AAPL">AAPL · Apple Inc.</option>
+                <option value="AMZN">AMZN · Amazon.com Inc.</option>
+                <option value="GOOGL">GOOGL · Alphabet Inc.</option>
+                <option value="TSLA">TSLA · Tesla Inc.</option>
+                <option value="DAL">DAL · Delta Air Lines</option>
+                <option value="XOM">XOM · Exxon Mobil</option>
+                <option value="JPM">JPM · JPMorgan Chase</option>
+                <option value="FCX">FCX · Freeport-McMoRan</option>
+                <option value="LLY">LLY · Eli Lilly & Co.</option>
+              </select>
+            </div>
+            <div class="quant-field">
+              <label class="metric-label">BENCHMARK</label>
+              <select id="mm-bench-select" class="custom-select" disabled>
+                <option value="^GSPC">^GSPC · S&P 500 Market Benchmark</option>
+              </select>
+            </div>
+            <div class="quant-field">
+              <label for="mm-start-date" class="metric-label">TIMEFRAME START</label>
+              <select id="mm-start-date" class="custom-select">
+                <option value="2022-01-01">2022 to Present (Recent Cycle)</option>
+                <option value="2020-01-01">2020 to Present (Post-Pandemic)</option>
+                <option value="2023-01-01">2023 to Present (AI Expansion)</option>
+              </select>
+            </div>
+            <button id="mm-run-btn" type="button" class="btn-primary">Compute OLS</button>
+          </div>
+
+          <!-- OLS Metrics Grid -->
+          <div class="stat-grid mm-stats-grid">
+            <article><p class="metric-label">MARKET BETA (β)</p><strong id="mm-beta">—</strong><span>Systematic sensitivity to S&P 500</span></article>
+            <article><p class="metric-label">ANNUALIZED ALPHA (α)</p><strong id="mm-alpha">—</strong><span>Excess Jensen's alpha return</span></article>
+            <article><p class="metric-label">R-SQUARED (R²)</p><strong id="mm-r2">—</strong><span>Market variance explained</span></article>
+            <article><p class="metric-label">IDIOSYNCRATIC VOL</p><strong id="mm-idio-vol">—</strong><span>Firm-specific residual risk</span></article>
+            <article><p class="metric-label">SHARPE RATIO</p><strong id="mm-sharpe">—</strong><span>Annualized risk-adjusted return</span></article>
+          </div>
+
+          <!-- Scatter Plot Canvas/SVG -->
+          <div class="scatter-card">
+            <div class="chart-header">
+              <p class="eyebrow" id="mm-chart-title">OLS REGRESSION: NVDA vs ^GSPC</p>
+              <span id="mm-sample-size" class="metric-label">—</span>
+            </div>
+            <div id="mm-scatter-wrap" class="scatter-wrap">
+              <div id="mm-scatter-chart" class="scatter-chart"></div>
+              <div id="mm-scatter-tooltip" class="chart-tooltip" hidden></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 2: EVENT STUDY LAB -->
+        <div id="quant-event-study" class="quant-subpanel" hidden>
+          <div class="quant-controls-bar">
+            <div class="quant-field quant-field-wide">
+              <label for="ev-preset-select" class="metric-label">PRESET CATALYST EVENT</label>
+              <select id="ev-preset-select" class="custom-select">
+                <option value="NVDA|2024-03-18">NVIDIA GTC Blackwell Architecture Keynote (2024-03-18) · NVDA</option>
+                <option value="MSFT|2023-07-18">Microsoft Copilot Pricing & Enterprise Launch (2023-07-18) · MSFT</option>
+                <option value="AAPL|2023-06-05">Apple Vision Pro WWDC Reveal (2023-06-05) · AAPL</option>
+                <option value="JPM|2024-09-18">Fed 50bps Benchmark Rate Cut (2024-09-18) · JPM</option>
+                <option value="DAL|2022-04-13">Delta Jet Fuel Spike & Q1 Earnings (2022-04-13) · DAL</option>
+              </select>
+            </div>
+            <div class="quant-field quant-field-sm">
+              <label for="ev-pre-window" class="metric-label">PRE-WINDOW (DAYS)</label>
+              <input type="number" id="ev-pre-window" min="1" max="15" value="3" class="custom-input" />
+            </div>
+            <div class="quant-field quant-field-sm">
+              <label for="ev-post-window" class="metric-label">POST-WINDOW (DAYS)</label>
+              <input type="number" id="ev-post-window" min="1" max="30" value="7" class="custom-input" />
+            </div>
+            <button id="ev-run-btn" type="button" class="btn-primary">Execute Event Study</button>
+          </div>
+
+          <!-- Event Study Metric Banner -->
+          <div class="event-banner" id="ev-banner">
+            <div><span class="metric-label">CUMULATIVE ABNORMAL RETURN (CAR)</span><strong id="ev-car">—</strong></div>
+            <div><span class="metric-label">T-STATISTIC</span><strong id="ev-tstat">—</strong></div>
+            <div><span class="metric-label">P-VALUE</span><strong id="ev-pval">—</strong></div>
+            <div><span class="metric-label">STATISTICAL SIGNIFICANCE</span><strong id="ev-sig-badge">—</strong></div>
+          </div>
+
+          <!-- CAR & AR Timeline Chart -->
+          <div class="event-chart-card">
+            <div class="chart-header">
+              <p class="eyebrow" id="ev-chart-title">ABNORMAL RETURN (AR) & CUMULATIVE ABNORMAL RETURN (CAR)</p>
+              <span class="metric-label">Estimation: 120 Days OLS</span>
+            </div>
+            <div id="ev-chart-wrap" class="event-chart-wrap">
+              <div id="ev-chart" class="event-chart"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 3: LEAD/LAG MACRO SPECTRUM -->
+        <div id="quant-lead-lag" class="quant-subpanel" hidden>
+          <div class="quant-controls-bar">
+            <div class="quant-field">
+              <label for="ll-stock-select" class="metric-label">EQUITY TICKER</label>
+              <select id="ll-stock-select" class="custom-select">
+                <option value="DAL">DAL · Delta Air Lines</option>
+                <option value="XOM">XOM · Exxon Mobil</option>
+                <option value="FCX">FCX · Freeport-McMoRan</option>
+                <option value="TSLA">TSLA · Tesla Inc.</option>
+                <option value="JPM">JPM · JPMorgan Chase</option>
+                <option value="NVDA">NVDA · NVIDIA Corporation</option>
+              </select>
+            </div>
+            <div class="quant-field">
+              <label for="ll-macro-select" class="metric-label">COMMODITY / MACRO FACTOR</label>
+              <select id="ll-macro-select" class="custom-select">
+                <option value="CL=F">Crude Oil WTI Benchmark (CL=F)</option>
+                <option value="BZ=F">Crude Oil Brent Benchmark (BZ=F)</option>
+                <option value="NG=F">Natural Gas Henry Hub (NG=F)</option>
+                <option value="HG=F">Copper COMEX (HG=F)</option>
+                <option value="^TNX">10-Year US Treasury Yield (^TNX)</option>
+                <option value="^VIX">CBOE Volatility Index (^VIX)</option>
+                <option value="GC=F">Gold COMEX (GC=F)</option>
+              </select>
+            </div>
+            <button id="ll-run-btn" type="button" class="btn-primary">Compute Cross-Correlation</button>
+          </div>
+
+          <!-- Optimal Lag Callout -->
+          <div class="ll-summary-card" id="ll-summary-card">
+            <div>
+              <p class="metric-label">OPTIMAL TRANSMISSION LAG</p>
+              <h3 id="ll-optimal-lag">—</h3>
+            </div>
+            <p id="ll-interp" class="ll-interp">Computing cross-correlation spectrum across 20 trading day lags…</p>
+          </div>
+
+          <!-- Cross-Correlation Bar Chart -->
+          <div class="ll-chart-card">
+            <div class="chart-header">
+              <p class="eyebrow" id="ll-chart-title">CROSS-CORRELATION SPECTRUM (LAGS -20d TO +20d)</p>
+              <span class="metric-label">Negative = Stock Leads · Positive = Factor Leads</span>
+            </div>
+            <div id="ll-chart-wrap" class="ll-chart-wrap">
+              <div id="ll-chart" class="ll-chart"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SUBTAB 4: UNIVERSE-WIDE MULTI-HORIZON LEAD/LAG RIPPLE ENGINE -->
+        <div id="quant-universe-lead-lag" class="quant-subpanel" hidden>
+          <div class="quant-controls-bar ull-controls-bar">
+            <div class="quant-field">
+              <label for="ull-stock-select" class="metric-label">TRIGGER LEADER STOCK</label>
+              <select id="ull-stock-select" class="custom-select">
+                <option value="NVDA" selected>NVDA · NVIDIA Corporation</option>
+                <option value="MSFT">MSFT · Microsoft Corporation</option>
+                <option value="AAPL">AAPL · Apple Inc.</option>
+                <option value="AMZN">AMZN · Amazon.com Inc.</option>
+                <option value="GOOGL">GOOGL · Alphabet Inc.</option>
+                <option value="TSLA">TSLA · Tesla Inc.</option>
+                <option value="DAL">DAL · Delta Air Lines</option>
+                <option value="XOM">XOM · Exxon Mobil</option>
+                <option value="JPM">JPM · JPMorgan Chase</option>
+                <option value="CAT">CAT · Caterpillar Inc.</option>
+                <option value="FCX">FCX · Freeport-McMoRan</option>
+                <option value="LLY">LLY · Eli Lilly & Co.</option>
+              </select>
+            </div>
+            <div class="quant-field">
+              <label class="metric-label">SHOCK TRIGGER THRESHOLD</label>
+              <div class="ull-pills" id="ull-threshold-pills">
+                <button type="button" class="ull-pill" data-val="0.02">+2.0%</button>
+                <button type="button" class="ull-pill is-active" data-val="0.025">+2.5%</button>
+                <button type="button" class="ull-pill" data-val="0.035">+3.5%</button>
+                <button type="button" class="ull-pill" data-val="0.05">+5.0%</button>
+              </div>
+            </div>
+            <div class="quant-field">
+              <label class="metric-label">DIFFUSION HORIZON</label>
+              <div class="ull-pills" id="ull-horizon-pills">
+                <button type="button" class="ull-pill" data-val="1">T+1 Day</button>
+                <button type="button" class="ull-pill" data-val="2">T+2 Days</button>
+                <button type="button" class="ull-pill is-active" data-val="5">T+5 (1 Wk)</button>
+                <button type="button" class="ull-pill" data-val="10">T+10 (2 Wks)</button>
+                <button type="button" class="ull-pill" data-val="20">T+20 (1 Mo)</button>
+              </div>
+            </div>
+            <div class="quant-field quant-field-action">
+              <button id="ull-run-btn" class="quant-btn" type="button">Scan Universe</button>
+            </div>
+          </div>
+
+          <!-- Summary Strip -->
+          <div class="ull-summary-banner" id="ull-summary-banner">
+            <div class="ull-stat-col">
+              <span class="metric-label">HISTORICAL SHOCK EVENTS</span>
+              <strong id="ull-stat-events">—</strong>
+            </div>
+            <div class="ull-stat-col">
+              <span class="metric-label">OBSERVATION WINDOW</span>
+              <strong id="ull-stat-sample">—</strong>
+            </div>
+            <div class="ull-stat-col">
+              <span class="metric-label">UNIVERSE COVERAGE</span>
+              <strong id="ull-stat-universe">34 Assets · 11 Sectors</strong>
+            </div>
+            <div class="ull-stat-col">
+              <span class="metric-label">TOP SPILLOVER TARGET</span>
+              <strong id="ull-stat-top-target" class="highlight-green">—</strong>
+            </div>
+          </div>
+
+          <!-- Cross-Sector Diffusion Map -->
+          <div class="ull-section-box">
+            <div class="chart-header">
+              <div>
+                <p class="eyebrow">CROSS-SECTOR INFORMATION SPILLOVER</p>
+                <h3 style="margin:0; font-size:15px; color:var(--text-bright);">Aggregate Sector Transmission Dynamics</h3>
+              </div>
+              <span class="metric-label" id="ull-sector-horizon-label">Diffusion Horizon: T+5 Days</span>
+            </div>
+            <div class="ull-sector-grid" id="ull-sector-grid">
+              <div class="list-message">Loading sector spillover...</div>
+            </div>
+          </div>
+
+          <!-- Main Split View: Leaderboard Table + Follower Impulse Response Chart -->
+          <div class="ull-split-container">
+            <!-- Left: Follower Stocks Leaderboard -->
+            <div class="ull-leaderboard-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">UNIVERSE FOLLOWERS LEADERBOARD</p>
+                  <h3 style="margin:0; font-size:15px; color:var(--text-bright);">Followers Ranked by Diffusion Gain</h3>
+                </div>
+                <span class="metric-label">Click row to plot impulse curve</span>
+              </div>
+              <div class="table-responsive ull-table-wrap">
+                <table class="data-table ull-table">
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Follower Stock</th>
+                      <th>Sector</th>
+                      <th>Peak Lag</th>
+                      <th>Peak Ret</th>
+                      <th>Cum Gain</th>
+                      <th>Win Rate</th>
+                      <th>Lift</th>
+                      <th>KG Relation</th>
+                    </tr>
+                  </thead>
+                  <tbody id="ull-table-body">
+                    <tr><td colspan="9" class="loading-td">Scanning universe for information diffusion…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Right: Impulse Trajectory Chart -->
+            <div class="ull-impulse-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">TEMPORAL IMPULSE RESPONSE</p>
+                  <h3 id="ull-impulse-title" style="margin:0; font-size:15px; color:var(--text-bright);">Cumulative Drift: Follower vs T0 Shock</h3>
+                </div>
+                <span class="metric-label" id="ull-impulse-badge">T+0 to T+20 Days</span>
+              </div>
+              <div class="ull-impulse-chart-wrap" id="ull-impulse-chart">
+                <!-- SVG rendered dynamically -->
+              </div>
+              <div class="ull-impulse-meta" id="ull-impulse-meta">
+                <!-- Details about the active follower -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW: AI BUBBLE & CONTAGION RADAR -->
+      <!-- ===================================================================== -->
+      <div id="view-bubble" class="view-panel" hidden>
+        <section class="hero-stocklens">
+          <div class="bubble-hero-wrap">
+            <div>
+              <p class="eyebrow">STOCKLENS US · SYSTEMIC RISK LAB</p>
+              <h1>AI Bubble Early Warning<br /><em>& Financial Contagion Radar.</em></h1>
+            </div>
+            <div class="bubble-live-bar">
+              <span class="pulse"></span>
+              <span id="bubble-live-timestamp">Live Market Data Active</span>
+              <button id="bubble-refresh-btn" class="bubble-refresh-btn" type="button">🔄 Refresh Live Data</button>
+            </div>
+          </div>
+          <p class="hero-copy">Evidence-driven econometric surveillance across the AI ecosystem: Real-time fundamental multiples, Reverse DCF growth hurdles, Dot-Com comparative benchmarks, composite fragility scoring, and multi-tier supply chain stress testing.</p>
+        </section>
+
+        <!-- Sub-Navigation for Bubble Radar -->
+        <div class="subnav-pills" role="tablist">
+          <button type="button" class="subnav-pill is-active" data-bubble-tab="valuation">🎯 AI Valuation & Reverse DCF</button>
+          <button type="button" class="subnav-pill" data-bubble-tab="dotcom">⚖️ Dot-Com vs AI Comparison</button>
+          <button type="button" class="subnav-pill" data-bubble-tab="safehaven">🛡️ Safe Haven & Capital Rotation (Saham Anti-Bubble)</button>
+          <button type="button" class="subnav-pill" data-bubble-tab="fragility">🚨 AI Market Fragility Index</button>
+          <button type="button" class="subnav-pill" data-bubble-tab="contagion">🌪️ Stress Testing & Contagion Lab</button>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SUBTAB 1: AI VALUATION & REVERSE DCF 2.0 -->
+        <!-- ================================================================= -->
+        <div id="bubble-subpanel-valuation" class="bubble-subpanel">
+          <!-- Subsector Multiples Summary Strip -->
+          <div class="bubble-subsector-strip" id="bubble-subsector-strip">
+            <!-- Dynamically populated cards -->
+          </div>
+
+          <!-- Controls Bar -->
+          <div class="bubble-controls-bar">
+            <div class="quant-field">
+              <label for="bubble-subsector-filter" class="metric-label">SUBSECTOR FILTER</label>
+              <select id="bubble-subsector-filter" class="custom-select">
+                <option value="All">All AI Subsectors (26 Stocks)</option>
+                <option value="Semiconductor & Chip Infrastructure">Semiconductor &amp; Chip Infrastructure</option>
+                <option value="Cloud & Hyperscalers">Cloud &amp; Hyperscalers</option>
+                <option value="Enterprise AI & Software">Enterprise AI &amp; Software</option>
+                <option value="Power, Electrical & Data Centers">Power, Electrical &amp; Data Centers</option>
+                <option value="Networking, Storage & Hardware">Networking, Storage &amp; Hardware</option>
+              </select>
+            </div>
+            <div class="quant-field">
+              <label for="bubble-sort-select" class="metric-label">SORT UNIVERSE BY</label>
+              <select id="bubble-sort-select" class="custom-select">
+                <option value="market_cap_billions">Market Capitalization ($B)</option>
+                <option value="sustainability_score">Fundamental Sustainability Score (0-100)</option>
+                <option value="ai_rev_share_est_pct">AI Direct Revenue Share (%)</option>
+                <option value="roic_pct">Return on Invested Capital (ROIC %)</option>
+                <option value="forward_pe">Forward P/E Ratio</option>
+                <option value="price_to_sales">Price-to-Sales (P/S)</option>
+                <option value="ev_to_ebitda">EV / EBITDA</option>
+                <option value="implied_5y_fcf_cagr_pct">Implied 5Y FCF Growth (Reverse DCF)</option>
+                <option value="day_change_pct">1-Day Price Change (%)</option>
+              </select>
+            </div>
+            <div class="bubble-realtime-badge">
+              <span class="badge-dot"></span> Real-Time Finnhub, SEC 10-K &amp; yfinance Feed
+            </div>
+          </div>
+
+          <!-- Interactive SVG Valuation vs Growth Map -->
+          <div class="dotcom-chart-card" id="bubble-valuation-scatter-card" style="margin-bottom: 18px;">
+            <div class="chart-header">
+              <div>
+                <p class="eyebrow">CROSS-SECTIONAL VALUATION VS GROWTH DISPERSION MAP</p>
+                <h3 style="margin:0; font-size:15px; color:var(--text-bright);">Forward P/E Multiple vs YoY Revenue Growth (Bubble Size = Market Cap · Color = Sustainability Score)</h3>
+              </div>
+              <span class="metric-label">Click any equity bubble to run Reverse DCF 2.0</span>
+            </div>
+            <div class="dotcom-chart-wrap" id="bubble-valuation-scatter-chart" style="min-height: 290px;">
+              <!-- SVG Scatter Plot rendered by dashboard.js -->
+            </div>
+          </div>
+
+          <!-- Main Split Container: Universe Table + Interactive Reverse DCF Calculator -->
+          <div class="bubble-split-layout">
+            <!-- Left: Valuation Table -->
+            <div class="bubble-table-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">AI EQUITIES FUNDAMENTAL &amp; CAPITAL INTENSITY LEADERBOARD</p>
+                  <h3 style="margin:0; font-size:15px; color:var(--text-bright);">Multiples, AI Revenue Exposure, ROIC, Capex/Rev, SBC Dilution &amp; Implied FCF CAGR</h3>
+                </div>
+                <span class="metric-label">Click row to inspect Reverse DCF 2.0 &amp; 5×5 Matrix</span>
+              </div>
+              <div class="table-responsive bubble-table-wrap">
+                <table class="data-table bubble-table">
+                  <thead>
+                    <tr>
+                      <th>Ticker</th>
+                      <th>Subsector &amp; AI Tier</th>
+                      <th>Live Price</th>
+                      <th>1D %</th>
+                      <th>Mkt Cap</th>
+                      <th>AI Rev %</th>
+                      <th>Fwd P/E</th>
+                      <th>P/S</th>
+                      <th>ROIC %</th>
+                      <th>Capex/Rev</th>
+                      <th>SBC/Rev</th>
+                      <th>Implied 5Y FCF</th>
+                      <th>Sust. Score</th>
+                      <th>Assessment</th>
+                    </tr>
+                  </thead>
+                  <tbody id="bubble-valuation-tbody">
+                    <tr><td colspan="14" class="loading-td">Loading real-time AI valuation &amp; capital intensity metrics…</td></tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Right: Interactive Reverse DCF 2.0 Calculator -->
+            <div class="bubble-dcf-card">
+              <div class="chart-header">
+                <div>
+                  <p class="eyebrow">REVERSE DCF 2.0 · EXPECTATIONS &amp; SENSITIVITY SOLVER</p>
+                  <h3 id="dcf-ticker-title" style="margin:0; font-size:15px; color:var(--text-bright);">NVDA · Implied Growth Rate</h3>
+                </div>
+                <span id="dcf-verdict-badge" class="dcf-badge dcf-badge-stretch">Speculative Stretch</span>
+              </div>
+              <p class="dcf-copy">Solves for the exact 5-year compound Free Cash Flow CAGR required to justify current Enterprise Value, plus the 5×5 WACC vs Terminal Growth sensitivity surface.</p>
+              
+              <div class="dcf-result-banner" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="dcf-result-stat">
+                  <span class="metric-label">IMPLIED 5Y FCF CAGR</span>
+                  <strong id="dcf-implied-growth" class="highlight-val">+29.2% / yr</strong>
+                </div>
+                <div class="dcf-result-stat">
+                  <span class="metric-label">CURRENT FCF → YR5</span>
+                  <strong id="dcf-current-fcf">$60.8B → $218B</strong>
+                </div>
+                <div class="dcf-result-stat">
+                  <span class="metric-label">EXPECTATION GAP</span>
+                  <strong id="dcf-expectation-gap" style="color:#10b981;">-28.4% vs Hist</strong>
+                </div>
+              </div>
+
+              <!-- Interactive Sliders -->
+              <div class="dcf-sliders-wrap">
+                <div class="dcf-slider-group">
+                  <div class="dcf-slider-header">
+                    <label for="dcf-wacc-slider">Discount Rate (WACC):</label>
+                    <span id="dcf-wacc-val">9.5%</span>
+                  </div>
+                  <input type="range" id="dcf-wacc-slider" min="7.0" max="13.0" step="0.5" value="9.5" />
+                </div>
+
+                <div class="dcf-slider-group">
+                  <div class="dcf-slider-header">
+                    <label for="dcf-tg-slider">Terminal Growth Rate (g):</label>
+                    <span id="dcf-tg-val">3.5%</span>
+                  </div>
+                  <input type="range" id="dcf-tg-slider" min="1.5" max="5.0" step="0.5" value="3.5" />
+                </div>
+              </div>
+
+              <!-- 5x5 Sensitivity Matrix Heatmap -->
+              <div class="dcf-matrix-wrap" style="margin-top: 12px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:6px;">
+                  <span class="metric-label">5×5 SENSITIVITY SURFACE: IMPLIED 5Y FCF CAGR (%)</span>
+                  <span class="metric-label" style="font-size:10px;">Rows: WACC · Cols: Terminal g</span>
+                </div>
+                <div id="dcf-sensitivity-matrix" class="table-responsive">
+                  <!-- Populated dynamically by dashboard.js -->
+                </div>
+              </div>
+
+              <div class="dcf-narrative-box" id="dcf-narrative-box">
+                <!-- Explanatory text -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SUBTAB 2: DOT-COM VS AI COMPARISON (10 DIMENSIONS) -->
+        <!-- ================================================================= -->
+        <div id="bubble-subpanel-dotcom" class="bubble-subpanel" hidden>
+          <div class="dotcom-synthesis-card" id="dotcom-synthesis-card">
+            <div class="synthesis-badge">10-DIMENSION ECONOMETRIC SYNTHESIS</div>
+            <p id="dotcom-synthesis-text">Loading historical comparison analysis…</p>
+            <div id="dotcom-survivorship-note" style="margin-top:10px; padding-top:10px; border-top:1px solid rgba(148,163,184,0.16); font-size:11.5px; color:#94a3b8;"></div>
+          </div>
+
+          <!-- Comparative Metrics Matrix Grid (10 Cards) -->
+          <div class="dotcom-matrix-grid" id="dotcom-matrix-grid">
+            <!-- Dynamically populated cards -->
+          </div>
+
+          <!-- Historical Normalized Drawdown Comparison Chart -->
+          <div class="dotcom-chart-card">
+            <div class="chart-header">
+              <div>
+                <p class="eyebrow">HISTORICAL CRASH &amp; BOOM TRAJECTORY</p>
+                <h3 style="margin:0; font-size:15px; color:var(--text-bright);">Nasdaq 1995–2003 (Dot-Com) vs Nasdaq 2018–2026 (AI Cycle)</h3>
+              </div>
+              <span class="metric-label">Normalized Base 100 Comparison</span>
+            </div>
+            <div class="dotcom-chart-wrap" id="dotcom-drawdown-chart">
+              <!-- SVG chart -->
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SUBTAB 3: AI MARKET FRAGILITY INDEX 2.0 -->
+        <!-- ================================================================= -->
+        <div id="bubble-subpanel-fragility" class="bubble-subpanel" hidden>
+          <!-- Hero Composite Gauge Card -->
+          <div class="fragility-hero-card">
+            <div class="fragility-dial-col">
+              <div class="fragility-dial-circle" id="fragility-dial-circle">
+                <span class="dial-score" id="fragility-score-val">72.0</span>
+                <span class="dial-max">/ 100</span>
+              </div>
+            </div>
+            <div class="fragility-summary-col">
+              <div class="fragility-regime-badge" id="fragility-regime-badge">ELEVATED FRAGILITY</div>
+              <h2 id="fragility-title" style="margin:6px 0; font-size:20px;">AI Market Vulnerability &amp; Regime Monitor</h2>
+              <p id="fragility-summary-text" class="fragility-desc">Loading real-time composite multi-factor fragility diagnosis…</p>
+              <div class="fragility-meta-strip">
+                <span>Normalization: <strong>Gaussian CDF</strong></span> · 
+                <span>Sensitivity Spread: <strong id="fragility-sens-range">68.5 – 76.2</strong></span> · 
+                <span id="fragility-asof">As of: Live Market</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interactive Weighting Scheme Presets & Sliders -->
+          <div class="bubble-controls-bar" style="flex-wrap:wrap; gap:14px; margin-bottom:18px;">
+            <div class="quant-field" style="flex:1; min-width:260px;">
+              <label class="metric-label">WEIGHT SENSITIVITY PRESETS (BUBBLE.MD SECTION 8)</label>
+              <div class="bubble-pills" id="fragility-preset-pills" style="margin-top:6px;">
+                <button type="button" class="bubble-pill is-active" data-w-preset="baseline">Econometric Baseline</button>
+                <button type="button" class="bubble-pill" data-w-preset="equal">Equal-Weight (1/N)</button>
+                <button type="button" class="bubble-pill" data-w-preset="valuation">Capex &amp; Valuation Skeptic</button>
+                <button type="button" class="bubble-pill" data-w-preset="contagion">Index Contagion Focus</button>
+                <button type="button" class="bubble-pill" data-w-preset="macro">Macro &amp; Rate Hawk</button>
+              </div>
+            </div>
+            <div id="fragility-preset-summary-strip" style="display:flex; gap:12px; flex-wrap:wrap; align-items:center;">
+              <!-- Populated dynamically with preset scores -->
+            </div>
+          </div>
+
+          <!-- 6 Indicator Dimension Cards -->
+          <div class="fragility-cards-grid" id="fragility-cards-grid">
+            <!-- Dynamically populated cards -->
+          </div>
+
+          <!-- 2020-2026 Historical Fragility & SQLite Pairwise Correlation Chart -->
+          <div class="dotcom-chart-card" style="margin-top:18px; margin-bottom:18px;">
+            <div class="chart-header">
+              <div>
+                <p class="eyebrow">EMPIRICAL HISTORICAL TRAJECTORY (2020–2026 FROM US_EQUITIES.DB)</p>
+                <h3 style="margin:0; font-size:15px; color:var(--text-bright);">Composite Fragility Index (0–100) vs 60-Day AI Basket Pairwise Correlation &amp; 200D SMA Breadth</h3>
+              </div>
+              <span class="metric-label">Computed across 26 AI Equities in SQLite</span>
+            </div>
+            <div class="dotcom-chart-wrap" id="fragility-history-chart" style="min-height:260px;">
+              <!-- SVG Chart rendered by dashboard.js -->
+            </div>
+          </div>
+
+          <div class="fragility-caveat-box" id="fragility-caveat-box">
+            <!-- Important research caveat -->
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SUBTAB 4: FINANCIAL CONTAGION, STRESS LAB & TAIL MATRIX -->
+        <!-- ================================================================= -->
+        <div id="bubble-subpanel-contagion" class="bubble-subpanel" hidden>
+          <!-- Scenario Controls Bar -->
+          <div class="contagion-controls-bar" style="flex-direction:column; align-items:stretch; gap:14px;">
+            <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px;">
+              <div class="quant-field">
+                <label class="metric-label">SELECT MULTI-TIER STRESS-TEST SCENARIO (A – F)</label>
+                <div class="bubble-pills" id="contagion-scenario-pills" style="margin-top:6px;">
+                  <button type="button" class="bubble-pill is-active" data-scenario="scenario_a">A: Capex Cut</button>
+                  <button type="button" class="bubble-pill" data-scenario="scenario_b">B: Semi Deceleration</button>
+                  <button type="button" class="bubble-pill" data-scenario="scenario_c">C: Real Yield Spike</button>
+                  <button type="button" class="bubble-pill" data-scenario="scenario_d">D: Guidance Cut (-20%)</button>
+                  <button type="button" class="bubble-pill" data-scenario="scenario_e">E: Grid Bottleneck</button>
+                  <button type="button" class="bubble-pill" data-scenario="scenario_f">F: GPU Cloud / OEM Distress</button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive Parameter Sliders -->
+            <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:16px; padding-top:10px; border-top:1px solid rgba(148,163,184,0.14);">
+              <div class="dcf-slider-group">
+                <div class="dcf-slider-header">
+                  <label for="stress-capex-slider">Hyperscaler Capex Cut (%):</label>
+                  <span id="stress-capex-val">-20%</span>
+                </div>
+                <input type="range" id="stress-capex-slider" min="5" max="50" step="5" value="20" />
+              </div>
+              <div class="dcf-slider-group">
+                <div class="dcf-slider-header">
+                  <label for="stress-semi-slider">Semiconductor Growth Shock (%):</label>
+                  <span id="stress-semi-val">-15%</span>
+                </div>
+                <input type="range" id="stress-semi-slider" min="5" max="40" step="5" value="15" />
+              </div>
+              <div class="dcf-slider-group">
+                <div class="dcf-slider-header">
+                  <label for="stress-rate-slider">10Y Treasury Yield Shock (bps):</label>
+                  <span id="stress-rate-val">+100 bps</span>
+                </div>
+                <input type="range" id="stress-rate-slider" min="25" max="250" step="25" value="100" />
+              </div>
+            </div>
+          </div>
+
+          <!-- Active Scenario Banner -->
+          <div class="contagion-banner">
+            <div>
+              <span class="metric-label" id="contagion-epicenter-label">SHOCK ORIGIN: Hyperscalers</span>
+              <h3 id="contagion-scenario-title" style="margin:4px 0 8px; color:var(--text-bright);">Scenario A: Hyperscaler AI Capex Reduction (-20%)</h3>
+              <p id="contagion-scenario-narrative" style="margin:0; font-size:12px; color:var(--ink-soft); line-height:1.5;">Narrative loading…</p>
+            </div>
+            <div class="contagion-banner-stats">
+              <div class="c-stat">
+                <span class="metric-label">MOST VULNERABLE</span>
+                <strong id="contagion-stat-top-vuln" style="color:#ef4444;">SMCI</strong>
+              </div>
+              <div class="c-stat">
+                <span class="metric-label">MOST DEFENSIVE</span>
+                <strong id="contagion-stat-top-resilient" style="color:#10b981;">GOOGL</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Impact Waterfall Table -->
+          <div class="contagion-table-card" style="margin-bottom:20px;">
+            <div class="chart-header">
+              <div>
+                <p class="eyebrow">NETWORK CONTAGION IMPACT WATERFALL</p>
+                <h3 style="margin:0; font-size:15px; color:var(--text-bright);">Multi-Tier Supply Chain Exposure &amp; Projected Price Pressure Range</h3>
+              </div>
+              <span class="metric-label">Ranked from highest to lowest risk</span>
+            </div>
+            <div class="table-responsive bubble-table-wrap">
+              <table class="data-table bubble-table">
+                <thead>
+                  <tr>
+                    <th>Ticker</th>
+                    <th>Supply Chain Tier</th>
+                    <th>Direct Exposure</th>
+                    <th>Revenue Shock</th>
+                    <th>EBITDA Shock</th>
+                    <th>Price Pressure Range</th>
+                    <th>Vulnerability Class</th>
+                  </tr>
+                </thead>
+                <tbody id="contagion-waterfall-tbody">
+                  <tr><td colspan="7" class="loading-td">Simulating network contagion shock…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- NEW: Empirical Conditional Tail Co-Movement Matrix (BUBBLE.MD Section 6) -->
+          <div class="contagion-table-card" id="contagion-tail-card">
+            <div class="chart-header" style="flex-wrap:wrap; gap:12px;">
+              <div>
+                <p class="eyebrow">EMPIRICAL CONDITIONAL TAIL CO-MOVEMENT MATRIX (US_EQUITIES.DB 2020–2026)</p>
+                <h3 style="margin:0; font-size:15px; color:var(--text-bright);">Downside vs Upside Tail Probabilities, Benjamini-Hochberg FDR q-Values &amp; Out-of-Sample Regime Stability</h3>
+              </div>
+              <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <label class="metric-label" for="tail-trigger-select">TRIGGER EPICENTER (A):</label>
+                <select id="tail-trigger-select" class="custom-select" style="min-width:120px;">
+                  <option value="NVDA">NVDA (NVIDIA)</option>
+                  <option value="TSM">TSM (TSMC)</option>
+                  <option value="ASML">ASML (Lithography)</option>
+                  <option value="AVGO">AVGO (Broadcom)</option>
+                  <option value="AMD">AMD (Adv Micro Devices)</option>
+                  <option value="MSFT">MSFT (Microsoft)</option>
+                  <option value="SMCI">SMCI (Super Micro)</option>
+                </select>
+                <label class="metric-label" for="tail-threshold-select">CRASH THRESHOLD (τ):</label>
+                <select id="tail-threshold-select" class="custom-select" style="min-width:110px;">
+                  <option value="2.5">≤ -2.5% Day</option>
+                  <option value="3.5" selected>≤ -3.5% Day</option>
+                  <option value="5.0">≤ -5.0% Day</option>
+                </select>
+              </div>
+            </div>
+            <div id="tail-contagion-meta-strip" style="padding:8px 14px; background:rgba(15,23,42,0.55); border-radius:8px; margin-bottom:10px; font-size:12px; color:#cbd5e1;">
+              Loading conditional tail co-movement statistics from SQLite…
+            </div>
+            <div class="table-responsive bubble-table-wrap">
+              <table class="data-table bubble-table">
+                <thead>
+                  <tr>
+                    <th>Target (B)</th>
+                    <th>Tier / Role</th>
+                    <th>P(B &lt; 0 | A ≤ -τ)</th>
+                    <th>E[R_B | A ≤ -τ]</th>
+                    <th>95% CI (Downside)</th>
+                    <th>E[R_B | A ≥ +τ]</th>
+                    <th>Downside Tail Beta</th>
+                    <th>Asymmetry</th>
+                    <th>FDR q-Value</th>
+                    <th>OOS Stability (20-23 vs 24-26)</th>
+                  </tr>
+                </thead>
+                <tbody id="tail-contagion-tbody">
+                  <tr><td colspan="10" class="loading-td">Computing empirical conditional tail probabilities from us_equities.db…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ================================================================= -->
+        <!-- SUBTAB 5: SAFE HAVEN & EMPIRICAL ANTI-CRASH ROTATION RADAR -->
+        <!-- ================================================================= -->
+        <div id="bubble-subpanel-safehaven" class="bubble-subpanel" hidden>
+          <!-- Hero Explanation Banner -->
+          <div class="safehaven-hero-card">
+            <div class="safehaven-header-col">
+              <span class="safehaven-pill-tag">THE GREAT CAPITAL ROTATION · EMPIRICAL SQLITE &amp; LIVE PROOF</span>
+              <h2 style="margin:6px 0; font-size:22px; color:var(--text-bright);">Where Capital Flees When The AI Bubble Bursts (34 Curated + 2,200-Stock SQLite Scanner)</h2>
+              <p class="safehaven-desc">Berdasarkan audit langsung terhadap <strong>1.5 GB database historis (`us_equities.db`)</strong> saat <strong>Dot-Com Crash (10 Maret 2000 – 9 Oktober 2002, ketika Nasdaq hancur -77.9%)</strong> serta <strong>122 hari perdagangan sejak 2022 ketika saham NVDA anjlok ≤ -3.5%</strong>: Ratusan miliar dolar modal institusi bermigrasi ke <strong>konsultan restrukturisasi kebangkrutan (`FCN` +677%), monopoli kesehatan (`UNH` +258%, `DGX` +211%), suku cadang kendaraan anti-resesi (`AZO` +255%), pialang asuransi (`BRO` +255%), konstruksi perumahan penerima pemangkasan bunga The Fed (`DHI` +157%), emas (`AEM` +132%, `NEM` +65%), dan barang kebutuhan pokok (`CHD` +129%, `MO` +116%)</strong>.</p>
+            </div>
+          </div>
+
+          <!-- Benchmark Comparison Banner: Safe Haven Basket vs AI Universe -->
+          <div class="safehaven-comparison-strip" id="safehaven-comparison-strip">
+            <!-- Dynamically populated comparison cards -->
+          </div>
+
+          <!-- Filter & Controls Bar -->
+          <div class="bubble-controls-bar">
+            <div class="quant-field">
+              <label for="safehaven-tier-filter" class="metric-label">DEFENSIVE &amp; COUNTER-CYCLICAL TIER</label>
+              <select id="safehaven-tier-filter" class="custom-select">
+                <option value="All">All Anti-Crash Assets (34 Curated Equities &amp; Assets)</option>
+                <option value="Counter-Cyclical Restructuring">Bankruptcy &amp; Restructuring Advisory (FCN +677%)</option>
+                <option value="Counter-Cyclical Consumer">Counter-Cyclical Auto Repair (AZO +255%)</option>
+                <option value="Rate-Cut Beneficiary">Fed Rate-Cut Housing Beneficiary (DHI +157%)</option>
+                <option value="Healthcare Monopoly">Healthcare &amp; Diagnostics Monopoly (UNH, DGX, CAH, ABBV, MDT)</option>
+                <option value="Fortress Cash Pile">Fortress Cash &amp; Insurance Float (BRK-B, BRO, PGR)</option>
+                <option value="Defense & Gov Contracts">Defense &amp; Pentagon Contracts (LMT, RTX)</option>
+                <option value="Essential Waste & Water">Essential Waste, Water &amp; Power (WM, AWK, SO, DUK, ED)</option>
+                <option value="Ultra Defensive">Ultra Defensive Essentials (CHD, JNJ, PG, CL, CAT)</option>
+                <option value="Defensive Cash Machine">Defensive Cash Machine (KO, PEP, WMT, COST)</option>
+                <option value="Super High Yield Safe Haven">Super High Yield &amp; Discount Retail (MO, KR)</option>
+                <option value="Commodity Safe Haven">Energy &amp; Real Commodities (XOM, CVX)</option>
+                <option value="Monetary Safe Haven">Monetary Safe Haven &amp; Gold (AEM, NEM, GLD)</option>
+              </select>
+            </div>
+            <div class="quant-field">
+              <label for="safehaven-sort-select" class="metric-label">SORT ASSETS BY</label>
+              <select id="safehaven-sort-select" class="custom-select">
+                <option value="resilience_score">Empirical Anti-Crash Resilience Score (0-100)</option>
+                <option value="dotcom_return_pct">2000–2002 Dot-Com Crash Return (%)</option>
+                <option value="avg_ret_on_nvda_crash_pct">Avg Return When NVDA Drops ≤ -3.5%</option>
+                <option value="corr_with_nvda">Correlation with NVDA (Lowest / Negative First)</option>
+                <option value="dividend_yield_pct">Dividend Yield (%)</option>
+                <option value="forward_pe">Forward P/E Ratio (Lowest First)</option>
+                <option value="ev_to_ebitda">EV / EBITDA Multiple (Lowest First)</option>
+                <option value="beta">Market Beta (Lowest First)</option>
+                <option value="day_change_pct">1-Day Price Change (%)</option>
+              </select>
+            </div>
+            <div class="bubble-realtime-badge">
+              <span class="badge-dot" style="background:#10b981;"></span> Live Finnhub + SQLite 122 NVDA-Crash Days
+            </div>
+          </div>
+
+          <!-- Safe Haven Leaderboard Table -->
+          <div class="bubble-table-card" style="margin-bottom:22px;">
+            <div class="chart-header">
+              <div>
+                <p class="eyebrow">CURATED POST-BUBBLE WINNERS &amp; CAPITAL RECIPIENTS (34 ASSETS)</p>
+                <h3 style="margin:0; font-size:15px; color:var(--text-bright);">Real-Time Valuation Multiples, Dot-Com Crash Return &amp; Empirical Performance on 122 NVDA Crash Days</h3>
+              </div>
+              <span class="metric-label">Click any stock row to inspect in Equity Atlas</span>
+            </div>
+            <div class="table-responsive bubble-table-wrap">
+              <table class="data-table bubble-table">
+                <thead>
+                  <tr>
+                    <th>Ticker</th>
+                    <th>Company</th>
+                    <th>Defense Sector</th>
+                    <th>Live Price</th>
+                    <th>1D %</th>
+                    <th>Fwd P/E</th>
+                    <th>Div Yield</th>
+                    <th>Beta</th>
+                    <th>Corr vs NVDA</th>
+                    <th>Avg on NVDA ≤ -3.5%</th>
+                    <th>Dot-Com Crash</th>
+                    <th>Safety Score</th>
+                    <th>Why It Won't Crash (Catalyst &amp; Proof)</th>
+                  </tr>
+                </thead>
+                <tbody id="safehaven-tbody">
+                  <tr><td colspan="13" class="loading-td">Scanning real-time flight-to-safety defensive universe…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- NEW: Interactive 2,200-Stock SQLite Empirical Anti-Crash Discovery Scanner -->
+          <div class="bubble-table-card" id="safehaven-db-scanner-card">
+            <div class="chart-header" style="flex-wrap:wrap; gap:12px;">
+              <div>
+                <p class="eyebrow">FULL-DATABASE EMPIRICAL ANTI-CRASH DISCOVERY ENGINE (2,200 STOCKS IN US_EQUITIES.DB)</p>
+                <h3 style="margin:0; font-size:15px; color:var(--text-bright);">Uncover Historical Survivors That Rose During the 2000–2002 Dot-Com Bust &amp; Decouple When NVDA Crashes</h3>
+              </div>
+              <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+                <label class="metric-label" for="dbscan-corr-select">MAX CORR VS NVDA:</label>
+                <select id="dbscan-corr-select" class="custom-select" style="min-width:135px;">
+                  <option value="0.05">≤ +0.05 (Zero / Negative Corr)</option>
+                  <option value="0.15">≤ +0.15 (Ultra Low Corr)</option>
+                  <option value="0.25" selected>≤ +0.25 (Decoupled)</option>
+                  <option value="0.40">≤ +0.40 (Broad Defensive)</option>
+                </select>
+                <label class="metric-label" for="dbscan-dotcom-select">MIN DOT-COM RETURN (2000–02):</label>
+                <select id="dbscan-dotcom-select" class="custom-select" style="min-width:135px;">
+                  <option value="100">+100% or Higher (Doubled in Crash)</option>
+                  <option value="50">+50% or Higher</option>
+                  <option value="20" selected>+20% or Higher</option>
+                  <option value="0">0% or Higher (All Positive Survivors)</option>
+                </select>
+                <label style="display:inline-flex; align-items:center; gap:6px; font-size:11.5px; color:#cbd5e1; cursor:pointer;">
+                  <input type="checkbox" id="dbscan-pos-crash-chk" />
+                  Only Positive Avg Return on NVDA Crash Days
+                </label>
+              </div>
+            </div>
+            <div id="dbscan-summary-banner" style="padding:8px 14px; background:rgba(16,185,129,0.08); border:1px solid rgba(16,185,129,0.22); border-radius:8px; margin-bottom:10px; font-size:12px; color:#d1fae5;">
+              Scanning 2,200 equities across 1962–2026 in `us_equities.db`…
+            </div>
+            <div class="table-responsive bubble-table-wrap">
+              <table class="data-table bubble-table">
+                <thead>
+                  <tr>
+                    <th>Rank</th>
+                    <th>Ticker</th>
+                    <th>Classification</th>
+                    <th>Mar 2000 Peak</th>
+                    <th>Oct 2002 Trough</th>
+                    <th>Dot-Com Crash Return</th>
+                    <th>Latest Price (SQLite)</th>
+                    <th>Corr vs NVDA (2022–26)</th>
+                    <th>Avg Return When NVDA ≤ -3.5%</th>
+                    <th>NVDA Crash Win Rate</th>
+                    <th>Ann. Volatility</th>
+                    <th>Empirical Anti-Crash Score</th>
+                  </tr>
+                </thead>
+                <tbody id="dbscan-tbody">
+                  <tr><td colspan="12" class="loading-td">Querying 2,200 stocks in us_equities.db…</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- VIEW 5: SEC FORM 10-K EVIDENCE CATALOG -->
+      <!-- ===================================================================== -->
+      <div id="view-evidence" class="view-panel" hidden>
+        <section class="hero-stocklens">
+          <div>
+            <p class="eyebrow">STOCKLENS US · REGULATORY FILINGS & CITATIONS</p>
+            <h1>SEC Form 10-K<br /><em>Ground-Truth Evidence.</em></h1>
+          </div>
+          <p class="hero-copy">Every supply relationship, supplier contract, and operating exposure in StockLens US is verified with authoritative citations from official regulatory filings.</p>
+        </section>
+
+        <div class="evidence-toolbar">
+          <div class="search-box evidence-search-box">
+            <span aria-hidden="true">⌕</span>
+            <input id="evidence-search-input" type="search" placeholder="Filter citations by company or keyword (e.g. Microsoft, Jet Fuel, GPU, Lithium)" />
+          </div>
+          <span class="metric-label" id="evidence-count-badge">13 CITATIONS</span>
+        </div>
+
+        <div id="evidence-grid" class="evidence-grid">
+          <div class="list-message">Loading verified SEC Form 10-K citations…</div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="shell footer">
+      <span>US EQUITY ATLAS & STOCKLENS US · MARKET INTELLIGENCE SUITE</span>
+      <span id="footer-source">Data: SQLite WAL, Columnar DuckDB, SEC EDGAR & Yahoo Finance</span>
+    </footer>
+    <script src="assets/dashboard.js?v=4.0"></script>
+  </body>
+</html>
