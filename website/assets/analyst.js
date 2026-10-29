@@ -1,5 +1,5 @@
 /* =========================================================================
-   US EQUITY ATLAS · DATA ANALYST EDITION (100% US EQUITIES & US MACRO)
+   US EQUITY ATLAS · EDITORIAL & QUANTITATIVE ENGINE (ANALYST SUITE)
    ========================================================================= */
 
 (function () {
@@ -54,18 +54,18 @@
   }
 
   /* =======================================================================
-     SVG MULTI-LINE CHART HELPER (EDITORIAL PAPER THEME)
+     SVG MULTI-LINE CHART WITH GRADIENT AREA FILL & ENDPOINT MARKERS
      ======================================================================= */
   function renderMultiLineChart(containerId, seriesList, options = {}) {
     const el = document.getElementById(containerId);
     if (!el) return;
 
-    const width = 600;
-    const height = options.height || 250;
+    const width = 620;
+    const height = options.height || 260;
     const padL = 52;
-    const padR = 18;
-    const padT = 16;
-    const padB = 28;
+    const padR = 22;
+    const padT = 18;
+    const padB = 30;
     const plotW = width - padL - padR;
     const plotH = height - padT - padB;
 
@@ -101,7 +101,7 @@
     }
 
     const ySpan = maxY - minY;
-    const yTicks = 5;
+    const yTicks = 4;
     let gridHtml = "";
 
     for (let i = 0; i <= yTicks; i++) {
@@ -110,8 +110,8 @@
       const label = options.yFormat ? options.yFormat(val) : val.toFixed(0);
       gridHtml += `
         <line x1="${padL}" y1="${y.toFixed(1)}" x2="${width - padR}" y2="${y.toFixed(1)}"
-              stroke="#dfe2da" stroke-width="1" />
-        <text x="${padL - 6}" y="${(y + 4).toFixed(1)}" text-anchor="end"
+              stroke="rgba(24,32,30,0.09)" stroke-dasharray="2,3" />
+        <text x="${padL - 8}" y="${(y + 3.5).toFixed(1)}" text-anchor="end"
               fill="#53615c" font-size="10" font-family="DM Mono, monospace">${label}</text>
       `;
     }
@@ -120,7 +120,7 @@
       const by = padT + plotH - ((options.baseline - minY) / ySpan) * plotH;
       gridHtml += `
         <line x1="${padL}" y1="${by.toFixed(1)}" x2="${width - padR}" y2="${by.toFixed(1)}"
-              stroke="#18201e" stroke-width="1.2" stroke-dasharray="4,4" />
+              stroke="rgba(24,32,30,0.45)" stroke-width="1.1" stroke-dasharray="4,4" />
       `;
     }
 
@@ -129,23 +129,48 @@
     const dateMid = refPoints[Math.floor(refPoints.length / 2)]?.d || "";
     const dateEnd = refPoints[refPoints.length - 1]?.d || "";
 
+    const gradId = `grad-${containerId}`;
+    const primaryColor = validSeries[0].color || "#5e8519";
+    let defsHtml = `
+      <defs>
+        <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${primaryColor}" stop-opacity="0.22" />
+          <stop offset="100%" stop-color="${primaryColor}" stop-opacity="0.0" />
+        </linearGradient>
+      </defs>
+    `;
+
     let pathsHtml = "";
-    validSeries.forEach((s) => {
+    validSeries.forEach((s, sIdx) => {
       const pts = s.points;
       const n = pts.length;
       const coords = [];
+      let firstX = padL;
+      let lastX = padL + plotW;
+      let lastY = padT + plotH;
+
       for (let i = 0; i < n; i++) {
         const yv = pts[i].y;
-        if (yv === null || yv === undefined || Number.isNaN(yv)) continue;
+        if (yv === null || yv === undefined || !Number.isFinite(yv)) continue;
         const x = padL + (i / Math.max(1, n - 1)) * plotW;
         const y = padT + plotH - ((yv - minY) / ySpan) * plotH;
+        if (coords.length === 0) firstX = x;
+        lastX = x;
+        lastY = y;
         coords.push(`${x.toFixed(1)},${y.toFixed(1)}`);
       }
       if (coords.length > 1) {
+        if (sIdx === 0) {
+          const areaPts = `${firstX.toFixed(1)},${(padT + plotH).toFixed(1)} ${coords.join(" ")} ${lastX.toFixed(1)},${(padT + plotH).toFixed(1)}`;
+          pathsHtml += `<polygon points="${areaPts}" fill="url(#${gradId})" />`;
+        }
         pathsHtml += `
           <polyline fill="none" stroke="${s.color}" stroke-width="${s.width || 2.1}"
+                    stroke-linecap="round" stroke-linejoin="round"
                     ${s.dashed ? 'stroke-dasharray="5,4"' : ""}
                     points="${coords.join(" ")}" />
+          <circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="3.4"
+                  fill="${s.color}" stroke="#fbfbf7" stroke-width="1.4" />
         `;
       }
     });
@@ -162,7 +187,7 @@
         return `
           <span class="legend-item">
             <span class="legend-swatch" style="background:${s.color}"></span>
-            <span>${s.label} <strong>(${lastVal})</strong></span>
+            <span>${s.label} <strong>${lastVal}</strong></span>
           </span>
         `;
       })
@@ -170,6 +195,7 @@
 
     el.innerHTML = `
       <svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}">
+        ${defsHtml}
         ${gridHtml}
         ${pathsHtml}
         <text x="${padL}" y="${height - 6}" fill="#53615c" font-size="10" font-family="DM Mono, monospace">${dateStart}</text>
@@ -208,33 +234,33 @@
     const kpiRow = document.getElementById("overview-kpi-row");
     if (kpiRow) {
       kpiRow.innerHTML = `
-        <div class="kpi-card">
+        <div class="kpi-card" style="--kpi-glow:#76a721">
           <span class="kpi-label">#1 US GROWTH LEADER</span>
-          <strong class="kpi-val pos">${topCagr ? topCagr.ticker : "NVDA"} (${fmtPct(topCagr?.cagr_pct)} CAGR)</strong>
-          <span class="kpi-sub">Total Return: ${fmtPct(topCagr?.total_return_pct)} · Sharpe ${fmtNum(topCagr?.sharpe_ratio)}</span>
+          <strong class="kpi-val pos">${topCagr ? topCagr.ticker : "NVDA"} · ${fmtPct(topCagr?.cagr_pct)}</strong>
+          <span class="kpi-sub">Cumulative: ${fmtPct(topCagr?.total_return_pct)} · Sharpe ${fmtNum(topCagr?.sharpe_ratio)}</span>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card" style="--kpi-glow:#147b54">
           <span class="kpi-label">#2 US GROWTH LEADER</span>
-          <strong class="kpi-val pos">${secondCagr ? secondCagr.ticker : "AVGO"} (${fmtPct(secondCagr?.cagr_pct)} CAGR)</strong>
-          <span class="kpi-sub">Total Return: ${fmtPct(secondCagr?.total_return_pct)} · Beta ${fmtNum(secondCagr?.beta)}</span>
+          <strong class="kpi-val pos">${secondCagr ? secondCagr.ticker : "TSLA"} · ${fmtPct(secondCagr?.cagr_pct)}</strong>
+          <span class="kpi-sub">Cumulative: ${fmtPct(secondCagr?.total_return_pct)} · Beta ${fmtNum(secondCagr?.beta)}</span>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card" style="--kpi-glow:#18201e">
           <span class="kpi-label">S&P 500 (^GSPC) BENCHMARK</span>
           <strong class="kpi-val ${clsSigned(sp500?.total_return_pct)}">${fmtPct(sp500?.total_return_pct)}</strong>
           <span class="kpi-sub">CAGR: ${fmtPct(sp500?.cagr_pct)} · Ann. Vol: ${fmtPct(sp500?.annualized_volatility_pct, 2, false)}</span>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card" style="--kpi-glow:#c54d3a">
           <span class="kpi-label">US 10Y TREASURY YIELD (^TNX)</span>
           <strong class="kpi-val mono">${fmtNum(macro.tnx_start)}% → ${fmtNum(macro.tnx_latest)}%</strong>
-          <span class="kpi-sub">Cycle Range: ${fmtNum(macro.tnx_min)}% – ${fmtNum(macro.tnx_max)}% (${macro.yield_spike_days_count || 0} Spike Days)</span>
+          <span class="kpi-sub">Cycle Range: ${fmtNum(macro.tnx_min)}% – ${fmtNum(macro.tnx_max)}% (${macro.yield_spike_days_count || 0} Spikes)</span>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card" style="--kpi-glow:#7c3aed">
           <span class="kpi-label">CBOE VOLATILITY INDEX (^VIX)</span>
           <strong class="kpi-val mono">${fmtNum(macro.vix_latest)} pts</strong>
-          <span class="kpi-sub">Sample Peak: ${fmtNum(macro.vix_max)} pts · ${macro.high_vix_days_count || 0} High-Fear Sessions</span>
+          <span class="kpi-sub">Cycle Peak: ${fmtNum(macro.vix_max)} pts · ${macro.high_vix_days_count || 0} High-Fear Days</span>
         </div>
-        <div class="kpi-card">
-          <span class="kpi-label">BEST RISK-ADJUSTED SHARPE</span>
+        <div class="kpi-card" style="--kpi-glow:#2563eb">
+          <span class="kpi-label">TOP RISK-ADJUSTED SHARPE</span>
           <strong class="kpi-val pos">${topSharpe ? topSharpe.ticker : "NVDA"} (${fmtNum(topSharpe?.sharpe_ratio)})</strong>
           <span class="kpi-sub">Annualized Alpha: ${fmtPct(topSharpe?.alpha_annual_pct)} vs ^GSPC</span>
         </div>
@@ -284,12 +310,12 @@
     if (!el || !DATASET) return;
 
     const items = (DATASET.asset_summaries || []).filter((s) => s.role !== "Macro");
-    const width = 600;
-    const height = 250;
-    const padL = 52;
-    const padR = 28;
+    const width = 560;
+    const height = 260;
+    const padL = 48;
+    const padR = 32;
     const padT = 18;
-    const padB = 32;
+    const padB = 30;
     const plotW = width - padL - padR;
     const plotH = height - padT - padB;
 
@@ -306,8 +332,8 @@
       const y = padT + plotH - (plotH * i) / 4;
       grid += `
         <line x1="${padL}" y1="${y.toFixed(1)}" x2="${width - padR}" y2="${y.toFixed(1)}"
-              stroke="#dfe2da" stroke-width="1" />
-        <text x="${padL - 6}" y="${(y + 4).toFixed(1)}" text-anchor="end"
+              stroke="rgba(24,32,30,0.09)" stroke-dasharray="2,3" />
+        <text x="${padL - 8}" y="${(y + 3.5).toFixed(1)}" text-anchor="end"
               fill="#53615c" font-size="10" font-family="DM Mono, monospace">${yv.toFixed(0)}%</text>
       `;
     }
@@ -325,13 +351,15 @@
       .map((s) => {
         const x = padL + ((s.annualized_volatility_pct - minX) / (maxX - minX)) * plotW;
         const y = padT + plotH - ((s.cagr_pct - minY) / (maxY - minY)) * plotH;
-        const r = Math.max(5.5, Math.min(13, 5.5 + Math.max(0, s.sharpe_ratio) * 3.8));
-        const col = s.role === "Benchmark" ? "#18201e" : "#5e8519";
+        const r = Math.max(6, Math.min(14, 6 + Math.max(0, s.sharpe_ratio) * 4.2));
+        const col = s.role === "Benchmark" ? "#18201e" : SERIES_COLORS[s.ticker] || "#5e8519";
         return `
           <g>
+            <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r + 3).toFixed(1)}"
+                    fill="${col}" fill-opacity="0.14" />
             <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}"
-                    fill="${col}" fill-opacity="0.82" stroke="#18201e" stroke-width="1.2" />
-            <text x="${(x + r + 4).toFixed(1)}" y="${(y + 3).toFixed(1)}"
+                    fill="${col}" fill-opacity="0.88" stroke="#fbfbf7" stroke-width="1.4" />
+            <text x="${(x + r + 5).toFixed(1)}" y="${(y + 3.5).toFixed(1)}"
                   fill="#18201e" font-size="10" font-family="DM Mono, monospace" font-weight="700">${s.ticker}</text>
           </g>
         `;
@@ -344,7 +372,7 @@
         ${dots}
       </svg>
       <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#5e8519"></span>10 US Mega-Cap Equities (Bubble = Sharpe Ratio)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#5e8519"></span>10 US Mega-Cap Equities (Radius = Sharpe Ratio)</span>
         <span class="legend-item"><span class="legend-swatch" style="background:#18201e"></span>S&P 500 Benchmark (^GSPC)</span>
       </div>
     `;
@@ -364,7 +392,7 @@
           <td class="mono">${Number(r.raw_rows).toLocaleString("en-US")}</td>
           <td class="mono">${r.missing_aligned} aligned</td>
           <td class="mono pos">${r.duplicates_removed}</td>
-          <td class="mono"><strong>${Number(r.clean_trading_days).toLocaleString("en-US")}</strong> days</td>
+          <td class="mono"><strong>${Number(r.clean_trading_days).toLocaleString("en-US")}</strong> sessions</td>
           <td class="mono">${r.first_date} → ${r.last_date}</td>
           <td class="mono">${Number(r.adj_factor_initial).toFixed(4)}</td>
           <td>${r.corporate_action_note}</td>
@@ -430,27 +458,27 @@
     const kpiStrip = document.getElementById("exp-kpi-strip");
     if (kpiStrip) {
       kpiStrip.innerHTML = `
-        <div class="kpi-card">
+        <div class="kpi-card" style="--kpi-glow:#76a721">
           <span class="kpi-label">${summary.ticker || ticker} LATEST CLOSE</span>
           <strong class="kpi-val">${fmtPrice(summary.latest_price, ticker)}</strong>
           <span class="kpi-sub">${summary.name || ""} · ${summary.sector || ""}</span>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card" style="--kpi-glow:#147b54">
           <span class="kpi-label">TOTAL RETURN (NOMINAL / EXCESS)</span>
           <strong class="kpi-val ${clsSigned(summary.total_return_pct)}">${fmtPct(summary.total_return_pct)}</strong>
           <span class="kpi-sub">Excess vs 10Y Treasury: ${fmtPct(summary.excess_return_pct)}</span>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card" style="--kpi-glow:#c54d3a">
           <span class="kpi-label">VOLATILITY & MAX DRAWDOWN</span>
           <strong class="kpi-val neg">${fmtPct(summary.max_drawdown_pct)} Max DD</strong>
           <span class="kpi-sub">Annualized Volatility: ${fmtPct(summary.annualized_volatility_pct, 2, false)}</span>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card" style="--kpi-glow:#2563eb">
           <span class="kpi-label">CAPM BETA & ANNUAL ALPHA</span>
           <strong class="kpi-val ${clsSigned(summary.alpha_annual_pct)}">α = ${fmtPct(summary.alpha_annual_pct)}</strong>
           <span class="kpi-sub">Beta (β) = ${fmtNum(summary.beta)} vs S&P 500 (^GSPC)</span>
         </div>
-        <div class="kpi-card">
+        <div class="kpi-card" style="--kpi-glow:#7c3aed">
           <span class="kpi-label">ANOMALY SPIKES DETECTED</span>
           <strong class="kpi-val mono">${summary.volume_anomalies_count || 0} Vol Spikes</strong>
           <span class="kpi-sub">${summary.return_3sigma_outliers || 0} Tail Shocks (>3σ)</span>
@@ -470,13 +498,13 @@
       [
         {
           label: `${ticker} Nominal Index`,
-          color: "#18201e",
+          color: "#5e8519",
           width: 2.3,
           points: rawA.map((r) => ({ d: r.d, y: (r.idx / baseLocalA) * 100 })),
         },
         {
           label: `${ticker} Rate-Adj Excess Index`,
-          color: "#5e8519",
+          color: "#18201e",
           dashed: true,
           width: 1.9,
           points: rawA.map((r) => ({ d: r.d, y: (r.exc_idx / baseExcA) * 100 })),
@@ -719,21 +747,24 @@
     if (eventsGrid) {
       eventsGrid.innerHTML = (DATASET.verified_events || [])
         .map(
-          (ev) => `
+          (ev, idx) => `
           <div class="event-card">
             <div class="event-top">
-              <span class="event-id-badge">${ev.event_id} · ${ev.matched_trading_date} · ${ev.ticker}</span>
+              <div class="event-num-wrap">
+                <span class="event-serif-num">${String(idx + 1).padStart(2, "0")}.</span>
+                <span class="event-id-badge">${ev.matched_trading_date} · ${ev.ticker}</span>
+              </div>
               <span class="tag-pill">${ev.category}</span>
             </div>
             <div class="event-title">${ev.title}</div>
             <p class="event-desc">${ev.explanation}</p>
             <div class="event-metrics">
               <div class="event-metric-item">
-                <span>ACTUAL DAY RETURN</span>
+                <span>ACTUAL 1D RETURN</span>
                 <strong class="${clsSigned(ev.actual_day_return_pct)}">${fmtPct(ev.actual_day_return_pct)}</strong>
               </div>
               <div class="event-metric-item">
-                <span>ABNORMAL RETURN (T0)</span>
+                <span>ABNORMAL (T0)</span>
                 <strong class="${clsSigned(ev.abnormal_return_t0_pct)}">${fmtPct(ev.abnormal_return_t0_pct)}</strong>
               </div>
               <div class="event-metric-item">
@@ -745,7 +776,10 @@
                 <strong class="mono">${fmtNum(ev.return_zscore)}σ / ${fmtNum(ev.volume_zscore)}σ</strong>
               </div>
             </div>
-            <div class="event-source">Verified Source: ${ev.source}</div>
+            <div class="event-source">
+              <span>Filing / Source: ${ev.source}</span>
+              <strong>$${fmtNum(ev.close_price)}</strong>
+            </div>
           </div>
         `
         )
@@ -867,8 +901,8 @@
         const willShow = liveWs.hidden;
         liveWs.hidden = !willShow;
         btnToggleLive.textContent = willShow
-          ? "✕ Tutup Preview Experimental Deep Quant"
-          : "🧪 Buka Preview Experimental (Local 6-View Deep Quant Terminal)";
+          ? "✕ Hide Experimental Workspace"
+          : "🧪 Launch Experimental Workspace (6 Modules)";
         if (willShow) {
           liveWs.scrollIntoView({ behavior: "smooth", block: "start" });
         }
@@ -888,10 +922,15 @@
       });
     });
 
-    document.querySelectorAll(".syllabus-card[data-jump-tab]").forEach((card) => {
-      card.addEventListener("click", () => {
-        const target = card.getAttribute("data-jump-tab");
-        if (target) switchDashboardTab(target);
+    // Interactive ticker pills in hero jump directly to Explorer for that stock
+    document.querySelectorAll(".hero-ticker-pill[data-jump-ticker]").forEach((pill) => {
+      pill.addEventListener("click", () => {
+        const tk = pill.getAttribute("data-jump-ticker");
+        const sel = document.getElementById("exp-ticker-select");
+        if (sel && tk) {
+          sel.value = tk;
+          switchDashboardTab("explorer");
+        }
       });
     });
 
