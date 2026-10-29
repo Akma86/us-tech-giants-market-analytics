@@ -814,21 +814,22 @@
      NAVIGATION & EVENT LISTENERS
      ======================================================================= */
   function switchPlatformMode(mode) {
-    const secLanding = document.getElementById("section-landing");
     const secAnalyst = document.getElementById("section-analyst");
     const secDeep = document.getElementById("section-deepquant");
-    const btnLanding = document.getElementById("btn-mode-landing");
     const btnAnalyst = document.getElementById("btn-mode-analyst");
     const btnDeep = document.getElementById("btn-mode-deepquant");
 
-    if (secLanding) secLanding.hidden = mode !== "landing";
-    if (secAnalyst) secAnalyst.hidden = mode !== "analyst";
-    if (secDeep) secDeep.hidden = mode !== "deepquant";
-
-    if (btnLanding) btnLanding.classList.toggle("is-active", mode === "landing");
-    if (btnAnalyst) btnAnalyst.classList.toggle("is-active", mode === "analyst");
-    if (btnDeep) btnDeep.classList.toggle("is-active", mode === "deepquant");
-
+    if (mode === "deepquant") {
+      if (secAnalyst) secAnalyst.hidden = true;
+      if (secDeep) secDeep.hidden = false;
+      if (btnAnalyst) btnAnalyst.classList.remove("is-active");
+      if (btnDeep) btnDeep.classList.add("is-active");
+    } else {
+      if (secAnalyst) secAnalyst.hidden = false;
+      if (secDeep) secDeep.hidden = true;
+      if (btnAnalyst) btnAnalyst.classList.add("is-active");
+      if (btnDeep) btnDeep.classList.remove("is-active");
+    }
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
@@ -850,38 +851,31 @@
   }
 
   function bindEvents() {
-    const btnLanding = document.getElementById("btn-mode-landing");
     const btnAnalyst = document.getElementById("btn-mode-analyst");
     const btnDeep = document.getElementById("btn-mode-deepquant");
     const btnBack = document.getElementById("btn-back-to-analyst");
     const brandHome = document.getElementById("brand-home-link");
-    const btnEnterAnalyst = document.getElementById("btn-landing-enter-analyst");
-    const btnEnterDeep = document.getElementById("btn-landing-enter-deep");
 
-    if (btnLanding) btnLanding.addEventListener("click", () => switchPlatformMode("landing"));
     if (btnAnalyst) btnAnalyst.addEventListener("click", () => switchPlatformMode("analyst"));
     if (btnDeep) btnDeep.addEventListener("click", () => switchPlatformMode("deepquant"));
     if (btnBack) btnBack.addEventListener("click", () => switchPlatformMode("analyst"));
-    if (btnEnterAnalyst) btnEnterAnalyst.addEventListener("click", () => switchPlatformMode("analyst"));
-    if (btnEnterDeep) btnEnterDeep.addEventListener("click", () => switchPlatformMode("deepquant"));
     if (brandHome) {
       brandHome.addEventListener("click", (e) => {
         e.preventDefault();
-        switchPlatformMode("landing");
+        switchPlatformMode("analyst");
       });
     }
-
-    document.querySelectorAll(".clickable-card[data-goto-tab]").forEach((card) => {
-      card.addEventListener("click", () => {
-        const target = card.getAttribute("data-goto-tab");
-        switchPlatformMode("analyst");
-        if (target) switchDashboardTab(target);
-      });
-    });
 
     document.querySelectorAll(".nav-tab").forEach((btn) => {
       btn.addEventListener("click", () => {
         const target = btn.getAttribute("data-tab");
+        if (target) switchDashboardTab(target);
+      });
+    });
+
+    document.querySelectorAll(".syllabus-card[data-jump-tab]").forEach((card) => {
+      card.addEventListener("click", () => {
+        const target = card.getAttribute("data-jump-tab");
         if (target) switchDashboardTab(target);
       });
     });
