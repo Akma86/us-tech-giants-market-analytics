@@ -209,9 +209,9 @@ function renderNewsFeed() {
   if (!items || !items.length) {
     container.innerHTML = `
       <div class="news-empty-state">
-        <p>${isDirect 
-          ? `No recent direct news found for <strong>${escapeHtml(newsState.currentSymbol)}</strong>.` 
-          : `No direct upstream suppliers or downstream customers found with recent alerts for <strong>${escapeHtml(newsState.currentSymbol)}</strong>. Try clicking [ 📥 Backfill 1Y News ] to archive more historical reports.`}
+        <p>${isDirect
+        ? `No recent direct news found for <strong>${escapeHtml(newsState.currentSymbol)}</strong>.`
+        : `No direct upstream suppliers or downstream customers found with recent alerts for <strong>${escapeHtml(newsState.currentSymbol)}</strong>. Try clicking [ 📥 Backfill 1Y News ] to archive more historical reports.`}
         </p>
       </div>
     `;
@@ -416,7 +416,7 @@ async function start() {
       data.nodes.forEach((n) => { stocklensState.nodesMap[n.id] = n; });
       loadCentralityTable();
       populatePathDropdowns();
-    }).catch(() => {});
+    }).catch(() => { });
   } catch (error) { setAppError(error.message); }
 }
 
@@ -2191,16 +2191,13 @@ function applyReverseDcfResult(dcf, stockInfo) {
   // Render 5x5 WACC vs Terminal Growth Sensitivity Matrix
   const matBox = $("#dcf-sensitivity-matrix");
   if (matBox && dcf.sensitivity_matrix && dcf.sensitivity_matrix.length) {
-    const colHeaders = dcf.sensitivity_matrix[0].cells.map((c) => {
-      const tgVal = c.tg_pct ?? c.terminal_growth_pct ?? 3.0;
-      return `<th style="text-align:center; font-size:10px; padding:4px 6px;">g=${tgVal.toFixed(1)}%</th>`;
-    }).join("");
+    const colHeaders = dcf.sensitivity_matrix[0].cells.map((c) => `<th style="text-align:center; font-size:10px; padding:4px 6px;">g=${c.terminal_growth_pct.toFixed(1)}%</th>`).join("");
     const rowsHtml = dcf.sensitivity_matrix.map((row) => {
       const cellsHtml = row.cells.map((cell) => {
-        const gVal = cell.implied_cagr_pct ?? cell.implied_5y_fcf_cagr_pct ?? 0;
+        const gVal = cell.implied_5y_fcf_cagr_pct;
         const bg = gVal > 40 ? "rgba(244,63,94,0.22)" : gVal > 22 ? "rgba(234,179,8,0.18)" : "rgba(16,185,129,0.20)";
         const col = gVal > 40 ? "#fda4af" : gVal > 22 ? "#fde047" : "#6ee7b7";
-        const isCurrent = Boolean(cell.is_center);
+        const isCurrent = Math.abs(row.wacc_pct - dcf.wacc_pct) < 0.25 && Math.abs(cell.terminal_growth_pct - dcf.terminal_growth_pct) < 0.25;
         return `<td style="text-align:center; padding:4px 6px; font-family:'DM Mono',monospace; font-size:10.5px; font-weight:${isCurrent ? '800' : '600'}; background:${bg}; color:${col}; ${isCurrent ? 'outline:1.5px solid #fff;' : ''}">${gVal >= 0 ? '+' : ''}${gVal.toFixed(1)}%</td>`;
       }).join("");
       return `<tr><td style="font-size:10px; font-weight:700; padding:4px 6px; color:#94a3b8;">WACC ${row.wacc_pct.toFixed(1)}%</td>${cellsHtml}</tr>`;
