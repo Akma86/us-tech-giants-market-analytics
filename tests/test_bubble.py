@@ -41,7 +41,7 @@ class TestAIBubbleSuite(unittest.TestCase):
             fcf_annual=20e9,
             wacc=0.095,
             terminal_growth=0.035,
-            historical_growth_pct=18.0
+            hist_rev_growth_pct=18.0
         )
         self.assertIn("implied_5y_fcf_cagr_pct", res)
         self.assertIn("expectation_gap_pct", res)

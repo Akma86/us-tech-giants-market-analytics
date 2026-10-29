@@ -949,7 +949,10 @@ class DotComComparisonEngine:
             cur = conn.cursor()
 
             # Stage 1: Exact-date indexed join across Dot-Com Peak (2000-03-10),
-            # Dot-Com Trough (2002-10-09), and Modern Latest (2026-10-23)
+            # Dot-Com Trough (2002-10-09), and Modern Latest trading date
+            latest_dt_row = cur.execute("SELECT MAX(date) FROM daily_prices WHERE symbol = 'NVDA'").fetchone()
+            latest_dt = latest_dt_row[0] if (latest_dt_row and latest_dt_row[0]) else "2026-10-23"
+
             cur.execute(
                 """
                 SELECT p1.symbol, p1.close AS c2000, p2.close AS c2002, p3.close AS c2026
@@ -958,9 +961,10 @@ class DotComComparisonEngine:
                 JOIN daily_prices p3 ON p1.symbol = p3.symbol
                 WHERE p1.date = '2000-03-10'
                   AND p2.date = '2002-10-09'
-                  AND p3.date = '2026-10-23'
+                  AND p3.date = ?
                   AND p1.close >= 1.5
-                """
+                """,
+                (latest_dt,)
             )
             dotcom_rows = cur.fetchall()
             if not dotcom_rows:

@@ -33,12 +33,21 @@ COMMODITY_TICKERS = {
 
 
 def load_seed_tickers() -> list[str]:
-    """Reads distinct stock tickers from entities.csv."""
+    """Reads distinct stock tickers from entities.csv plus AI & Safe-Haven universes."""
     entities_path = DATA_US_DIR / "entities.csv"
     if not entities_path.exists():
         raise FileNotFoundError(f"Missing entities file: {entities_path}")
     df_ent = pd.read_csv(entities_path)
-    tickers = df_ent[df_ent["entity_type"] == "Company"]["ticker"].dropna().unique().tolist()
+    tickers = set(df_ent[df_ent["entity_type"] == "Company"]["ticker"].dropna().unique().tolist())
+    try:
+        if str(PROJECT_ROOT) not in sys.path:
+            sys.path.insert(0, str(PROJECT_ROOT))
+        from src.bubble_valuation import AI_UNIVERSE
+        from src.dotcom_comparison import SAFE_HAVEN_UNIVERSE
+        from src.bubble_contagion import SUPPLY_CHAIN_SENSITIVITIES
+        tickers |= set(AI_UNIVERSE.keys()) | set(SAFE_HAVEN_UNIVERSE.keys()) | set(SUPPLY_CHAIN_SENSITIVITIES.keys())
+    except Exception as e:
+        print(f"[!] Note: Could not load extended universe tickers: {e}")
     return sorted(tickers)
 
 

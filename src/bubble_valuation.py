@@ -580,12 +580,15 @@ class AIValuationEngine:
         net_debt: float = 0.0,
         projection_years: int = 5,
         historical_growth_pct: Optional[float] = None,
+        hist_rev_growth_pct: Optional[float] = None,
     ) -> Dict[str, Any]:
         """
         Solves for the implied 5-year compound annual growth rate (CAGR) of FCF
         that equates discounted cash flows to current market enterprise/equity value,
         AND generates a 5x5 WACC vs Terminal Growth Sensitivity Matrix.
         """
+        if historical_growth_pct is None and hist_rev_growth_pct is not None:
+            historical_growth_pct = hist_rev_growth_pct
         if current_price <= 0 or shares_outstanding <= 0 or fcf_annual <= 0:
             return {
                 "implied_5y_fcf_cagr_pct": 0.0,
