@@ -840,7 +840,7 @@
       if (panel) panel.hidden = t !== tabId;
     });
 
-    document.querySelectorAll(".nav-tab").forEach((btn) => {
+    document.querySelectorAll(".analyst-nav-tab").forEach((btn) => {
       btn.classList.toggle("is-active", btn.getAttribute("data-tab") === tabId);
     });
 
@@ -854,11 +854,26 @@
     const btnAnalyst = document.getElementById("btn-mode-analyst");
     const btnDeep = document.getElementById("btn-mode-deepquant");
     const btnBack = document.getElementById("btn-back-to-analyst");
+    const btnToggleLive = document.getElementById("btn-toggle-deepquant-live");
     const brandHome = document.getElementById("brand-home-link");
 
     if (btnAnalyst) btnAnalyst.addEventListener("click", () => switchPlatformMode("analyst"));
     if (btnDeep) btnDeep.addEventListener("click", () => switchPlatformMode("deepquant"));
     if (btnBack) btnBack.addEventListener("click", () => switchPlatformMode("analyst"));
+    if (btnToggleLive) {
+      btnToggleLive.addEventListener("click", () => {
+        const liveWs = document.getElementById("deepquant-live-workspace");
+        if (!liveWs) return;
+        const willShow = liveWs.hidden;
+        liveWs.hidden = !willShow;
+        btnToggleLive.textContent = willShow
+          ? "✕ Tutup Preview Experimental Deep Quant"
+          : "🧪 Buka Preview Experimental (Local 6-View Deep Quant Terminal)";
+        if (willShow) {
+          liveWs.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+      });
+    }
     if (brandHome) {
       brandHome.addEventListener("click", (e) => {
         e.preventDefault();
@@ -866,7 +881,7 @@
       });
     }
 
-    document.querySelectorAll(".nav-tab").forEach((btn) => {
+    document.querySelectorAll(".analyst-nav-tab").forEach((btn) => {
       btn.addEventListener("click", () => {
         const target = btn.getAttribute("data-tab");
         if (target) switchDashboardTab(target);

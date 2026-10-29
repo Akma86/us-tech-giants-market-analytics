@@ -68,9 +68,10 @@ data/database/mongodb_market_data/*
 !data/database/mongodb_market_data/.gitkeep
 data/database/mongod_27018.log
 
-# Website / Local Explorer (files kept locally, directory tracked via .gitkeep)
-website/*
-!website/.gitkeep
+# Secret API keys (never commit private API keys)
+website/.api_keys.json
+*.api_keys.json
+website/news_service.py
 market_server.py
 
 # DuckDB database binaries

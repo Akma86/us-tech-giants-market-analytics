@@ -30,7 +30,16 @@ try:
 except ImportError:
     from news_service import get_stock_news, backfill_stock_news
 
-STATIC_FILES = {"index.html", "assets/dashboard.css", "assets/dashboard.js", "assets/favicon.svg"}
+STATIC_FILES = {
+    "index.html",
+    "assets/dashboard.css",
+    "assets/dashboard.js",
+    "assets/analyst.css",
+    "assets/analyst.js",
+    "assets/favicon.svg",
+    "data/analyst_dataset.json",
+    "data/us_market_clean.csv",
+}
 RANGE_DAYS = {"1M": 42, "6M": 220, "1Y": 390, "5Y": 1850}
 
 

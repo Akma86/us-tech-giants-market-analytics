@@ -374,7 +374,8 @@ button {
   overflow-x: auto;
 }
 
-.nav-tab {
+.nav-tab,
+.analyst-nav-tab {
   padding: 10px 16px;
   border: 0;
   border-radius: 4px;
@@ -386,12 +387,14 @@ button {
   transition: all 0.16s;
 }
 
-.nav-tab:hover {
+.nav-tab:hover,
+.analyst-nav-tab:hover {
   color: var(--ink);
   background: rgba(255, 255, 255, 0.55);
 }
 
-.nav-tab.is-active {
+.nav-tab.is-active,
+.analyst-nav-tab.is-active {
   background: var(--ink);
   color: #ffffff;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
