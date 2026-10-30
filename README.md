@@ -33,9 +33,13 @@ Open [`http://127.0.0.1:8000`](http://127.0.0.1:8000). The dashboard uses only t
 StockLens US transforms multi-decade price histories into an institutional-grade cross-asset intelligence suite connecting **11 GICS Sectors, 31 Blue-Chip Equities, Commodities, and Macro Indicators** grounded in verified **SEC Form 10-K regulatory disclosures**.
 
 ```bash
-# Launch the Unified Web Dashboard (Equity Atlas & StockLens US)
-python website/market_server.py --port 8000
-# Open http://127.0.0.1:8000 in your browser
+# Option A: Launch StockLens Deep Quant Terminal (2,200+ Stocks & Knowledge Graph)
+python stocklens/market_server.py --port 8000
+# Open http://127.0.0.1:8000 (portfolio also available at http://127.0.0.1:8000/portfolio/)
+
+# Option B: Launch Data Analyst Portfolio (Static)
+python -m http.server 3000 --directory portfolio
+# Open http://127.0.0.1:3000
 ```
 
 ### Core Architecture & Analytical Modules:
@@ -332,12 +336,21 @@ pip install -r requirements.txt
 
 ## 🚀 Usage & Workflow
 
-### 1. Launch the Interactive Web Dashboard (US Equity Atlas)
-Explore the complete universe of 2,200+ equities, 11 market sectors, interactive charts, and risk metrics via the local web app (kept local in `website/`):
+### 1. Launch the Web Applications
+
+#### Option A: StockLens US Deep Quant Terminal (2,200+ Equities & Knowledge Graph)
+Explore the complete universe of 2,200+ equities, 11 market sectors, interactive charts, and risk metrics via StockLens (in `stocklens/`):
 ```bash
-python website/market_server.py --port 8000
+python stocklens/market_server.py --port 8000
 ```
-Then open **[http://127.0.0.1:8000](http://127.0.0.1:8000)** in your browser.
+Then open **[http://127.0.0.1:8000](http://127.0.0.1:8000)** in your browser (the Portfolio is also accessible at **[http://127.0.0.1:8000/portfolio/](http://127.0.0.1:8000/portfolio/)**).
+
+#### Option B: US Equity Data Analyst Portfolio (Vercel-Ready Static Site)
+Run the dedicated 10 US leaders data analytics & econometric portfolio (in `portfolio/`):
+```bash
+python -m http.server 3000 --directory portfolio
+```
+Then open **[http://127.0.0.1:3000](http://127.0.0.1:3000)** in your browser. Deployable to Vercel with Root Directory set to `portfolio`.
 
 ![US Equity Atlas Interactive Web Dashboard](reports/figures/us_equity_atlas_web_dashboard.png)
 

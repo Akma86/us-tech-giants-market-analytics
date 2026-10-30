@@ -69,10 +69,12 @@ data/database/mongodb_market_data/*
 data/database/mongod_27018.log
 
 # Secret API keys (never commit private API keys)
+stocklens/.api_keys.json
 website/.api_keys.json
 *.api_keys.json
+stocklens/news_service.py
 website/news_service.py
-market_server.py
+/market_server.py
 
 # DuckDB database binaries
 *.duckdb

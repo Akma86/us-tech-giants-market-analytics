@@ -19,7 +19,11 @@ from urllib.parse import parse_qs, urlparse
 FILE_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = FILE_DIR.parent if (FILE_DIR.parent / "data").exists() else FILE_DIR
 DATABASE_PATH = PROJECT_ROOT / "data" / "database" / "us_equities.db"
-STATIC_DIR = FILE_DIR if (FILE_DIR / "index.html").exists() else (PROJECT_ROOT / "website")
+STATIC_DIR = FILE_DIR if (FILE_DIR / "index.html").exists() else (PROJECT_ROOT / "stocklens")
+PORTFOLIO_DIR = PROJECT_ROOT / "portfolio"
+
+if str(FILE_DIR) not in sys.path:
+    sys.path.insert(0, str(FILE_DIR))
 
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
@@ -34,11 +38,7 @@ STATIC_FILES = {
     "index.html",
     "assets/dashboard.css",
     "assets/dashboard.js",
-    "assets/analyst.css",
-    "assets/analyst.js",
     "assets/favicon.svg",
-    "data/analyst_dataset.json",
-    "data/us_market_clean.csv",
 }
 RANGE_DAYS = {"1M": 42, "6M": 220, "1Y": 390, "5Y": 1850}
 
@@ -683,6 +683,23 @@ class MarketRequestHandler(BaseHTTPRequestHandler):
             self.respond_json({"error": f"Database error: {error}"}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def serve_static(self, path: str) -> None:
+        if path.startswith("/portfolio"):
+            rel_port = path[len("/portfolio"):].lstrip("/")
+            rel_port = "index.html" if rel_port in {"", "/"} else rel_port
+            candidate = (PORTFOLIO_DIR / rel_port).resolve()
+            if candidate.is_file() and str(candidate).startswith(str(PORTFOLIO_DIR)):
+                content_type = mimetypes.guess_type(candidate.name)[0] or "application/octet-stream"
+                body = candidate.read_bytes()
+                self.send_response(HTTPStatus.OK)
+                self.send_header("Content-Type", f"{content_type}; charset=utf-8")
+                self.send_header("Content-Length", str(len(body)))
+                self.send_header("Cache-Control", "no-store")
+                self.end_headers()
+                self.wfile.write(body)
+                return
+            self.send_error(HTTPStatus.NOT_FOUND, "File not found")
+            return
+
         relative = "index.html" if path in {"", "/"} else path.lstrip("/")
         if relative not in STATIC_FILES:
             self.send_error(HTTPStatus.NOT_FOUND, "File not found")

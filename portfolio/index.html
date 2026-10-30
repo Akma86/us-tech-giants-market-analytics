@@ -1,0 +1,610 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="US Equity Atlas · Data Analyst Portfolio: 10 US Mega-Cap Equities, S&amp;P 500 (^GSPC), US 10Y Treasury Yield (^TNX) &amp; CBOE VIX (^VIX) — Data Engineering, Feature Engineering, CAPM &amp; Macro Regimes, 10 Event Studies &amp; Mathematical Spot-Checks."
+    />
+    <title>US Equity Analytics · Data Analyst Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="stylesheet" href="assets/analyst.css?v=3.0" />
+  </head>
+  <body>
+    <div class="ambient ambient-one"></div>
+    <div class="ambient ambient-two"></div>
+
+    <header class="topbar shell">
+      <a class="brand" href="#top" id="brand-home-link" aria-label="US Equity Analytics home">
+        <span class="brand-mark"><i></i><i></i><i></i></span>
+        <span>US<span>ATLAS</span> · PORTFOLIO</span>
+      </a>
+
+      <div class="topbar-actions">
+        <a href="../stocklens/index.html" class="topbar-action-pill" target="_blank" title="Explore StockLens 2,200 stocks, Knowledge Graph & Quantitative Models">StockLens Deep Lab ↗</a>
+        <a href="data/us_market_clean.csv" download="us_market_clean.csv" class="topbar-link" title="Download Cleaned US Equities & Macro CSV">📥 Download Clean CSV</a>
+        <a href="https://github.com/Akma86/us-tech-giants-market-analytics" target="_blank" rel="noopener" class="topbar-link">GitHub ↗</a>
+        <div class="market-status"><span class="pulse"></span><span id="header-status">100% US Equities &amp; Macro Validated</span></div>
+      </div>
+    </header>
+
+    <main id="top" class="shell">
+      <div id="section-analyst">
+        <section class="analyst-hero" aria-labelledby="analyst-page-title">
+          <div>
+            <p class="eyebrow">US EQUITIES · DATA ENGINEERING, ECONOMETRICS &amp; EVENT STUDY</p>
+            <h1 id="analyst-page-title">
+              Ten US leaders.<br />
+              <em>One rigorous market study.</em>
+            </h1>
+          </div>
+          <div class="analyst-hero-right">
+            <p class="analyst-hero-copy">
+              End-to-end <strong>Data Engineering, Feature Engineering, CAPM Market-Adjusted Returns (&alpha;, &beta;, &varepsilon;<sub>i,t</sub>), US 10Y Treasury Yield (^TNX) &amp; VIX (^VIX) Macro Regime Analysis, Unusual-Movement Detection,</strong> and <strong>10 Verified SEC/Fed Event Studies</strong> across America's 10 flagship mega-cap leaders vs S&amp;P 500 (^GSPC).
+            </p>
+            <div class="hero-universe-pills" aria-label="Quick jump to stock explorer">
+              <button type="button" class="hero-ticker-pill" data-jump-ticker="NVDA">NVDA</button>
+              <button type="button" class="hero-ticker-pill" data-jump-ticker="AAPL">AAPL</button>
+              <button type="button" class="hero-ticker-pill" data-jump-ticker="MSFT">MSFT</button>
+              <button type="button" class="hero-ticker-pill" data-jump-ticker="GOOGL">GOOGL</button>
+              <button type="button" class="hero-ticker-pill" data-jump-ticker="AMZN">AMZN</button>
+              <button type="button" class="hero-ticker-pill" data-jump-ticker="META">META</button>
+              <button type="button" class="hero-ticker-pill" data-jump-ticker="TSLA">TSLA</button>
+              <button type="button" class="hero-ticker-pill" data-jump-ticker="AVGO">AVGO</button>
+              <button type="button" class="hero-ticker-pill" data-jump-ticker="AMD">AMD</button>
+              <button type="button" class="hero-ticker-pill" data-jump-ticker="ORCL">ORCL</button>
+              <button type="button" class="hero-ticker-pill is-macro" data-jump-ticker="^GSPC">^GSPC</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="market-strip" aria-label="Universe snapshot">
+          <div>
+            <p class="metric-label">Cleaned US Observations</p>
+            <strong id="kpi-total-obs">22,295</strong>
+          </div>
+          <div>
+            <p class="metric-label">US Universe Coverage</p>
+            <strong>10 US Stocks + ^GSPC + ^TNX + ^VIX</strong>
+          </div>
+          <div>
+            <p class="metric-label">Sample Window</p>
+            <strong id="meta-sample-range">2020-01-02 → 2026-10-28</strong>
+          </div>
+          <div>
+            <p class="metric-label">Audit &amp; Spot-Check Status</p>
+            <strong>10 Events · 6 Proofs (0.000000 Diff)</strong>
+          </div>
+        </section>
+
+        <!-- Floating Editorial Navigation Bar -->
+        <nav class="analyst-nav-bar" role="tablist" aria-label="Analytical Chapters">
+          <div class="analyst-nav-group">
+            <button type="button" class="analyst-nav-tab is-active" data-tab="overview">
+              <span class="tab-num">I.</span> Overview &amp; Data Hygiene
+            </button>
+            <button type="button" class="analyst-nav-tab" data-tab="explorer">
+              <span class="tab-num">II.</span> Stock Explorer &amp; Feature Lab
+            </button>
+            <button type="button" class="analyst-nav-tab" data-tab="comparison">
+              <span class="tab-num">III.</span> CAPM &amp; Macro Regimes
+            </button>
+            <button type="button" class="analyst-nav-tab" data-tab="events">
+              <span class="tab-num">IV.</span> 10 Catalysts, Spikes &amp; Proofs
+            </button>
+          </div>
+          <span class="eyebrow" style="padding-right: 12px;">SELECT ANALYTICAL CHAPTER</span>
+        </nav>
+
+        <!-- =============================================================== -->
+        <!-- CHAPTER I: OVERVIEW & DATA ENGINEERING AUDIT                    -->
+        <!-- =============================================================== -->
+        <section id="tab-overview" class="tab-panel">
+          <div class="kpi-row" id="overview-kpi-row"></div>
+
+          <div class="editorial-section-head first-section">
+            <span class="ed-number">01</span>
+            <div>
+              <p class="eyebrow">CROSS-SECTIONAL TRAJECTORY &amp; EFFICIENCY</p>
+              <h2>Compounding trajectories.<br /><em>Risk versus reward.</em></h2>
+            </div>
+            <p class="ed-desc">
+              Comparing cumulative wealth generation (Base = 100) across the 10 US mega-cap leaders against the S&amp;P 500 (^GSPC), both in nominal terms and net of the US 10-Year Treasury risk-free rate (^TNX).
+            </p>
+          </div>
+
+          <div class="grid-2col">
+            <div class="panel-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">US MEGA-CAP CUMULATIVE TRAJECTORY (BASE = 100)</p>
+                  <h3>10 US Leaders vs S&amp;P 500 (^GSPC) Benchmark</h3>
+                </div>
+                <div class="control-inline">
+                  <label for="ov-return-mode">Basis:</label>
+                  <select id="ov-return-mode" class="custom-select-sm">
+                    <option value="raw">Nominal Total Return Index</option>
+                    <option value="excess">Excess Return Index (Net of 10Y Treasury Yield)</option>
+                  </select>
+                </div>
+              </div>
+              <div id="ov-cumulative-chart" class="chart-box"></div>
+            </div>
+
+            <div class="panel-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">EXPLORATORY DATA ANALYSIS · RISK VS RETURN MAP</p>
+                  <h3>Annualized Volatility (%) vs CAGR (%)</h3>
+                </div>
+                <span class="tag-pill">Bubble = Sharpe Ratio</span>
+              </div>
+              <div id="ov-risk-return-chart" class="chart-box"></div>
+            </div>
+          </div>
+
+          <!-- Open Editorial Section 02: Statistical Leaderboard -->
+          <div class="editorial-section-head">
+            <span class="ed-number">02</span>
+            <div>
+              <p class="eyebrow">STATISTICAL DISTRIBUTION LEDGER</p>
+              <h2>Full-cycle performance.<br /><em>Tail risk &amp; higher moments.</em></h2>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+              <p class="ed-desc" style="text-align:right;">
+                Complete parametric and non-parametric profile across all 13 US series (2020–2026).
+              </p>
+              <div class="control-inline">
+                <label for="ov-role-filter">Filter Universe:</label>
+                <select id="ov-role-filter" class="custom-select-sm">
+                  <option value="All">All 13 Series (Stocks + Benchmark + Macro)</option>
+                  <option value="Equity">10 US Equities Only</option>
+                  <option value="Benchmark">Benchmark &amp; Macro Only</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ticker</th>
+                  <th>Company / Series</th>
+                  <th>Sector</th>
+                  <th>Latest Close</th>
+                  <th>Total Return</th>
+                  <th>Excess Return (vs Rf)</th>
+                  <th>CAGR (Ann.)</th>
+                  <th>Ann. Volatility</th>
+                  <th>Sharpe Ratio</th>
+                  <th>Max Drawdown</th>
+                  <th>Skewness</th>
+                  <th>Kurtosis</th>
+                </tr>
+              </thead>
+              <tbody id="asset-summary-tbody"></tbody>
+            </table>
+          </div>
+
+          <!-- Open Editorial Section 03: Data Hygiene & Corporate Action Audit -->
+          <div class="editorial-section-head">
+            <span class="ed-number">03</span>
+            <div>
+              <p class="eyebrow">DATA QUALITY &amp; CORPORATE ACTION AUDIT</p>
+              <h2>Zero-artifact hygiene.<br /><em>Calendar &amp; split verification.</em></h2>
+            </div>
+            <p class="ed-desc">
+              All 10 US equities and macro benchmarks are aligned to the NYSE/NASDAQ trading calendar (1,715 sessions) with backward-adjusted split factors verified against SEC filings.
+            </p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ticker</th>
+                  <th>Company / Series</th>
+                  <th>Sector / Role</th>
+                  <th>Raw Bars</th>
+                  <th>Missing Aligned</th>
+                  <th>Duplicates Removed</th>
+                  <th>Clean Sessions</th>
+                  <th>Sample Window</th>
+                  <th>Init Split/Adj Factor</th>
+                  <th>Verified Corporate Actions &amp; Split Notes</th>
+                </tr>
+              </thead>
+              <tbody id="cleaning-audit-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- CHAPTER II: INTERACTIVE US STOCK EXPLORER & FEATURE LAB         -->
+        <!-- =============================================================== -->
+        <section id="tab-explorer" class="tab-panel" hidden>
+          <div class="quant-controls-bar">
+            <div class="quant-field">
+              <label class="eyebrow" for="exp-ticker-select">SELECT US EQUITY / SERIES</label>
+              <select id="exp-ticker-select" class="custom-select">
+                <option value="NVDA">NVDA — NVIDIA Corporation</option>
+                <option value="AAPL">AAPL — Apple Inc.</option>
+                <option value="MSFT">MSFT — Microsoft Corporation</option>
+                <option value="GOOGL">GOOGL — Alphabet Inc.</option>
+                <option value="AMZN">AMZN — Amazon.com Inc.</option>
+                <option value="META">META — Meta Platforms Inc.</option>
+                <option value="TSLA">TSLA — Tesla Inc.</option>
+                <option value="AVGO">AVGO — Broadcom Inc.</option>
+                <option value="AMD">AMD — Advanced Micro Devices Inc.</option>
+                <option value="ORCL">ORCL — Oracle Corporation</option>
+                <option value="^GSPC">^GSPC — S&amp;P 500 Benchmark</option>
+              </select>
+            </div>
+
+            <div class="quant-field">
+              <label class="eyebrow" for="exp-compare-select">COMPARE AGAINST BENCHMARK / PEER</label>
+              <select id="exp-compare-select" class="custom-select">
+                <option value="^GSPC">^GSPC — S&amp;P 500 Index</option>
+                <option value="MSFT">MSFT — Microsoft Corporation</option>
+                <option value="AAPL">AAPL — Apple Inc.</option>
+                <option value="NVDA">NVDA — NVIDIA Corporation</option>
+                <option value="AVGO">AVGO — Broadcom Inc.</option>
+                <option value="AMD">AMD — Advanced Micro Devices Inc.</option>
+              </select>
+            </div>
+
+            <div class="quant-field-sm">
+              <label class="eyebrow">TIME HORIZON</label>
+              <div class="range-switcher" id="exp-range-pills">
+                <button type="button" data-range="1Y">1Y</button>
+                <button type="button" data-range="3Y">3Y</button>
+                <button type="button" data-range="ALL" class="is-active">ALL (2020–2026)</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="kpi-row" id="exp-kpi-strip"></div>
+
+          <div class="grid-2col">
+            <div class="panel-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">ENGINEERED FEATURE #1 · NORMALIZED CUMULATIVE TRAJECTORY</p>
+                  <h3>Nominal Return vs Rate-Adjusted Excess Return vs Comparison</h3>
+                </div>
+              </div>
+              <div id="exp-price-chart" class="chart-box"></div>
+            </div>
+
+            <div class="panel-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">ENGINEERED FEATURE #2 · VOLATILITY REGIME &amp; DRAWDOWN</p>
+                  <h3>30-Day Rolling Annualized Volatility (%) &amp; Drawdown (%)</h3>
+                </div>
+              </div>
+              <div id="exp-vol-chart" class="chart-box"></div>
+            </div>
+          </div>
+
+          <div class="grid-2col">
+            <div class="panel-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">ENGINEERED FEATURE #3 · VOLUME ANOMALY Z-SCORE</p>
+                  <h3>20-Day Rolling Volume Z-Score (Institutional Spikes ≥ +2.5σ)</h3>
+                </div>
+              </div>
+              <div id="exp-vz-chart" class="chart-box"></div>
+            </div>
+
+            <div class="panel-card">
+              <div class="card-header">
+                <div>
+                  <p class="eyebrow">US EQUITY &amp; MACRO CORRELATION MATRIX (13&times;13)</p>
+                  <h3>Daily Co-Movement Across 10 US Stocks, S&amp;P 500, ^TNX &amp; ^VIX</h3>
+                </div>
+              </div>
+              <div id="exp-corr-matrix" class="table-wrap" style="max-height: 315px; margin-top: 0;"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- CHAPTER III: MARKET-ADJUSTED RETURNS (CAPM) & US MACRO          -->
+        <!-- =============================================================== -->
+        <section id="tab-comparison" class="tab-panel" hidden>
+          <div class="editorial-section-head first-section">
+            <span class="ed-number">01</span>
+            <div>
+              <p class="eyebrow">SINGLE-INDEX CAPM DECOMPOSITION</p>
+              <h2>Market beta vs firm alpha.<br /><em>Idiosyncratic residual isolation.</em></h2>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+              <p class="ed-desc" style="text-align:right;">
+                Separating S&amp;P 500 systematic exposure (&beta;<sub>i</sub> R<sub>m,t</sub><sup>e</sup>) from firm-specific abnormal compounding (&alpha;<sub>i</sub> + &varepsilon;<sub>i,t</sub>).
+              </p>
+              <div class="control-inline">
+                <label for="capm-stock-select">Inspect Trajectory:</label>
+                <select id="capm-stock-select" class="custom-select-sm">
+                  <option value="NVDA">NVDA (vs S&amp;P 500)</option>
+                  <option value="AAPL">AAPL (vs S&amp;P 500)</option>
+                  <option value="MSFT">MSFT (vs S&amp;P 500)</option>
+                  <option value="META">META (vs S&amp;P 500)</option>
+                  <option value="AVGO">AVGO (vs S&amp;P 500)</option>
+                  <option value="GOOGL">GOOGL (vs S&amp;P 500)</option>
+                  <option value="AMZN">AMZN (vs S&amp;P 500)</option>
+                  <option value="TSLA">TSLA (vs S&amp;P 500)</option>
+                  <option value="AMD">AMD (vs S&amp;P 500)</option>
+                  <option value="ORCL">ORCL (vs S&amp;P 500)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2col" style="align-items: start;">
+            <div class="panel-card">
+              <div id="capm-residual-chart" class="chart-box"></div>
+            </div>
+            <div class="table-wrap" style="margin-top: 0;">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Ticker</th>
+                    <th>Benchmark</th>
+                    <th>Beta (&beta;<sub>i</sub>)</th>
+                    <th>Ann. Alpha (&alpha;<sub>i</sub>)</th>
+                    <th>R<sup>2</sup></th>
+                    <th>Idio. Vol (&sigma;<sub>&varepsilon;</sub>)</th>
+                    <th>Info Ratio</th>
+                    <th>Raw Return</th>
+                    <th>Market-Adj Residual</th>
+                  </tr>
+                </thead>
+                <tbody id="capm-table-tbody"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="editorial-section-head">
+            <span class="ed-number">02</span>
+            <div>
+              <p class="eyebrow">US MACROECONOMIC REGIME TRANSMISSION (^TNX &amp; ^VIX)</p>
+              <h2>Discount rate shocks.<br /><em>Treasury yields &amp; volatility regimes.</em></h2>
+            </div>
+            <div>
+              <span class="tag-pill" id="macro-fx-badge" style="margin-bottom:8px;">US 10Y Yield (^TNX): 1.88% &rarr; 4.25%</span>
+              <p class="ed-desc" id="macro-narrative-text"></p>
+            </div>
+          </div>
+
+          <div class="grid-2col-equal">
+            <div class="panel-card">
+              <h4 class="subchart-title">S&amp;P 500 (^GSPC) vs US 10-Year Treasury Yield (^TNX) &amp; CBOE VIX (^VIX)</h4>
+              <div id="macro-fx-chart" class="chart-box"></div>
+            </div>
+            <div class="panel-card">
+              <h4 class="subchart-title">60-Day Rolling Correlation: S&amp;P 500 Returns vs &Delta;10Y Yield &amp; &Delta;VIX</h4>
+              <div id="macro-rolling-corr-chart" class="chart-box"></div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Ticker</th>
+                  <th>Company / Index</th>
+                  <th>Sector</th>
+                  <th>Corr vs &Delta;10Y Yield</th>
+                  <th>Corr vs &Delta;VIX</th>
+                  <th>Avg Return on Yield Spike (&ge; +6 bps)</th>
+                  <th>Avg Return on Yield Relief (&le; &minus;6 bps)</th>
+                  <th>Avg Return in High VIX (&ge; 28)</th>
+                  <th>Nominal Cum Return</th>
+                  <th>Rate-Adjusted Excess Return</th>
+                </tr>
+              </thead>
+              <tbody id="macro-regime-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- =============================================================== -->
+        <!-- CHAPTER IV: 10 VERIFIED CATALYSTS, ANOMALIES & PROOFS           -->
+        <!-- =============================================================== -->
+        <section id="tab-events" class="tab-panel" hidden>
+          <div class="editorial-section-head first-section">
+            <span class="ed-number">01</span>
+            <div>
+              <p class="eyebrow">EVENT INVESTIGATION &amp; ABNORMAL RETURN ATTRIBUTION</p>
+              <h2>Ten defining catalysts.<br /><em>SEC filings &amp; FOMC shocks.</em></h2>
+            </div>
+            <p class="ed-desc">
+              Manually verified historical catalysts across our 10 US mega-caps and the S&amp;P 500, quantifying exact T<sub>0</sub> abnormal returns and 5-day Cumulative Abnormal Returns (CAR).
+            </p>
+          </div>
+
+          <div class="events-grid" id="verified-events-grid"></div>
+
+          <div class="editorial-section-head">
+            <span class="ed-number">02</span>
+            <div>
+              <p class="eyebrow">AUTOMATED UNUSUAL-MOVEMENT DETECTION ENGINE</p>
+              <h2>Extreme tail events.<br /><em>|Z<sub>ret</sub>| &ge; 3.1&sigma; &amp; Z<sub>vol</sub> &ge; 3.4&sigma; spikes.</em></h2>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:flex-end;gap:8px;">
+              <p class="ed-desc" style="text-align:right;">
+                Algorithmic detection of multi-sigma return breakouts, selloffs, and institutional volume surges.
+              </p>
+              <div class="control-inline">
+                <label for="anom-ticker-filter">Filter US Ticker:</label>
+                <select id="anom-ticker-filter" class="custom-select-sm">
+                  <option value="All">All 10 US Equities (Top 45 Anomalies)</option>
+                  <option value="NVDA">NVDA</option>
+                  <option value="META">META</option>
+                  <option value="TSLA">TSLA</option>
+                  <option value="AAPL">AAPL</option>
+                  <option value="MSFT">MSFT</option>
+                  <option value="AMZN">AMZN</option>
+                  <option value="GOOGL">GOOGL</option>
+                  <option value="AVGO">AVGO</option>
+                  <option value="AMD">AMD</option>
+                  <option value="ORCL">ORCL</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Rank</th>
+                  <th>Date</th>
+                  <th>Ticker</th>
+                  <th>Company</th>
+                  <th>Close Price</th>
+                  <th>1-Day Return (%)</th>
+                  <th>Return Z-Score (60D)</th>
+                  <th>Volume Z-Score (20D)</th>
+                  <th>S&amp;P 500 Return</th>
+                  <th>Anomaly Classification</th>
+                </tr>
+              </thead>
+              <tbody id="anomalies-tbody"></tbody>
+            </table>
+          </div>
+
+          <div class="editorial-section-head">
+            <span class="ed-number">03</span>
+            <div>
+              <p class="eyebrow">ANALYTICAL VALIDATION &amp; MATHEMATICAL SPOT-CHECK AUDIT</p>
+              <h2>Closed-form verification.<br /><em>Zero numerical discrepancy.</em></h2>
+            </div>
+            <p class="ed-desc">
+              Every engineered feature and econometric claim is audited step-by-step against closed-form formulas on raw price observations.
+            </p>
+          </div>
+
+          <div class="table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Check ID</th>
+                  <th>Analytical Metric</th>
+                  <th>Ticker &amp; Date</th>
+                  <th>Closed-Form Mathematical Formula</th>
+                  <th>Raw Dataset Inputs</th>
+                  <th>Manual Calculation</th>
+                  <th>Pipeline Output</th>
+                  <th>Abs Difference</th>
+                  <th>Audit Status</th>
+                </tr>
+              </thead>
+              <tbody id="spot-check-tbody"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+
+      <!-- ===================================================================== -->
+      <!-- DEEP QUANT & AI CONTAGION LAB (COMING SOON + EXPERIMENTAL PREVIEW)    -->
+      <!-- ===================================================================== -->
+        
+        <!-- ===================================================================== -->
+        <!-- RESEARCH ROADMAP & DEEP QUANT TERMINAL PREVIEW                         -->
+        <!-- ===================================================================== -->
+        <section id="roadmap" class="analyst-view-panel" style="margin-top: 56px;">
+          <div class="editorial-section-head">
+            <span class="ed-number">04</span>
+            <div>
+              <p class="eyebrow">RESEARCH ROADMAP · BEYOND 10 US MEGA-CAPS</p>
+              <h2>Deep Quant Lab.<br /><em>2,228 US equities, knowledge graph &amp; transmission.</em></h2>
+            </div>
+            <p class="ed-desc">
+              Expanding from core 10 US leaders into the full 2,228-stock US equity universe, SEC 10-K financial knowledge graph, econometric transmission diffusion, and AI bubble contagion radar.
+            </p>
+          </div>
+
+          <div style="margin: 20px 0 28px 0; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px;">
+            <a href="../stocklens/index.html" class="topbar-action-pill" target="_blank" style="padding: 10px 20px; font-size: 13px; font-weight: 700;">
+              Launch Dedicated StockLens Terminal (6 Modules) ↗
+            </a>
+            <span class="eyebrow">ARCHITECTURE CALIBRATION · 75% COMPLETE</span>
+          </div>
+
+          <div class="wip-roadmap-grid">
+          <article class="wip-card">
+            <span class="wip-card-num">01.</span>
+            <div class="syl-header">
+              <span class="eyebrow">IN CALIBRATION · 85%</span>
+              <span class="syl-badge">9.7M DAILY BARS</span>
+            </div>
+            <h3>2,228-Stock US Equity Atlas &amp; SQLite Engine</h3>
+            <p class="card-desc" style="margin-bottom:0;">
+              Eksplorasi penuh 2.228 saham AS lintas 11 sektor GICS dengan riwayat harga harian sejak 1962 hingga 2026 di dalam database us_equities.db.
+            </p>
+            <div class="wip-bar"><div class="wip-bar-fill" style="width: 85%;"></div></div>
+          </article>
+
+          <article class="wip-card">
+            <span class="wip-card-num">02.</span>
+            <div class="syl-header">
+              <span class="eyebrow">IN DEVELOPMENT · 75%</span>
+              <span class="syl-badge">SEC FORM 10-K</span>
+            </div>
+            <h3>Supply-Chain Financial Knowledge Graph</h3>
+            <p class="card-desc" style="margin-bottom:0;">
+              Pemetaan jaringan pemasok, pelanggan, dan komoditas makro yang diverifikasi langsung dari kutipan dokumen regulasi SEC Form 10-K beserta algoritma <em>PageRank &amp; Betweenness Centrality</em>.
+            </p>
+            <div class="wip-bar"><div class="wip-bar-fill" style="width: 75%;"></div></div>
+          </article>
+
+          <article class="wip-card">
+            <span class="wip-card-num">03.</span>
+            <div class="syl-header">
+              <span class="eyebrow">IN DEVELOPMENT · 70%</span>
+              <span class="syl-badge">T+1 TO T+20</span>
+            </div>
+            <h3>Multi-Horizon Lead-Lag Diffusion Engine</h3>
+            <p class="card-desc" style="margin-bottom:0;">
+              Mesin ekonometrika lintas seluruh saham AS untuk mendeteksi efek rambatan harga (<em>information diffusion</em>) pada horizon T+1, T+2, T+5, T+10, hingga T+20 hari perdagangan.
+            </p>
+            <div class="wip-bar"><div class="wip-bar-fill" style="width: 70%;"></div></div>
+          </article>
+
+          <article class="wip-card">
+            <span class="wip-card-num">04.</span>
+            <div class="syl-header">
+              <span class="eyebrow">RESEARCH PREVIEW · 65%</span>
+              <span class="syl-badge">AI BUBBLE RADAR</span>
+            </div>
+            <h3>AI Bubble Early Warning &amp; Anti-Crash Safe-Haven Scanner</h3>
+            <p class="card-desc" style="margin-bottom:0;">
+              Model <em>Reverse DCF 2.0 (5&times;5 WACC/Terminal Growth Matrix)</em>, perbandingan 10 dimensi <em>Dot-Com (2000) vs AI (2026)</em>, serta pemindaian saham defensif tahan krisis.
+            </p>
+            <div class="wip-bar"><div class="wip-bar-fill" style="width: 65%;"></div></div>
+          </article>
+        </div>
+        </section>
+
+      </div>
+    </main>
+
+    <footer class="shell footer">
+      <span>US EQUITY ANALYTICS · QUANTITATIVE DATA ANALYST PORTFOLIO</span>
+      <span id="footer-source">Data: 10 US Leaders + S&amp;P 500 (^GSPC), 10Y Yield (^TNX) &amp; CBOE VIX (^VIX) · SEC Form 10-K/8-K</span>
+    </footer>
+
+    <script src="assets/analyst.js?v=3.0"></script>
+  </body>
+</html>
