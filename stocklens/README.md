@@ -55,3 +55,4 @@ Once running:
 ## 🔗 Related Applications
 
 - **Data Analyst Portfolio (`portfolio/`)**: Dedicated static portfolio website showcasing the 10 US mega-cap technology leaders, CAPM regressions, macro factor regimes, and mathematical spot-check audits.
+

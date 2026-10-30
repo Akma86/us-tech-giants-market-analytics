@@ -66,3 +66,4 @@ To deploy this portfolio to Vercel:
 ## 🔗 Related Applications
 
 - **StockLens Deep Quant Terminal (`stocklens/`)**: Interactive quantitative analysis platform covering 2,200+ US equities, SEC 10-K financial knowledge graph, lead-lag transmission paths, and AI bubble contagion radar. Run locally with `python stocklens/market_server.py --port 8000`.
+
