@@ -1,0 +1,24 @@
+{
+  "pipeline_run_utc": "2026-11-02T15:18:13.520903Z",
+  "sample_start_date": "1947-01-31",
+  "sample_end_date": "2026-10-31",
+  "total_monthly_observations": 958,
+  "latest_macro_reading": {
+    "date": "2026-09-30",
+    "year_month": "2026-09",
+    "cpi_headline_yoy_pct": 3.72,
+    "cpi_core_yoy_pct": 2.57,
+    "pce_headline_yoy_pct": 3.65,
+    "pce_core_yoy_pct": 3.12,
+    "fed_funds_rate_pct": 3.75,
+    "real_policy_rate_pct": 0.63,
+    "cpi_pce_wedge_pct": -0.56,
+    "breakeven_10y_inflation_pct": 2.35,
+    "yield_curve_10y_2y_pct": 0.34
+  },
+  "primary_sources": {
+    "cpi": "Bureau of Labor Statistics (BLS) Consumer Price Index",
+    "pce": "Bureau of Economic Analysis (BEA) Personal Consumption Expenditures",
+    "rates_and_yields": "Federal Reserve Board & Federal Reserve Bank of St. Louis (FRED)"
+  }
+}

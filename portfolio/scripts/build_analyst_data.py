@@ -238,26 +238,38 @@ VERIFIED_EVENTS_SPEC = [
 
 
 def load_series_from_local() -> Dict[str, pd.DataFrame]:
-    """Load the 13 US series from local Parquet and SQLite databases."""
-    df_pq = pd.read_parquet(PARQUET_PATH)
-    df_pq = df_pq.rename(
-        columns={
-            "date": "Date",
-            "open": "Open",
-            "high": "High",
-            "low": "Low",
-            "close": "Close",
-            "adj_close": "Adj Close",
-            "volume": "Volume",
-        }
-    )
-    df_pq["Date"] = pd.to_datetime(df_pq["Date"]).dt.tz_localize(None)
-
+    """Load the 13 US series from local raw CSV, Parquet, or SQLite databases."""
+    raw_dir = ROOT_DIR / "data" / "raw"
     raw_map: Dict[str, pd.DataFrame] = {}
+
     for item in UNIVERSE_META:
         t = item["ticker"]
-        sub = df_pq[df_pq["ticker"] == t].copy()
-        if sub.empty and SQLITE_PATH.exists():
+        clean_t = t.replace("^", "")
+        csv_file = raw_dir / f"{clean_t}.csv"
+        sub = None
+
+        if csv_file.exists():
+            sub = pd.read_csv(csv_file)
+            sub["Date"] = pd.to_datetime(sub["Date"]).dt.tz_localize(None)
+            if "Adj Close" not in sub.columns and "Close" in sub.columns:
+                sub["Adj Close"] = sub["Close"]
+        elif PARQUET_PATH.exists():
+            df_pq = pd.read_parquet(PARQUET_PATH)
+            df_pq = df_pq.rename(
+                columns={
+                    "date": "Date",
+                    "open": "Open",
+                    "high": "High",
+                    "low": "Low",
+                    "close": "Close",
+                    "adj_close": "Adj Close",
+                    "volume": "Volume",
+                }
+            )
+            df_pq["Date"] = pd.to_datetime(df_pq["Date"]).dt.tz_localize(None)
+            sub = df_pq[df_pq["ticker"] == t].copy()
+
+        if (sub is None or sub.empty) and SQLITE_PATH.exists():
             conn = sqlite3.connect(str(SQLITE_PATH))
             sub = pd.read_sql_query(
                 "SELECT date AS Date, open AS Open, high AS High, low AS Low, "
@@ -269,8 +281,12 @@ def load_series_from_local() -> Dict[str, pd.DataFrame]:
             conn.close()
             sub["Date"] = pd.to_datetime(sub["Date"]).dt.tz_localize(None)
 
-        sub = sub[sub["Date"] >= pd.Timestamp(SAMPLE_START)].sort_values("Date").reset_index(drop=True)
-        raw_map[t] = sub
+        if sub is not None and not sub.empty:
+            sub = sub[sub["Date"] >= pd.Timestamp(SAMPLE_START)].sort_values("Date").reset_index(drop=True)
+            raw_map[t] = sub
+        else:
+            raise FileNotFoundError(f"Missing price series for {t}")
+
     return raw_map
 
 
