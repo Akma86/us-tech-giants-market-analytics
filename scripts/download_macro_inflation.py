@@ -20,6 +20,7 @@ import io
 import json
 import subprocess
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 import pandas as pd
@@ -86,23 +87,39 @@ SERIES_SPECS = {
 
 
 def fetch_fred_series(series_id: str) -> pd.DataFrame:
-    """Fetch series from FRED using curl for robust bot-protection handling."""
+    """Fetch series from FRED using curl for robust bot-protection handling, with retry & cache fallback."""
     url = f"https://fred.stlouisfed.org/graph/fredgraph.csv?id={series_id}"
-    cmd = ["curl.exe", "-s", url, "--max-time", "15"]
-    res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8")
-    if res.returncode != 0 or not res.stdout.strip():
-        raise RuntimeError(f"Failed to fetch {series_id}: curl exit code {res.returncode}")
+    cache_path = RAW_MACRO_DIR / f"{series_id.lower()}.csv"
+    
+    last_err = None
+    for attempt in range(1, 4):
+        cmd = ["curl.exe", "-s", url, "--max-time", "20"]
+        res = subprocess.run(cmd, capture_output=True, text=True, encoding="utf-8")
+        if res.returncode == 0 and res.stdout.strip():
+            try:
+                df = pd.read_csv(io.StringIO(res.stdout))
+                date_col = "observation_date" if "observation_date" in df.columns else "DATE"
+                if date_col in df.columns and series_id in df.columns:
+                    df = df.rename(columns={date_col: "Date", series_id: "Value"})
+                    df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+                    df["Value"] = pd.to_numeric(df["Value"].replace(".", pd.NA), errors="coerce")
+                    df = df.dropna().sort_values("Date").reset_index(drop=True)
+                    return df
+            except Exception as e:
+                last_err = e
+        else:
+            last_err = RuntimeError(f"curl exit code {res.returncode}")
+        time.sleep(2 * attempt)
 
-    df = pd.read_csv(io.StringIO(res.stdout))
-    date_col = "observation_date" if "observation_date" in df.columns else "DATE"
-    if date_col not in df.columns or series_id not in df.columns:
-        raise ValueError(f"Malformed response for {series_id}: columns {list(df.columns)}")
+    # Fallback to existing cache if available
+    if cache_path.exists():
+        print(f"(using local cache for {series_id})", end=" ", flush=True)
+        df = pd.read_csv(cache_path)
+        df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
+        df["Value"] = pd.to_numeric(df["Value"], errors="coerce")
+        return df.dropna().sort_values("Date").reset_index(drop=True)
 
-    df = df.rename(columns={date_col: "Date", series_id: "Value"})
-    df["Date"] = pd.to_datetime(df["Date"], errors="coerce")
-    df["Value"] = pd.to_numeric(df["Value"].replace(".", pd.NA), errors="coerce")
-    df = df.dropna().sort_values("Date").reset_index(drop=True)
-    return df
+    raise RuntimeError(f"Failed to fetch {series_id} after 3 attempts: {last_err}")
 
 
 def main() -> None:

@@ -160,6 +160,10 @@ def main():
                     "Adj Close": "adj_close",
                     "Volume": "volume",
                 })
+                new_pq["date"] = pd.to_datetime(new_pq["date"]).dt.tz_localize(None)
+                new_pq["volume"] = new_pq["volume"].fillna(0).astype("int64")
+                new_pq["series_type"] = new_pq["ticker"].apply(lambda t: "macro" if str(t).startswith("^") else "equity")
+                new_pq["unit"] = "USD"
                 # Keep common columns
                 common_cols = [c for c in pq_df.columns if c in new_pq.columns]
                 comb_pq = pd.concat([pq_df[common_cols], new_pq[common_cols]], ignore_index=True)
@@ -173,16 +177,7 @@ def main():
                 for sym in tickers_list:
                     ddb.execute("DELETE FROM daily_prices WHERE ticker = ?", [sym])
                 
-                ddb_df = df.copy().rename(columns={
-                    "Ticker": "ticker",
-                    "Date": "date",
-                    "Open": "open",
-                    "High": "high",
-                    "Low": "low",
-                    "Close": "close",
-                    "Adj Close": "adj_close",
-                    "Volume": "volume",
-                })
+                ddb_df = new_pq[common_cols].copy()
                 ddb.register("temp_new_prices", ddb_df)
                 ddb.execute("INSERT INTO daily_prices SELECT * FROM temp_new_prices")
                 ddb.close()
@@ -197,3 +192,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+

@@ -1,8 +1,8 @@
 {
-  "pipeline_run_utc": "2026-11-02T15:18:13.520903Z",
+  "pipeline_run_utc": "2026-11-04T15:26:09.952373Z",
   "sample_start_date": "1947-01-31",
-  "sample_end_date": "2026-10-31",
-  "total_monthly_observations": 958,
+  "sample_end_date": "2026-11-30",
+  "total_monthly_observations": 959,
   "latest_macro_reading": {
     "date": "2026-09-30",
     "year_month": "2026-09",
