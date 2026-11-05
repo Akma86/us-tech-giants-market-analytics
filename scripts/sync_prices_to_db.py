@@ -79,21 +79,33 @@ def main():
     print("Batch upserting records into `daily_prices` table...")
     t0 = time.time()
 
-    # Prepare records
-    records = []
-    for _, r in df.iterrows():
-        records.append((
-            str(r["Ticker"]).strip(),
-            str(r["Date"])[:10],
-            float(r["Open"]) if pd.notna(r["Open"]) else None,
-            float(r["High"]) if pd.notna(r["High"]) else None,
-            float(r["Low"]) if pd.notna(r["Low"]) else None,
-            float(r["Close"]) if pd.notna(r["Close"]) else None,
-            float(r["Adj Close"]) if pd.notna(r["Adj Close"]) else (float(r["Close"]) if pd.notna(r["Close"]) else None),
-            int(r["Volume"]) if pd.notna(r["Volume"]) else 0,
-            float(r.get("Dividends", 0.0)) if pd.notna(r.get("Dividends")) else 0.0,
-            float(r.get("Stock Splits", 0.0)) if pd.notna(r.get("Stock Splits")) else 0.0,
-        ))
+    # Prepare records via fast vectorized pandas
+    df_clean = pd.DataFrame({
+        "symbol": df["Ticker"].astype(str).str.strip(),
+        "date": df["Date"].astype(str).str[:10],
+        "open": pd.to_numeric(df["Open"], errors="coerce"),
+        "high": pd.to_numeric(df["High"], errors="coerce"),
+        "low": pd.to_numeric(df["Low"], errors="coerce"),
+        "close": pd.to_numeric(df["Close"], errors="coerce"),
+        "adj_close": pd.to_numeric(df["Adj Close"] if "Adj Close" in df.columns else df["Close"], errors="coerce"),
+        "volume": pd.to_numeric(df["Volume"], errors="coerce").fillna(0).astype("int64"),
+        "dividends": pd.to_numeric(df["Dividends"] if "Dividends" in df.columns else 0.0, errors="coerce").fillna(0.0),
+        "stock_splits": pd.to_numeric(df["Stock Splits"] if "Stock Splits" in df.columns else 0.0, errors="coerce").fillna(0.0),
+    })
+    records = [
+        (
+            r[0], r[1],
+            None if pd.isna(r[2]) else float(r[2]),
+            None if pd.isna(r[3]) else float(r[3]),
+            None if pd.isna(r[4]) else float(r[4]),
+            None if pd.isna(r[5]) else float(r[5]),
+            None if pd.isna(r[6]) else float(r[6]),
+            int(r[7]),
+            float(r[8]),
+            float(r[9]),
+        )
+        for r in df_clean.itertuples(index=False, name=None)
+    ]
 
     # Chunked inserts of 10,000 records
     chunk_size = 10000
