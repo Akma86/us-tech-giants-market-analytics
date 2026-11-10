@@ -110,7 +110,7 @@
           <div class="kpi-row" id="overview-kpi-row"></div>
 
           <div class="editorial-section-head first-section">
-            <span class="ed-number">01</span>
+            <span class="module-chip"><span class="led-dot led-emerald"></span>MODULE I</span>
             <div>
               <p class="eyebrow">CROSS-SECTIONAL TRAJECTORY &amp; EFFICIENCY</p>
               <h2>Compounding trajectories.<br /><em>Risk versus reward.</em></h2>
@@ -150,9 +150,9 @@
             </div>
           </div>
 
-          <!-- Open Editorial Section 02: Statistical Leaderboard -->
+          <!-- Module II: Statistical Distribution Ledger -->
           <div class="editorial-section-head">
-            <span class="ed-number">02</span>
+            <span class="module-chip"><span class="led-dot led-emerald"></span>MODULE II</span>
             <div>
               <p class="eyebrow">STATISTICAL DISTRIBUTION LEDGER</p>
               <h2>Full-cycle performance.<br /><em>Tail risk &amp; higher moments.</em></h2>
@@ -194,9 +194,9 @@
             </table>
           </div>
 
-          <!-- Open Editorial Section 03: Data Hygiene & Corporate Action Audit -->
+          <!-- Module III: Data Hygiene & Corporate Action Audit -->
           <div class="editorial-section-head">
-            <span class="ed-number">03</span>
+            <span class="module-chip"><span class="led-dot led-emerald"></span>MODULE III</span>
             <div>
               <p class="eyebrow">DATA QUALITY &amp; CORPORATE ACTION AUDIT</p>
               <h2>Zero-artifact hygiene.<br /><em>Calendar &amp; split verification.</em></h2>
@@ -274,11 +274,44 @@
           <div class="kpi-row" id="exp-kpi-strip"></div>
 
           <div class="grid-2col">
-            <div class="panel-card">
+            <div class="panel-card skeuo-panel-card">
               <div class="card-header">
                 <div>
                   <p class="eyebrow">ENGINEERED FEATURE #1 · NORMALIZED CUMULATIVE TRAJECTORY</p>
                   <h3>Nominal Return vs Rate-Adjusted Excess Return vs Comparison</h3>
+                </div>
+                <div class="card-header-badge">
+                  <span class="live-probe-indicator"><span class="pulse-bead"></span>LIVE OHLCV PROBE ACTIVE</span>
+                </div>
+              </div>
+              <div class="skeuo-telemetry-bay" id="exp-price-hud" aria-label="Interactive Price & OHLCV Telemetry Gauge">
+                <div class="hud-col">
+                  <span class="hud-tag">PROBE DATE</span>
+                  <span class="hud-val" id="hud-val-date">2026-11-04</span>
+                </div>
+                <div class="hud-col">
+                  <span class="hud-tag">OPEN</span>
+                  <span class="hud-val" id="hud-val-open">--</span>
+                </div>
+                <div class="hud-col">
+                  <span class="hud-tag">HIGH</span>
+                  <span class="hud-val hud-high" id="hud-val-high">--</span>
+                </div>
+                <div class="hud-col">
+                  <span class="hud-tag">LOW</span>
+                  <span class="hud-val hud-low" id="hud-val-low">--</span>
+                </div>
+                <div class="hud-col">
+                  <span class="hud-tag">CLOSE</span>
+                  <span class="hud-val hud-close" id="hud-val-close">--</span>
+                </div>
+                <div class="hud-col">
+                  <span class="hud-tag">DAILY RETURN</span>
+                  <span class="hud-val hud-ret" id="hud-val-ret">--</span>
+                </div>
+                <div class="hud-col">
+                  <span class="hud-tag">VOLUME</span>
+                  <span class="hud-val hud-vol" id="hud-val-vol">--</span>
                 </div>
               </div>
               <div id="exp-price-chart" class="chart-box"></div>
@@ -323,7 +356,7 @@
         <!-- =============================================================== -->
         <section id="tab-comparison" class="tab-panel" hidden>
           <div class="editorial-section-head first-section">
-            <span class="ed-number">01</span>
+            <span class="module-chip"><span class="led-dot led-cyan"></span>FACTOR ENGINE</span>
             <div>
               <p class="eyebrow">SINGLE-INDEX CAPM DECOMPOSITION</p>
               <h2>Market beta vs firm alpha.<br /><em>Idiosyncratic residual isolation.</em></h2>
@@ -375,7 +408,7 @@
           </div>
 
           <div class="editorial-section-head">
-            <span class="ed-number">02</span>
+            <span class="module-chip"><span class="led-dot led-amber"></span>MACRO TRANSMISSION</span>
             <div>
               <p class="eyebrow">US MACROECONOMIC REGIME TRANSMISSION (^TNX &amp; ^VIX)</p>
               <h2>Discount rate shocks.<br /><em>Treasury yields &amp; volatility regimes.</em></h2>
@@ -423,7 +456,7 @@
         <!-- =============================================================== -->
         <section id="tab-events" class="tab-panel" hidden>
           <div class="editorial-section-head first-section">
-            <span class="ed-number">01</span>
+            <span class="module-chip"><span class="led-dot led-emerald"></span>CATALYST RADAR</span>
             <div>
               <p class="eyebrow">EVENT INVESTIGATION &amp; ABNORMAL RETURN ATTRIBUTION</p>
               <h2>Ten defining catalysts.<br /><em>SEC filings &amp; FOMC shocks.</em></h2>
@@ -436,7 +469,7 @@
           <div class="events-grid" id="verified-events-grid"></div>
 
           <div class="editorial-section-head">
-            <span class="ed-number">02</span>
+            <span class="module-chip"><span class="led-dot led-amber"></span>ANOMALY ENGINE</span>
             <div>
               <p class="eyebrow">AUTOMATED UNUSUAL-MOVEMENT DETECTION ENGINE</p>
               <h2>Extreme tail events.<br /><em>|Z<sub>ret</sub>| &ge; 3.1&sigma; &amp; Z<sub>vol</sub> &ge; 3.4&sigma; spikes.</em></h2>
@@ -485,7 +518,7 @@
           </div>
 
           <div class="editorial-section-head">
-            <span class="ed-number">03</span>
+            <span class="module-chip"><span class="led-dot led-emerald"></span>MATHEMATICAL AUDIT</span>
             <div>
               <p class="eyebrow">ANALYTICAL VALIDATION &amp; MATHEMATICAL SPOT-CHECK AUDIT</p>
               <h2>Closed-form verification.<br /><em>Zero numerical discrepancy.</em></h2>
@@ -525,7 +558,7 @@
         <!-- ===================================================================== -->
         <section id="roadmap" class="analyst-view-panel" style="margin-top: 56px;">
           <div class="editorial-section-head">
-            <span class="ed-number">04</span>
+            <span class="module-chip"><span class="led-dot led-cyan"></span>EXPANSION HORIZON</span>
             <div>
               <p class="eyebrow">RESEARCH ROADMAP · BEYOND 10 US MEGA-CAPS</p>
               <h2>Deep Quant Lab.<br /><em>2,228 US equities, knowledge graph &amp; transmission.</em></h2>
