@@ -9,19 +9,19 @@
   let activeRange = "ALL";
 
   const SERIES_COLORS = {
-    NVDA: "#059669", // Deep emerald
-    AAPL: "#0284c7", // Sky blue
-    MSFT: "#2563eb", // Royal blue
-    GOOGL: "#d97706", // Amber gold
-    AMZN: "#ea580c", // Bright orange
-    META: "#8b5cf6", // Deep neon violet
-    TSLA: "#e11d48", // Crimson rose
-    AVGO: "#0d9488", // Teal
-    AMD: "#db2777", // Hot pink
-    ORCL: "#4f46e5", // Indigo
-    "^GSPC": "#1e293b", // Crisp charcoal benchmark
-    "^TNX": "#c2410c", // Warning amber
-    "^VIX": "#c026d3", // Electric fuchsia
+    NVDA: "#5e8519",
+    AAPL: "#18201e",
+    MSFT: "#147b54",
+    GOOGL: "#2563eb",
+    AMZN: "#d97706",
+    META: "#7c3aed",
+    TSLA: "#c54d3a",
+    AVGO: "#0d9488",
+    AMD: "#db2777",
+    ORCL: "#4f46e5",
+    "^GSPC": "#18201e",
+    "^TNX": "#c54d3a",
+    "^VIX": "#7c3aed",
   };
 
   function fmtPct(v, digits = 2, showPlus = true) {
@@ -53,67 +53,25 @@
     return n > 0 ? "pos" : "neg";
   }
 
-  function formatVol(n) {
-    if (!n || n === 0) return "0";
-    const num = Number(n);
-    if (num >= 1e9) return (num / 1e9).toFixed(2) + "B";
-    if (num >= 1e6) return (num / 1e6).toFixed(1) + "M";
-    if (num >= 1e3) return (num / 1e3).toFixed(1) + "K";
-    return num.toLocaleString();
-  }
-
-  function updatePriceHud(bar, ticker = "NVDA") {
-    if (!bar) return;
-    const dEl = document.getElementById("hud-val-date");
-    const oEl = document.getElementById("hud-val-open");
-    const hEl = document.getElementById("hud-val-high");
-    const lEl = document.getElementById("hud-val-low");
-    const cEl = document.getElementById("hud-val-close");
-    const rEl = document.getElementById("hud-val-ret");
-    const vEl = document.getElementById("hud-val-vol");
-
-    const openVal = bar.o !== undefined ? bar.o : bar.c;
-    const highVal = bar.h !== undefined ? bar.h : bar.c;
-    const lowVal = bar.l !== undefined ? bar.l : bar.c;
-    const closeVal = bar.c;
-
-    if (dEl) dEl.textContent = bar.d;
-    if (oEl) oEl.textContent = "$" + Number(openVal).toFixed(2);
-    if (hEl) hEl.textContent = "$" + Number(highVal).toFixed(2);
-    if (lEl) lEl.textContent = "$" + Number(lowVal).toFixed(2);
-    if (cEl) cEl.textContent = "$" + Number(closeVal).toFixed(2);
-    if (rEl) {
-      const isPos = bar.ret >= 0;
-      rEl.className = "hud-val hud-ret " + (isPos ? "pos" : "neg");
-      rEl.textContent = (isPos ? "▲ +" : "▼ ") + Math.abs(Number(bar.ret)).toFixed(2) + "%";
-    }
-    if (vEl) vEl.textContent = formatVol(bar.v);
-  }
-
   /* =======================================================================
-     SKEUOMORPHIC SVG MULTI-LINE CHART ENGINE
-     - Interactive Crosshair Hairline
-     - Luminous Snapping Dots on Curves
-     - High-Low Range Shadow Corridor
-     - Rich Floating Tactile Tooltip with Open, High, Low, Close, Return & Volume
-     - Real-Time Live HUD Telemetry Sync
+     SVG MULTI-LINE CHART WITH GRADIENT AREA FILL & ENDPOINT MARKERS
      ======================================================================= */
   function renderMultiLineChart(containerId, seriesList, options = {}) {
     const el = document.getElementById(containerId);
     if (!el) return;
 
-    const width = 640;
-    const height = options.height || 270;
+    const width = 620;
+    const height = options.height || 260;
     const padL = 52;
-    const padR = 24;
-    const padT = 20;
-    const padB = 32;
+    const padR = 22;
+    const padT = 18;
+    const padB = 30;
     const plotW = width - padL - padR;
     const plotH = height - padT - padB;
 
     const validSeries = seriesList.filter((s) => s.points && s.points.length > 1);
     if (!validSeries.length) {
-      el.innerHTML = `<div style="padding:24px;color:rgba(255,255,255,0.4);font-family:var(--mono);">No time-series points available.</div>`;
+      el.innerHTML = `<div style="padding:24px;color:#53615c;">No time-series points available.</div>`;
       return;
     }
 
@@ -142,12 +100,7 @@
       minY -= 1;
     }
 
-    // Add 4% buffer so curves don't clip against border rails
-    const spanRaw = maxY - minY;
-    minY -= spanRaw * 0.03;
-    maxY += spanRaw * 0.05;
     const ySpan = maxY - minY;
-
     const yTicks = 4;
     let gridHtml = "";
 
@@ -157,9 +110,9 @@
       const label = options.yFormat ? options.yFormat(val) : val.toFixed(0);
       gridHtml += `
         <line x1="${padL}" y1="${y.toFixed(1)}" x2="${width - padR}" y2="${y.toFixed(1)}"
-              stroke="rgba(15, 23, 42, 0.08)" stroke-dasharray="2,3" />
-        <text x="${padL - 10}" y="${(y + 3.5).toFixed(1)}" text-anchor="end"
-              fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${label}</text>
+              stroke="rgba(24,32,30,0.09)" stroke-dasharray="2,3" />
+        <text x="${padL - 8}" y="${(y + 3.5).toFixed(1)}" text-anchor="end"
+              fill="#53615c" font-size="10" font-family="DM Mono, monospace">${label}</text>
       `;
     }
 
@@ -167,7 +120,7 @@
       const by = padT + plotH - ((options.baseline - minY) / ySpan) * plotH;
       gridHtml += `
         <line x1="${padL}" y1="${by.toFixed(1)}" x2="${width - padR}" y2="${by.toFixed(1)}"
-              stroke="rgba(22, 163, 74, 0.4)" stroke-width="1.2" stroke-dasharray="4,4" />
+              stroke="rgba(24,32,30,0.45)" stroke-width="1.1" stroke-dasharray="4,4" />
       `;
     }
 
@@ -177,54 +130,17 @@
     const dateEnd = refPoints[refPoints.length - 1]?.d || "";
 
     const gradId = `grad-${containerId}`;
-    const primaryColor = validSeries[0].color || "#059669";
+    const primaryColor = validSeries[0].color || "#5e8519";
     let defsHtml = `
       <defs>
         <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
           <stop offset="0%" stop-color="${primaryColor}" stop-opacity="0.22" />
-          <stop offset="65%" stop-color="${primaryColor}" stop-opacity="0.05" />
           <stop offset="100%" stop-color="${primaryColor}" stop-opacity="0.0" />
         </linearGradient>
-        <filter id="glow-${containerId}" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="2" result="blur" />
-          <feMerge>
-            <feMergeNode in="blur" />
-            <feMergeNode in="SourceGraphic" />
-          </feMerge>
-        </filter>
       </defs>
     `;
 
-    // 1. High-Low Range Corridor Envelope if options.ohlcData and showRange
-    let rangeCorridorHtml = "";
-    if (options.showRange && options.ohlcData && options.ohlcData.rawA) {
-      const ohlcList = options.ohlcData.rawA;
-      const baseA = options.ohlcData.baseLocalA || ohlcList[0]?.c || 100;
-      const upperCoords = [];
-      const lowerCoords = [];
-      const n = ohlcList.length;
-
-      for (let i = 0; i < n; i++) {
-        const r = ohlcList[i];
-        if (!r) continue;
-        const x = padL + (i / Math.max(1, n - 1)) * plotW;
-        const highVal = (r.h / baseA) * 100;
-        const lowVal = (r.l / baseA) * 100;
-        const yHigh = padT + plotH - ((highVal - minY) / ySpan) * plotH;
-        const yLow = padT + plotH - ((lowVal - minY) / ySpan) * plotH;
-        upperCoords.push(`${x.toFixed(1)},${yHigh.toFixed(1)}`);
-        lowerCoords.unshift(`${x.toFixed(1)},${yLow.toFixed(1)}`);
-      }
-      if (upperCoords.length > 1) {
-        const polyPoints = upperCoords.concat(lowerCoords).join(" ");
-        rangeCorridorHtml = `
-          <polygon points="${polyPoints}" fill="rgba(22, 163, 74, 0.08)" stroke="rgba(22, 163, 74, 0.25)" stroke-width="0.8" stroke-dasharray="2,2" />
-        `;
-      }
-    }
-
-    // 2. Multi-series lines and endpoint dots
-    let pathsHtml = rangeCorridorHtml;
+    let pathsHtml = "";
     validSeries.forEach((s, sIdx) => {
       const pts = s.points;
       const n = pts.length;
@@ -249,37 +165,15 @@
           pathsHtml += `<polygon points="${areaPts}" fill="url(#${gradId})" />`;
         }
         pathsHtml += `
-          <polyline fill="none" stroke="${s.color}" stroke-width="${s.width || 2.2}"
+          <polyline fill="none" stroke="${s.color}" stroke-width="${s.width || 2.1}"
                     stroke-linecap="round" stroke-linejoin="round"
                     ${s.dashed ? 'stroke-dasharray="5,4"' : ""}
                     points="${coords.join(" ")}" />
-          <circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="3.8"
-                  fill="${s.color}" stroke="#ffffff" stroke-width="1.8" />
+          <circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="3.4"
+                  fill="${s.color}" stroke="#fbfbf7" stroke-width="1.4" />
         `;
       }
     });
-
-    // 3. Crosshair Hairline & Tracking Beads
-    let crosshairDotsHtml = validSeries
-      .map(
-        (s, idx) => `
-        <circle class="crosshair-dot-${idx}" r="4.8" fill="${s.color}" stroke="#ffffff" stroke-width="2"
-                style="display:none; pointer-events:none; filter:drop-shadow(0 1px 3px rgba(15,23,42,0.3));" />
-      `
-      )
-      .join("");
-
-    const crosshairGroupHtml = `
-      <g class="chart-crosshair-group" style="display:none; pointer-events:none;">
-        <line class="chart-crosshair-v" y1="${padT}" y2="${padT + plotH}" stroke="rgba(22, 163, 74, 0.85)" stroke-width="1.2" stroke-dasharray="3,3" />
-        ${crosshairDotsHtml}
-      </g>
-    `;
-
-    // 4. Interactive Overlay
-    const overlayHtml = `
-      <rect class="chart-hover-overlay" x="${padL}" y="${padT}" width="${plotW}" height="${plotH}" fill="transparent" style="cursor:crosshair; pointer-events:all;" />
-    `;
 
     const legendHtml = validSeries
       .map((s) => {
@@ -300,192 +194,16 @@
       .join("");
 
     el.innerHTML = `
-      <svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" class="skeuo-chart-svg">
+      <svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}">
         ${defsHtml}
         ${gridHtml}
         ${pathsHtml}
-        ${crosshairGroupHtml}
-        ${overlayHtml}
-        <text x="${padL}" y="${height - 8}" fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${dateStart}</text>
-        <text x="${padL + plotW / 2}" y="${height - 8}" text-anchor="middle" fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${dateMid}</text>
-        <text x="${width - padR}" y="${height - 8}" text-anchor="end" fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${dateEnd}</text>
+        <text x="${padL}" y="${height - 6}" fill="#53615c" font-size="10" font-family="DM Mono, monospace">${dateStart}</text>
+        <text x="${padL + plotW / 2}" y="${height - 6}" text-anchor="middle" fill="#53615c" font-size="10" font-family="DM Mono, monospace">${dateMid}</text>
+        <text x="${width - padR}" y="${height - 6}" text-anchor="end" fill="#53615c" font-size="10" font-family="DM Mono, monospace">${dateEnd}</text>
       </svg>
-      <div class="skeuo-chart-tooltip" style="display:none; position:absolute; pointer-events:none; z-index:50;"></div>
       <div class="chart-legend">${legendHtml}</div>
     `;
-
-    // 5. Attach Interactive Pointer Listeners
-    const overlay = el.querySelector(".chart-hover-overlay");
-    const crosshairGroup = el.querySelector(".chart-crosshair-group");
-    const crosshairLine = el.querySelector(".chart-crosshair-v");
-    const tooltipEl = el.querySelector(".skeuo-chart-tooltip");
-    const svgEl = el.querySelector("svg");
-
-    if (!overlay || !crosshairGroup || !tooltipEl || !svgEl) return;
-
-    function handlePointerMove(e) {
-      const rect = svgEl.getBoundingClientRect();
-      const clientX = e.touches ? e.touches[0].clientX : e.clientX;
-      const clientY = e.touches ? e.touches[0].clientY : e.clientY;
-
-      const svgX = ((clientX - rect.left) / rect.width) * width;
-      if (svgX < padL || svgX > width - padR) {
-        handlePointerLeave();
-        return;
-      }
-
-      const relX = (svgX - padL) / plotW;
-      const nPoints = refPoints.length;
-      const idx = Math.max(0, Math.min(nPoints - 1, Math.round(relX * (nPoints - 1))));
-      const pt = refPoints[idx];
-      const snapX = padL + (idx / Math.max(1, nPoints - 1)) * plotW;
-
-      // Position vertical hairline
-      crosshairLine.setAttribute("x1", snapX.toFixed(1));
-      crosshairLine.setAttribute("x2", snapX.toFixed(1));
-
-      // Position tracking dots
-      validSeries.forEach((s, sIdx) => {
-        const dot = crosshairGroup.querySelector(`.crosshair-dot-${sIdx}`);
-        if (!dot) return;
-        const sPt = s.points[idx];
-        if (sPt && sPt.y !== null && sPt.y !== undefined && Number.isFinite(sPt.y)) {
-          const snapY = padT + plotH - ((sPt.y - minY) / ySpan) * plotH;
-          dot.setAttribute("cx", snapX.toFixed(1));
-          dot.setAttribute("cy", snapY.toFixed(1));
-          dot.style.display = "block";
-        } else {
-          dot.style.display = "none";
-        }
-      });
-      crosshairGroup.style.display = "block";
-
-      // Render Tooltip Content
-      if (options.ohlcData && options.ohlcData.rawA && options.ohlcData.rawA[idx]) {
-        const barA = options.ohlcData.rawA[idx];
-        const barB = options.ohlcData.rawB ? options.ohlcData.rawB[idx] : null;
-        const dStr = barA.d || pt.d;
-
-        let dayName = "";
-        try {
-          const dt = new Date(dStr + "T00:00:00Z");
-          dayName = dt.toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });
-        } catch (_) {}
-
-        const isPos = barA.ret >= 0;
-        const chgSign = isPos ? "+" : "";
-        const chgClass = isPos ? "pos" : "neg";
-        const chgIcon = isPos ? "▲" : "▼";
-
-        tooltipEl.innerHTML = `
-          <div class="skeuo-tt-card">
-            <div class="skeuo-tt-head">
-              <div class="skeuo-tt-date-row">
-                <span class="skeuo-tt-dot"></span>
-                <span class="skeuo-tt-date">${dStr} ${dayName ? `· ${dayName}` : ""}</span>
-              </div>
-              <span class="skeuo-tt-badge">${options.ohlcData.ticker}</span>
-            </div>
-            <div class="skeuo-tt-ohlc-grid">
-              <div class="skeuo-tt-cell">
-                <span class="tt-tag">OPEN</span>
-                <span class="tt-val">$${Number(barA.o).toFixed(2)}</span>
-              </div>
-              <div class="skeuo-tt-cell tt-high">
-                <span class="tt-tag">HIGH</span>
-                <span class="tt-val">$${Number(barA.h).toFixed(2)}</span>
-              </div>
-              <div class="skeuo-tt-cell tt-low">
-                <span class="tt-tag">LOW</span>
-                <span class="tt-val">$${Number(barA.l).toFixed(2)}</span>
-              </div>
-              <div class="skeuo-tt-cell tt-close">
-                <span class="tt-tag">CLOSE</span>
-                <span class="tt-val">$${Number(barA.c).toFixed(2)}</span>
-              </div>
-            </div>
-            <div class="skeuo-tt-meta">
-              <span class="skeuo-tt-chg ${chgClass}">
-                ${chgIcon} ${chgSign}${Number(barA.ret).toFixed(2)}%
-              </span>
-              <span class="skeuo-tt-vol">Vol: <strong>${formatVol(barA.v)}</strong></span>
-            </div>
-            ${
-              barB
-                ? `
-            <div class="skeuo-tt-comp">
-              <span class="comp-name">${options.ohlcData.compareTicker}: $${Number(barB.c).toFixed(2)}</span>
-              <span class="comp-ret ${barB.ret >= 0 ? "pos" : "neg"}">${barB.ret >= 0 ? "+" : ""}${Number(barB.ret).toFixed(2)}%</span>
-            </div>`
-                : ""
-            }
-          </div>
-        `;
-
-        // Update live HUD
-        updatePriceHud(barA, options.ohlcData.ticker);
-      } else {
-        // Standard series tooltip
-        const dStr = pt.d;
-        tooltipEl.innerHTML = `
-          <div class="skeuo-tt-card">
-            <div class="skeuo-tt-head">
-              <div class="skeuo-tt-date-row">
-                <span class="skeuo-tt-dot"></span>
-                <span class="skeuo-tt-date">${dStr}</span>
-              </div>
-            </div>
-            <div class="skeuo-tt-list">
-              ${validSeries
-                .map((s) => {
-                  const sPt = s.points[idx];
-                  if (!sPt || sPt.y === undefined || Number.isNaN(sPt.y)) return "";
-                  const fmtVal = options.yFormat ? options.yFormat(sPt.y) : sPt.y.toFixed(2);
-                  return `
-                  <div class="skeuo-tt-item">
-                    <span class="swatch" style="background:${s.color}"></span>
-                    <span class="name">${s.label}</span>
-                    <strong class="val">${fmtVal}</strong>
-                  </div>
-                `;
-                })
-                .join("")}
-            </div>
-          </div>
-        `;
-      }
-
-      // Position tooltip inside container
-      const elRect = el.getBoundingClientRect();
-      const ttWidth = 230;
-      let posX = clientX - elRect.left + 16;
-      let posY = clientY - elRect.top - 20;
-
-      if (posX + ttWidth > elRect.width - 12) {
-        posX = clientX - elRect.left - ttWidth - 16;
-      }
-      if (posY < 10) posY = 10;
-
-      tooltipEl.style.left = `${Math.max(8, posX)}px`;
-      tooltipEl.style.top = `${posY}px`;
-      tooltipEl.style.display = "block";
-    }
-
-    function handlePointerLeave() {
-      if (crosshairGroup) crosshairGroup.style.display = "none";
-      if (tooltipEl) tooltipEl.style.display = "none";
-      if (options.ohlcData && options.ohlcData.rawA) {
-        const latest = options.ohlcData.rawA[options.ohlcData.rawA.length - 1];
-        updatePriceHud(latest, options.ohlcData.ticker);
-      }
-    }
-
-    overlay.addEventListener("pointerenter", handlePointerMove);
-    overlay.addEventListener("pointermove", handlePointerMove);
-    overlay.addEventListener("pointerleave", handlePointerLeave);
-    overlay.addEventListener("touchstart", handlePointerMove, { passive: true });
-    overlay.addEventListener("touchmove", handlePointerMove, { passive: true });
-    overlay.addEventListener("touchend", handlePointerLeave);
   }
 
   /* =======================================================================
@@ -614,9 +332,9 @@
       const y = padT + plotH - (plotH * i) / 4;
       grid += `
         <line x1="${padL}" y1="${y.toFixed(1)}" x2="${width - padR}" y2="${y.toFixed(1)}"
-              stroke="rgba(15, 23, 42, 0.08)" stroke-dasharray="2,3" />
+              stroke="rgba(24,32,30,0.09)" stroke-dasharray="2,3" />
         <text x="${padL - 8}" y="${(y + 3.5).toFixed(1)}" text-anchor="end"
-              fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${yv.toFixed(0)}%</text>
+              fill="#53615c" font-size="10" font-family="DM Mono, monospace">${yv.toFixed(0)}%</text>
       `;
     }
 
@@ -625,7 +343,7 @@
       const x = padL + (plotW * i) / 4;
       grid += `
         <text x="${x.toFixed(1)}" y="${height - 6}" text-anchor="middle"
-              fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${xv.toFixed(0)}% Vol</text>
+              fill="#53615c" font-size="10" font-family="DM Mono, monospace">${xv.toFixed(0)}% Vol</text>
       `;
     }
 
@@ -633,30 +351,29 @@
       .map((s) => {
         const x = padL + ((s.annualized_volatility_pct - minX) / (maxX - minX)) * plotW;
         const y = padT + plotH - ((s.cagr_pct - minY) / (maxY - minY)) * plotH;
-        const r = Math.max(7, Math.min(15, 7 + Math.max(0, s.sharpe_ratio) * 4.2));
-        const col = s.role === "Benchmark" ? "#1e293b" : SERIES_COLORS[s.ticker] || "#059669";
+        const r = Math.max(6, Math.min(14, 6 + Math.max(0, s.sharpe_ratio) * 4.2));
+        const col = s.role === "Benchmark" ? "#18201e" : SERIES_COLORS[s.ticker] || "#5e8519";
         return `
-          <g class="scatter-point" style="cursor:pointer;">
-            <title>${s.ticker} (${s.name})&#10;CAGR: ${s.cagr_pct}%&#10;Annualized Volatility: ${s.annualized_volatility_pct}%&#10;Sharpe Ratio: ${s.sharpe_ratio}&#10;Max Drawdown: ${s.max_drawdown_pct}%</title>
-            <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r + 4).toFixed(1)}"
+          <g>
+            <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r + 3).toFixed(1)}"
                     fill="${col}" fill-opacity="0.14" />
             <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}"
-                    fill="${col}" fill-opacity="0.92" stroke="#ffffff" stroke-width="1.8" />
+                    fill="${col}" fill-opacity="0.88" stroke="#fbfbf7" stroke-width="1.4" />
             <text x="${(x + r + 5).toFixed(1)}" y="${(y + 3.5).toFixed(1)}"
-                  fill="#0f172a" font-size="11" font-family="DM Mono, monospace" font-weight="700">${s.ticker}</text>
+                  fill="#18201e" font-size="10" font-family="DM Mono, monospace" font-weight="700">${s.ticker}</text>
           </g>
         `;
       })
       .join("");
 
     el.innerHTML = `
-      <svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}" class="skeuo-chart-svg">
+      <svg viewBox="0 0 ${width} ${height}" width="100%" height="${height}">
         ${grid}
         ${dots}
       </svg>
       <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#059669"></span>10 US Mega-Cap Equities (Bubble Radius = Sharpe Ratio)</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#1e293b"></span>S&P 500 Benchmark (^GSPC)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#5e8519"></span>10 US Mega-Cap Equities (Radius = Sharpe Ratio)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#18201e"></span>S&P 500 Benchmark (^GSPC)</span>
       </div>
     `;
   }
@@ -772,65 +489,49 @@
     const rawA = filterPointsByRange(DATASET.time_series[ticker] || [], activeRange);
     const rawB = filterPointsByRange(DATASET.time_series[compareTicker] || [], activeRange);
 
-    const baseLocalA = rawA[0]?.c || 100;
+    const baseLocalA = rawA[0]?.idx || 100;
     const baseExcA = rawA[0]?.exc_idx || 100;
-    const baseLocalB = rawB[0]?.c || 100;
+    const baseLocalB = rawB[0]?.idx || 100;
 
     renderMultiLineChart(
       "exp-price-chart",
       [
         {
           label: `${ticker} Nominal Index`,
-          color: SERIES_COLORS[ticker] || "#059669",
-          width: 2.4,
-          points: rawA.map((r) => ({ d: r.d, y: (r.c / baseLocalA) * 100 })),
+          color: "#5e8519",
+          width: 2.3,
+          points: rawA.map((r) => ({ d: r.d, y: (r.idx / baseLocalA) * 100 })),
         },
         {
           label: `${ticker} Rate-Adj Excess Index`,
-          color: "#38bdf8",
+          color: "#18201e",
           dashed: true,
-          width: 2.0,
+          width: 1.9,
           points: rawA.map((r) => ({ d: r.d, y: (r.exc_idx / baseExcA) * 100 })),
         },
         {
           label: `${compareTicker} Benchmark/Peer`,
-          color: SERIES_COLORS[compareTicker] || "#f43f5e",
+          color: "#c54d3a",
           width: 2.0,
-          points: rawB.map((r) => ({ d: r.d, y: (r.c / baseLocalB) * 100 })),
+          points: rawB.map((r) => ({ d: r.d, y: (r.idx / baseLocalB) * 100 })),
         },
       ],
-      {
-        baseline: 100,
-        showRange: true,
-        yFormat: (v) => v.toFixed(0),
-        ohlcData: {
-          ticker,
-          rawA,
-          compareTicker,
-          rawB,
-          baseLocalA,
-        },
-      }
+      { baseline: 100, yFormat: (v) => v.toFixed(0) }
     );
-
-    // Initial HUD synchronization to latest observation
-    if (rawA.length > 0) {
-      updatePriceHud(rawA[rawA.length - 1], ticker);
-    }
 
     renderMultiLineChart(
       "exp-vol-chart",
       [
         {
           label: `${ticker} 30D Annualized Volatility (%)`,
-          color: SERIES_COLORS[ticker] || "#059669",
-          width: 2.2,
+          color: "#5e8519",
+          width: 2.1,
           points: rawA.map((r) => ({ d: r.d, y: r.vol30 })),
         },
         {
           label: `${ticker} Drawdown (%)`,
-          color: "#f43f5e",
-          width: 2.0,
+          color: "#c54d3a",
+          width: 1.9,
           points: rawA.map((r) => ({ d: r.d, y: r.dd })),
         },
       ],
@@ -842,8 +543,8 @@
       [
         {
           label: `${ticker} 20D Volume Z-Score`,
-          color: "#38bdf8",
-          width: 2.1,
+          color: "#18201e",
+          width: 2.0,
           points: rawA.map((r) => ({ d: r.d, y: r.vz })),
         },
       ],

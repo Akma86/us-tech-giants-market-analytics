@@ -191,7 +191,7 @@ def history(conn: sqlite3.Connection, symbol: str, selected_range: str) -> dict[
         where += " AND date >= ?"
         params.append(cutoff.isoformat())
     rows = conn.execute(
-        f"SELECT date, open, high, low, close, adj_close, volume FROM daily_prices WHERE {where} ORDER BY date ASC", params
+        f"SELECT date, close, adj_close, volume FROM daily_prices WHERE {where} ORDER BY date ASC", params
     ).fetchall()
     return {"symbol": symbol, "range": selected_range, "rows": [dict(row) for row in rows]}
 

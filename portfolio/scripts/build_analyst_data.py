@@ -812,35 +812,27 @@ def clean_and_engineer(raw_map: Dict[str, pd.DataFrame]) -> Dict[str, Any]:
         },
     ]
 
-    # Complete Daily Time-Series with full OHLCV for interactive precision hover tooltips & inspection
+    # Downsampled Time-Series for fast client-side SVG rendering (every 5th trading day + final bar)
     time_series: Dict[str, List[Dict[str, Any]]] = {}
     for item in UNIVERSE_META:
         t = item["ticker"]
         sub = full_df[full_df["Ticker"] == t].sort_values("Date").reset_index(drop=True)
-        t_records = []
-        for r in sub.itertuples():
-            price_val = round(float(r.Price), 2)
-            open_val = round(float(getattr(r, "Open", price_val)), 2) if pd.notna(getattr(r, "Open", None)) else price_val
-            high_val = round(float(getattr(r, "High", price_val)), 2) if pd.notna(getattr(r, "High", None)) else price_val
-            low_val = round(float(getattr(r, "Low", price_val)), 2) if pd.notna(getattr(r, "Low", None)) else price_val
-            vol_val = int(getattr(r, "Volume", 0)) if pd.notna(getattr(r, "Volume", None)) else 0
-            
-            t_records.append({
-                "d": r.Date.strftime("%Y-%m-%d"),
-                "o": open_val,
-                "h": high_val,
-                "l": low_val,
-                "c": price_val,
-                "v": vol_val,
-                "ret": round(float(r.Daily_Return * 100.0), 2),
-                "idx": round(float(r.Cum_Return_Index), 2),
-                "exc_idx": round(float(r.Excess_Return_Index), 2),
-                "res_idx": round(float(r.Residual_Index), 2),
-                "vol30": round(float(r.Rolling_Vol_30D_Pct), 2),
-                "vz": round(float(r.Volume_ZScore_20D), 2),
-                "dd": round(float(r.Drawdown_Pct), 2),
-            })
-        time_series[t] = t_records
+        idx_take = sorted(set(list(range(0, len(sub), 5)) + [len(sub) - 1]))
+        sampled = sub.iloc[idx_take]
+        time_series[t] = [
+            {
+                "d": r["Date"].strftime("%Y-%m-%d"),
+                "c": round(float(r["Price"]), 2),
+                "ret": round(float(r["Daily_Return"] * 100.0), 2),
+                "idx": round(float(r["Cum_Return_Index"]), 2),
+                "exc_idx": round(float(r["Excess_Return_Index"]), 2),
+                "res_idx": round(float(r["Residual_Index"]), 2),
+                "vol30": round(float(r["Rolling_Vol_30D_Pct"]), 2),
+                "vz": round(float(r["Volume_ZScore_20D"]), 2),
+                "dd": round(float(r["Drawdown_Pct"]), 2),
+            }
+            for _, r in sampled.iterrows()
+        ]
 
     payload = {
         "metadata": {
