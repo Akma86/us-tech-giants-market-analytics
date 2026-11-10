@@ -1,5 +1,5 @@
 /* US Equity Atlas — UI for the project's local SQLite market API. */
-const SECTOR_COLORS = ["#88af38", "#db7d66", "#6b9ecb", "#d69346", "#a58e4f", "#bd6750", "#8a9b61", "#60a3a3", "#b884a6", "#c79357", "#7f92cf"];
+const SECTOR_COLORS = ["#059669", "#dc2626", "#0284c7", "#d97706", "#7c3aed", "#e11d48", "#15803d", "#0891b2", "#9333ea", "#ea580c", "#4f46e5"];
 const RANGE_LABELS = { "1M": "1 month", "6M": "6 months", "1Y": "1 year", "5Y": "5 years", ALL: "all history" };
 const state = { sector: "All", query: "", page: 1, overview: null, selected: "AAPL", detail: null, range: "1Y", chartRows: [], detailRequest: 0 };
 const $ = (selector) => document.querySelector(selector);
@@ -318,6 +318,44 @@ async function loadHistory(requestId = state.detailRequest) {
   } catch (error) { if (requestId === state.detailRequest) setAppError(error.message); }
 }
 
+function updateStocklensHud(row, prevRow) {
+  if (!row) return;
+  const dEl = $("#sl-hud-date");
+  const oEl = $("#sl-hud-open");
+  const hEl = $("#sl-hud-high");
+  const lEl = $("#sl-hud-low");
+  const cEl = $("#sl-hud-close");
+  const rEl = $("#sl-hud-ret");
+  const vEl = $("#sl-hud-vol");
+
+  const openVal = row.open !== undefined && row.open !== null ? row.open : row.adj_close;
+  const highVal = row.high !== undefined && row.high !== null ? row.high : row.adj_close;
+  const lowVal = row.low !== undefined && row.low !== null ? row.low : row.adj_close;
+  const closeVal = row.close !== undefined && row.close !== null ? row.close : row.adj_close;
+
+  if (dEl) dEl.textContent = row.date;
+  if (oEl) oEl.textContent = money.format(openVal);
+  if (hEl) hEl.textContent = money.format(highVal);
+  if (lEl) lEl.textContent = money.format(lowVal);
+  if (cEl) cEl.textContent = money.format(closeVal);
+
+  if (rEl) {
+    let retPct = 0;
+    if (prevRow && prevRow.adj_close) {
+      retPct = ((row.adj_close / prevRow.adj_close) - 1) * 100;
+    } else if (openVal && openVal > 0) {
+      retPct = ((closeVal / openVal) - 1) * 100;
+    }
+    const isPos = retPct >= 0;
+    rEl.textContent = `${isPos ? "+" : ""}${retPct.toFixed(2)}%`;
+    rEl.className = `sl-hud-val ${isPos ? "pos" : "neg"}`;
+  }
+
+  if (vEl) {
+    vEl.textContent = formatVolume(row.volume);
+  }
+}
+
 function renderHistory(rows) {
   if (!rows?.length || rows.length < 2) { renderNoHistory(); return; }
   const sampledRows = rows.length > 800 ? rows.filter((_, index) => index % Math.ceil(rows.length / 800) === 0 || index === rows.length - 1) : rows;
@@ -330,16 +368,79 @@ function renderHistory(rows) {
   min = Math.max(0, min - padding); max += padding;
   const toX = (index) => left + index / (sampledRows.length - 1) * chartWidth;
   const toY = (value) => top + (max - value) / (max - min) * chartHeight;
+
+  // High-Low Range Corridor Envelope
+  let rangeCorridor = "";
+  const hasHL = sampledRows.some((r) => r.high !== undefined && r.high !== null && r.low !== undefined && r.low !== null);
+  if (hasHL) {
+    const upper = [];
+    const lower = [];
+    sampledRows.forEach((r, idx) => {
+      const hv = r.high !== undefined && r.high !== null ? r.high : r.adj_close;
+      const lv = r.low !== undefined && r.low !== null ? r.low : r.adj_close;
+      upper.push(`${toX(idx).toFixed(2)},${toY(hv).toFixed(2)}`);
+      lower.unshift(`${toX(idx).toFixed(2)},${toY(lv).toFixed(2)}`);
+    });
+    rangeCorridor = `<polygon points="${upper.concat(lower).join(" ")}" fill="var(--chart-color)" fill-opacity="0.08" stroke="var(--chart-color)" stroke-opacity="0.25" stroke-width="0.8" stroke-dasharray="2,2"/>`;
+  }
+
   const line = sampledRows.map((row, index) => `${index ? "L" : "M"}${toX(index).toFixed(2)},${toY(row.adj_close).toFixed(2)}`).join(" ");
   const area = `${line} L ${toX(sampledRows.length - 1).toFixed(2)},${top + chartHeight} L ${left},${top + chartHeight} Z`;
-  const grids = [0, .33, .66, 1].map((position) => { const y = top + position * chartHeight; const value = max - position * (max - min); return `<line class="chart-grid" x1="${left}" x2="${left + chartWidth}" y1="${y}" y2="${y}"/><text class="chart-axis-label" x="${width - 2}" y="${y + 3}" text-anchor="end">${money.format(value)}</text>`; }).join("");
-  const dates = [0, .33, .66, 1].map((position) => { const index = Math.min(sampledRows.length - 1, Math.round(position * (sampledRows.length - 1))); const anchor = position === 0 ? "start" : position === 1 ? "end" : "middle"; return `<text class="chart-axis-label" x="${toX(index)}" y="${height - 7}" text-anchor="${anchor}">${shortDate.format(asDate(sampledRows[index].date))}</text>`; }).join("");
+  const grids = [0, .33, .66, 1].map((position) => {
+    const y = top + position * chartHeight;
+    const value = max - position * (max - min);
+    return `<line class="chart-grid" x1="${left}" x2="${left + chartWidth}" y1="${y}" y2="${y}" stroke="rgba(15, 23, 42, 0.08)" stroke-dasharray="2,3"/><text class="chart-axis-label" x="${width - 2}" y="${y + 3}" text-anchor="end" fill="rgba(15, 23, 42, 0.55)">${money.format(value)}</text>`;
+  }).join("");
+  const dates = [0, .33, .66, 1].map((position) => {
+    const index = Math.min(sampledRows.length - 1, Math.round(position * (sampledRows.length - 1)));
+    const anchor = position === 0 ? "start" : position === 1 ? "end" : "middle";
+    return `<text class="chart-axis-label" x="${toX(index)}" y="${height - 7}" text-anchor="${anchor}" fill="rgba(15, 23, 42, 0.55)">${shortDate.format(asDate(sampledRows[index].date))}</text>`;
+  }).join("");
   const sectorIndex = Math.max(0, state.overview?.sectors.findIndex((sector) => sector.key === state.detail?.sector) ?? 0);
   const chartColor = SECTOR_COLORS[sectorIndex % SECTOR_COLORS.length];
   $("#price-chart").style.setProperty("--chart-color", chartColor);
-  $("#price-chart").innerHTML = `<svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" role="img" aria-label="Adjusted close price from ${rows[0].date} to ${last(rows).date}"><defs><linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="${chartColor}" stop-opacity=".28"/><stop offset="100%" stop-color="${chartColor}" stop-opacity="0"/></linearGradient></defs>${grids}<path class="chart-area" d="${area}"/><path class="chart-line" d="${line}"/>${dates}</svg>`;
+
+  const crosshairGroup = `
+    <g class="sl-crosshair-group" style="display:none; pointer-events:none;">
+      <line id="sl-crosshair-v" y1="${top}" y2="${top + chartHeight}" stroke="${chartColor}" stroke-width="1.2" stroke-dasharray="3,3" />
+      <circle id="sl-crosshair-dot" r="4.5" fill="${chartColor}" stroke="#ffffff" stroke-width="2" style="filter:drop-shadow(0 2px 4px rgba(15,23,42,0.3));" />
+    </g>
+  `;
+
+  const overlayRect = `<rect class="sl-chart-overlay" x="${left}" y="${top}" width="${chartWidth}" height="${chartHeight}" fill="transparent" style="cursor:crosshair; pointer-events:all;"/>`;
+
+  $("#price-chart").innerHTML = `
+    <svg viewBox="0 0 ${width} ${height}" preserveAspectRatio="none" role="img" aria-label="Adjusted close price from ${rows[0].date} to ${last(rows).date}">
+      <defs>
+        <linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="${chartColor}" stop-opacity=".22"/>
+          <stop offset="100%" stop-color="${chartColor}" stop-opacity="0"/>
+        </linearGradient>
+      </defs>
+      ${grids}
+      ${rangeCorridor}
+      <path class="chart-area" d="${area}"/>
+      <path class="chart-line" d="${line}"/>
+      ${dates}
+      ${crosshairGroup}
+      ${overlayRect}
+    </svg>
+  `;
   $("#chart-summary").textContent = `Adjusted close · ${fullDate.format(asDate(rows[0].date))} — ${fullDate.format(asDate(last(rows).date))}`;
   renderMetrics(rows);
+
+  // Initialize HUD to latest bar
+  updateStocklensHud(last(sampledRows), sampledRows[sampledRows.length - 2]);
+
+  // Bind Overlay Events
+  const overlay = $("#price-chart .sl-chart-overlay");
+  if (overlay) {
+    overlay.addEventListener("pointermove", (e) => renderChartTooltip(e.clientX));
+    overlay.addEventListener("pointerleave", () => handleChartPointerLeave());
+    overlay.addEventListener("touchstart", (e) => { if (e.touches[0]) renderChartTooltip(e.touches[0].clientX); }, { passive: true });
+    overlay.addEventListener("touchmove", (e) => { if (e.touches[0]) renderChartTooltip(e.touches[0].clientX); }, { passive: true });
+    overlay.addEventListener("touchend", () => handleChartPointerLeave());
+  }
 }
 
 function renderNoHistory() {
@@ -382,18 +483,116 @@ function renderMetrics(rows) {
 
 function renderChartTooltip(clientX) {
   const rows = state.chartRows;
-  if (!rows.length) return;
+  if (!rows || !rows.length) return;
   const wrap = $("#chart-wrap"), rect = wrap.getBoundingClientRect();
-  const ratio = Math.max(0, Math.min(1, (clientX - rect.left - 12) / Math.max(1, rect.width - 80)));
+  const leftPad = 12, plotWidth = rect.width - 80;
+  const ratio = Math.max(0, Math.min(1, (clientX - rect.left - leftPad) / Math.max(1, plotWidth)));
   const index = Math.round(ratio * (rows.length - 1)), row = rows[index];
-  const x = 12 + index / Math.max(1, rows.length - 1) * (rect.width - 80);
+  const prevRow = index > 0 ? rows[index - 1] : null;
+
+  // Chart coordinates
   const values = rows.map((item) => item.adj_close), min = Math.min(...values), max = Math.max(...values);
   const padding = Math.max((max - min) * .12, max * .03, .01), paddedMin = Math.max(0, min - padding), paddedMax = max + padding;
-  const y = 20 + (paddedMax - row.adj_close) / (paddedMax - paddedMin) * (rect.height - 57);
+  
+  const width = 1000, height = 340, left = 12, right = 68, top = 20, bottom = 37;
+  const chartWidth = width - left - right, chartHeight = height - top - bottom;
+  const svgX = left + index / Math.max(1, rows.length - 1) * chartWidth;
+  const svgY = top + (paddedMax - row.adj_close) / (paddedMax - paddedMin) * chartHeight;
+
+  // Move crosshair in SVG
+  const chLine = $("#sl-crosshair-v");
+  const chDot = $("#sl-crosshair-dot");
+  const chGroup = $(".sl-crosshair-group");
+  if (chGroup) chGroup.style.display = "block";
+  if (chLine) {
+    chLine.setAttribute("x1", svgX.toFixed(2));
+    chLine.setAttribute("x2", svgX.toFixed(2));
+  }
+  if (chDot) {
+    chDot.setAttribute("cx", svgX.toFixed(2));
+    chDot.setAttribute("cy", svgY.toFixed(2));
+  }
+
+  // Update Telemetry HUD
+  updateStocklensHud(row, prevRow);
+
+  // Floating Skeuomorphic Tooltip
+  const openVal = row.open !== undefined && row.open !== null ? row.open : row.adj_close;
+  const highVal = row.high !== undefined && row.high !== null ? row.high : row.adj_close;
+  const lowVal = row.low !== undefined && row.low !== null ? row.low : row.adj_close;
+  const closeVal = row.close !== undefined && row.close !== null ? row.close : row.adj_close;
+  let retPct = 0;
+  if (prevRow && prevRow.adj_close) {
+    retPct = ((row.adj_close / prevRow.adj_close) - 1) * 100;
+  } else if (openVal && openVal > 0) {
+    retPct = ((closeVal / openVal) - 1) * 100;
+  }
+
+  let dayName = "";
+  try {
+    const dt = new Date(row.date + "T00:00:00Z");
+    dayName = dt.toLocaleDateString("en-US", { weekday: "short", timeZone: "UTC" });
+  } catch (_) {}
+
+  const isPos = retPct >= 0;
   const tooltip = $("#chart-tooltip");
-  const volText = row.volume ? ` · Vol: ${formatVolume(row.volume)}` : "";
-  tooltip.innerHTML = `<strong>${money.format(row.adj_close)}</strong><span>${fullDate.format(asDate(row.date))}${volText}</span>`;
-  tooltip.style.left = `${Math.max(73, Math.min(rect.width - 73, x))}px`; tooltip.style.top = `${Math.max(48, y)}px`; tooltip.hidden = false;
+  tooltip.innerHTML = `
+    <div class="skeuo-tt-card">
+      <div class="skeuo-tt-head">
+        <div class="skeuo-tt-date-row">
+          <span class="skeuo-tt-dot"></span>
+          <span class="skeuo-tt-date">${row.date} ${dayName ? `· ${dayName}` : ""}</span>
+        </div>
+        <span class="skeuo-tt-badge">${state.selected || "STOCK"}</span>
+      </div>
+      <div class="skeuo-tt-ohlc-grid">
+        <div class="skeuo-tt-cell">
+          <span class="tt-tag">OPEN</span>
+          <span class="tt-val">$${openVal.toFixed(2)}</span>
+        </div>
+        <div class="skeuo-tt-cell tt-high">
+          <span class="tt-tag">HIGH</span>
+          <span class="tt-val">$${highVal.toFixed(2)}</span>
+        </div>
+        <div class="skeuo-tt-cell tt-low">
+          <span class="tt-tag">LOW</span>
+          <span class="tt-val">$${lowVal.toFixed(2)}</span>
+        </div>
+        <div class="skeuo-tt-cell tt-close">
+          <span class="tt-tag">CLOSE</span>
+          <span class="tt-val">$${closeVal.toFixed(2)}</span>
+        </div>
+      </div>
+      <div class="skeuo-tt-meta">
+        <span class="skeuo-tt-chg ${isPos ? "pos" : "neg"}">
+          ${isPos ? "▲ +" : "▼ "}${retPct.toFixed(2)}%
+        </span>
+        <span class="skeuo-tt-vol">Vol: <strong>${formatVolume(row.volume)}</strong></span>
+      </div>
+    </div>
+  `;
+
+  // Position Tooltip
+  const ttWidth = 240;
+  const domX = leftPad + index / Math.max(1, rows.length - 1) * plotWidth;
+  const domY = 20 + (paddedMax - row.adj_close) / (paddedMax - paddedMin) * (rect.height - 57);
+  let posX = domX + 16;
+  if (posX + ttWidth > rect.width - 12) {
+    posX = domX - ttWidth - 16;
+  }
+  tooltip.style.left = `${Math.max(8, posX)}px`;
+  tooltip.style.top = `${Math.max(10, domY - 20)}px`;
+  tooltip.hidden = false;
+}
+
+function handleChartPointerLeave() {
+  const tooltip = $("#chart-tooltip");
+  if (tooltip) tooltip.hidden = true;
+  const chGroup = $(".sl-crosshair-group");
+  if (chGroup) chGroup.style.display = "none";
+  if (state.chartRows?.length) {
+    updateStocklensHud(last(state.chartRows), state.chartRows[state.chartRows.length - 2]);
+  }
 }
 
 async function start() {
@@ -699,7 +898,7 @@ function renderGraphStep() {
     const s = e.sourceNode;
     const t = e.targetNode;
     const isHighlighted = (stocklensState.selectedNode && (s.id === stocklensState.selectedNode.id || t.id === stocklensState.selectedNode.id));
-    let edgeStroke = isHighlighted ? "#38bdf8" : "rgba(148, 163, 184, 0.22)";
+    let edgeStroke = isHighlighted ? "#0284c7" : "rgba(15, 23, 42, 0.2)";
     let edgeWidth = isHighlighted ? 2.2 : 1.0;
 
     if (stocklensState.viewMode === "contagion" && stocklensState.contagionData) {
@@ -783,7 +982,7 @@ function renderGraphStep() {
     ctx.fillStyle = isSelected ? "#f43f5e" : nodeColor;
     ctx.fill();
     ctx.lineWidth = isEpicenter ? 2.5 : 1.5;
-    ctx.strokeStyle = isEpicenter ? "#fee2e2" : "#0b111a";
+    ctx.strokeStyle = isEpicenter ? "#dc2626" : "#ffffff";
     ctx.stroke();
 
     // Node label
@@ -794,7 +993,7 @@ function renderGraphStep() {
     }
 
     ctx.font = isSelected || isEpicenter ? "700 11px DM Mono, monospace" : "500 9px DM Mono, monospace";
-    ctx.fillStyle = isSelected || isEpicenter ? "#fff" : (isContagion && !contagionInfo ? "#64748b" : "#cbd5e1");
+    ctx.fillStyle = isSelected || isEpicenter ? "#dc2626" : (isContagion && !contagionInfo ? "#64748b" : "#0f172a");
     ctx.textAlign = "center";
     ctx.fillText(label, n.x, n.y - n.radius - 4);
   }

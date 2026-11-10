@@ -9,19 +9,19 @@
   let activeRange = "ALL";
 
   const SERIES_COLORS = {
-    NVDA: "#aff838", // Electric lime
-    AAPL: "#38bdf8", // Sky cyan
-    MSFT: "#60a5fa", // Electric blue
-    GOOGL: "#fbbf24", // Amber gold
-    AMZN: "#f97316", // Bright orange
-    META: "#c084fc", // Neon violet
-    TSLA: "#f43f5e", // Crimson rose
-    AVGO: "#2dd4bf", // Mint teal
-    AMD: "#f472b6", // Hot pink
-    ORCL: "#818cf8", // Indigo
-    "^GSPC": "#f1f5f9", // Crisp titanium white
-    "^TNX": "#fb923c", // Warning amber
-    "^VIX": "#e879f9", // Electric fuchsia
+    NVDA: "#059669", // Deep emerald
+    AAPL: "#0284c7", // Sky blue
+    MSFT: "#2563eb", // Royal blue
+    GOOGL: "#d97706", // Amber gold
+    AMZN: "#ea580c", // Bright orange
+    META: "#8b5cf6", // Deep neon violet
+    TSLA: "#e11d48", // Crimson rose
+    AVGO: "#0d9488", // Teal
+    AMD: "#db2777", // Hot pink
+    ORCL: "#4f46e5", // Indigo
+    "^GSPC": "#1e293b", // Crisp charcoal benchmark
+    "^TNX": "#c2410c", // Warning amber
+    "^VIX": "#c026d3", // Electric fuchsia
   };
 
   function fmtPct(v, digits = 2, showPlus = true) {
@@ -157,9 +157,9 @@
       const label = options.yFormat ? options.yFormat(val) : val.toFixed(0);
       gridHtml += `
         <line x1="${padL}" y1="${y.toFixed(1)}" x2="${width - padR}" y2="${y.toFixed(1)}"
-              stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,3" />
+              stroke="rgba(15, 23, 42, 0.08)" stroke-dasharray="2,3" />
         <text x="${padL - 10}" y="${(y + 3.5).toFixed(1)}" text-anchor="end"
-              fill="rgba(255,255,255,0.45)" font-size="10" font-family="DM Mono, monospace">${label}</text>
+              fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${label}</text>
       `;
     }
 
@@ -167,7 +167,7 @@
       const by = padT + plotH - ((options.baseline - minY) / ySpan) * plotH;
       gridHtml += `
         <line x1="${padL}" y1="${by.toFixed(1)}" x2="${width - padR}" y2="${by.toFixed(1)}"
-              stroke="rgba(175,248,56,0.35)" stroke-width="1.2" stroke-dasharray="4,4" />
+              stroke="rgba(22, 163, 74, 0.4)" stroke-width="1.2" stroke-dasharray="4,4" />
       `;
     }
 
@@ -177,16 +177,16 @@
     const dateEnd = refPoints[refPoints.length - 1]?.d || "";
 
     const gradId = `grad-${containerId}`;
-    const primaryColor = validSeries[0].color || "#aff838";
+    const primaryColor = validSeries[0].color || "#059669";
     let defsHtml = `
       <defs>
         <linearGradient id="${gradId}" x1="0" y1="0" x2="0" y2="1">
-          <stop offset="0%" stop-color="${primaryColor}" stop-opacity="0.28" />
-          <stop offset="65%" stop-color="${primaryColor}" stop-opacity="0.06" />
+          <stop offset="0%" stop-color="${primaryColor}" stop-opacity="0.22" />
+          <stop offset="65%" stop-color="${primaryColor}" stop-opacity="0.05" />
           <stop offset="100%" stop-color="${primaryColor}" stop-opacity="0.0" />
         </linearGradient>
         <filter id="glow-${containerId}" x="-20%" y="-20%" width="140%" height="140%">
-          <feGaussianBlur stdDeviation="3" result="blur" />
+          <feGaussianBlur stdDeviation="2" result="blur" />
           <feMerge>
             <feMergeNode in="blur" />
             <feMergeNode in="SourceGraphic" />
@@ -218,7 +218,7 @@
       if (upperCoords.length > 1) {
         const polyPoints = upperCoords.concat(lowerCoords).join(" ");
         rangeCorridorHtml = `
-          <polygon points="${polyPoints}" fill="rgba(175, 248, 56, 0.07)" stroke="rgba(175, 248, 56, 0.22)" stroke-width="0.8" stroke-dasharray="2,2" />
+          <polygon points="${polyPoints}" fill="rgba(22, 163, 74, 0.08)" stroke="rgba(22, 163, 74, 0.25)" stroke-width="0.8" stroke-dasharray="2,2" />
         `;
       }
     }
@@ -252,10 +252,9 @@
           <polyline fill="none" stroke="${s.color}" stroke-width="${s.width || 2.2}"
                     stroke-linecap="round" stroke-linejoin="round"
                     ${s.dashed ? 'stroke-dasharray="5,4"' : ""}
-                    filter="url(#glow-${containerId})"
                     points="${coords.join(" ")}" />
           <circle cx="${lastX.toFixed(1)}" cy="${lastY.toFixed(1)}" r="3.8"
-                  fill="${s.color}" stroke="#0a0e0c" stroke-width="1.8" />
+                  fill="${s.color}" stroke="#ffffff" stroke-width="1.8" />
         `;
       }
     });
@@ -264,15 +263,15 @@
     let crosshairDotsHtml = validSeries
       .map(
         (s, idx) => `
-        <circle class="crosshair-dot-${idx}" r="4.8" fill="${s.color}" stroke="#0a0e0c" stroke-width="2"
-                style="display:none; pointer-events:none; filter:drop-shadow(0 0 6px ${s.color});" />
+        <circle class="crosshair-dot-${idx}" r="4.8" fill="${s.color}" stroke="#ffffff" stroke-width="2"
+                style="display:none; pointer-events:none; filter:drop-shadow(0 1px 3px rgba(15,23,42,0.3));" />
       `
       )
       .join("");
 
     const crosshairGroupHtml = `
       <g class="chart-crosshair-group" style="display:none; pointer-events:none;">
-        <line class="chart-crosshair-v" y1="${padT}" y2="${padT + plotH}" stroke="rgba(175, 248, 56, 0.75)" stroke-width="1.2" stroke-dasharray="3,3" />
+        <line class="chart-crosshair-v" y1="${padT}" y2="${padT + plotH}" stroke="rgba(22, 163, 74, 0.85)" stroke-width="1.2" stroke-dasharray="3,3" />
         ${crosshairDotsHtml}
       </g>
     `;
@@ -307,9 +306,9 @@
         ${pathsHtml}
         ${crosshairGroupHtml}
         ${overlayHtml}
-        <text x="${padL}" y="${height - 8}" fill="rgba(255,255,255,0.4)" font-size="10" font-family="DM Mono, monospace">${dateStart}</text>
-        <text x="${padL + plotW / 2}" y="${height - 8}" text-anchor="middle" fill="rgba(255,255,255,0.4)" font-size="10" font-family="DM Mono, monospace">${dateMid}</text>
-        <text x="${width - padR}" y="${height - 8}" text-anchor="end" fill="rgba(255,255,255,0.4)" font-size="10" font-family="DM Mono, monospace">${dateEnd}</text>
+        <text x="${padL}" y="${height - 8}" fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${dateStart}</text>
+        <text x="${padL + plotW / 2}" y="${height - 8}" text-anchor="middle" fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${dateMid}</text>
+        <text x="${width - padR}" y="${height - 8}" text-anchor="end" fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${dateEnd}</text>
       </svg>
       <div class="skeuo-chart-tooltip" style="display:none; position:absolute; pointer-events:none; z-index:50;"></div>
       <div class="chart-legend">${legendHtml}</div>
@@ -615,9 +614,9 @@
       const y = padT + plotH - (plotH * i) / 4;
       grid += `
         <line x1="${padL}" y1="${y.toFixed(1)}" x2="${width - padR}" y2="${y.toFixed(1)}"
-              stroke="rgba(255,255,255,0.06)" stroke-dasharray="2,3" />
+              stroke="rgba(15, 23, 42, 0.08)" stroke-dasharray="2,3" />
         <text x="${padL - 8}" y="${(y + 3.5).toFixed(1)}" text-anchor="end"
-              fill="rgba(255,255,255,0.45)" font-size="10" font-family="DM Mono, monospace">${yv.toFixed(0)}%</text>
+              fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${yv.toFixed(0)}%</text>
       `;
     }
 
@@ -626,7 +625,7 @@
       const x = padL + (plotW * i) / 4;
       grid += `
         <text x="${x.toFixed(1)}" y="${height - 6}" text-anchor="middle"
-              fill="rgba(255,255,255,0.45)" font-size="10" font-family="DM Mono, monospace">${xv.toFixed(0)}% Vol</text>
+              fill="rgba(15, 23, 42, 0.55)" font-size="10" font-family="DM Mono, monospace">${xv.toFixed(0)}% Vol</text>
       `;
     }
 
@@ -635,16 +634,16 @@
         const x = padL + ((s.annualized_volatility_pct - minX) / (maxX - minX)) * plotW;
         const y = padT + plotH - ((s.cagr_pct - minY) / (maxY - minY)) * plotH;
         const r = Math.max(7, Math.min(15, 7 + Math.max(0, s.sharpe_ratio) * 4.2));
-        const col = s.role === "Benchmark" ? "#f1f5f9" : SERIES_COLORS[s.ticker] || "#aff838";
+        const col = s.role === "Benchmark" ? "#1e293b" : SERIES_COLORS[s.ticker] || "#059669";
         return `
           <g class="scatter-point" style="cursor:pointer;">
             <title>${s.ticker} (${s.name})&#10;CAGR: ${s.cagr_pct}%&#10;Annualized Volatility: ${s.annualized_volatility_pct}%&#10;Sharpe Ratio: ${s.sharpe_ratio}&#10;Max Drawdown: ${s.max_drawdown_pct}%</title>
             <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(r + 4).toFixed(1)}"
-                    fill="${col}" fill-opacity="0.18" />
+                    fill="${col}" fill-opacity="0.14" />
             <circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${r.toFixed(1)}"
-                    fill="${col}" fill-opacity="0.92" stroke="#0a0e0c" stroke-width="1.8" />
+                    fill="${col}" fill-opacity="0.92" stroke="#ffffff" stroke-width="1.8" />
             <text x="${(x + r + 5).toFixed(1)}" y="${(y + 3.5).toFixed(1)}"
-                  fill="#f1f5f9" font-size="11" font-family="DM Mono, monospace" font-weight="700">${s.ticker}</text>
+                  fill="#0f172a" font-size="11" font-family="DM Mono, monospace" font-weight="700">${s.ticker}</text>
           </g>
         `;
       })
@@ -656,8 +655,8 @@
         ${dots}
       </svg>
       <div class="chart-legend">
-        <span class="legend-item"><span class="legend-swatch" style="background:#aff838"></span>10 US Mega-Cap Equities (Bubble Radius = Sharpe Ratio)</span>
-        <span class="legend-item"><span class="legend-swatch" style="background:#f1f5f9"></span>S&P 500 Benchmark (^GSPC)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#059669"></span>10 US Mega-Cap Equities (Bubble Radius = Sharpe Ratio)</span>
+        <span class="legend-item"><span class="legend-swatch" style="background:#1e293b"></span>S&P 500 Benchmark (^GSPC)</span>
       </div>
     `;
   }
@@ -782,7 +781,7 @@
       [
         {
           label: `${ticker} Nominal Index`,
-          color: SERIES_COLORS[ticker] || "#aff838",
+          color: SERIES_COLORS[ticker] || "#059669",
           width: 2.4,
           points: rawA.map((r) => ({ d: r.d, y: (r.c / baseLocalA) * 100 })),
         },
@@ -824,7 +823,7 @@
       [
         {
           label: `${ticker} 30D Annualized Volatility (%)`,
-          color: SERIES_COLORS[ticker] || "#aff838",
+          color: SERIES_COLORS[ticker] || "#059669",
           width: 2.2,
           points: rawA.map((r) => ({ d: r.d, y: r.vol30 })),
         },
