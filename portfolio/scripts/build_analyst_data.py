@@ -834,6 +834,84 @@ def clean_and_engineer(raw_map: Dict[str, pd.DataFrame]) -> Dict[str, Any]:
             for _, r in sampled.iterrows()
         ]
 
+    def _safe_num(val: Any, digits: int = 2) -> Any:
+        if val is None or pd.isna(val):
+            return None
+        return round(float(val), digits)
+
+    def _build_historical_treasury_payload() -> Dict[str, Any]:
+        import shutil
+        from pathlib import Path
+
+        repo_root = Path(__file__).resolve().parent.parent.parent
+        proc_dir = repo_root / "data" / "processed"
+        monthly_csv = proc_dir / "us_treasury_sp500_comparison_monthly.csv"
+        daily_csv = proc_dir / "us_treasury_sp500_daily_1962_present.csv"
+        prices_daily_csv = proc_dir / "us_treasury_prices_daily.csv"
+        price_catalog_json = proc_dir / "us_treasury_price_catalog.json"
+        summary_json = proc_dir / "us_treasury_sp500_summary.json"
+        if not monthly_csv.exists() or not summary_json.exists():
+            return {"available": False}
+
+        # Sync downloadable CSVs & summary into portfolio/data/
+        for src in (monthly_csv, daily_csv, prices_daily_csv, price_catalog_json, summary_json):
+            if src.exists():
+                shutil.copy2(src, DATA_OUT_DIR / src.name)
+
+        summary_data = json.loads(summary_json.read_text(encoding="utf-8"))
+        hist_df = pd.read_csv(monthly_csv)
+        hist_df["date"] = pd.to_datetime(hist_df["date"])
+        hist_df = hist_df.sort_values("date").reset_index(drop=True)
+
+        source_code_map = {
+            "M1333AUSM156NNBR (NBER LT US Bond)": "NBER LT",
+            "LTGOVTBD (Fed LT Govt Bond)": "Fed LT",
+            "GS10 (Fed 10Y CMT)": "GS10",
+            "DGS10 (Month-to-Date Avg)": "DGS10 MTD",
+            "^TNX (Month-to-Date Avg)": "^TNX MTD",
+        }
+
+        series_points: List[Dict[str, Any]] = []
+        for _, r in hist_df.iterrows():
+            series_points.append(
+                {
+                    "d": r["date"].strftime("%Y-%m-%d"),
+                    "y10": _safe_num(r.get("treasury_10y_yield"), 2),
+                    "src": source_code_map.get(str(r.get("source_series", "")), str(r.get("source_series", ""))),
+                    "y3m": _safe_num(r.get("tbill_3m_yield"), 2),
+                    "spr": _safe_num(r.get("spread_10y_3m"), 2),
+                    "ff": _safe_num(r.get("fedfunds_rate"), 2),
+                    "cpi": _safe_num(r.get("cpi_yoy_pct"), 2),
+                    "ry": _safe_num(r.get("real_10y_yield"), 2),
+                    "sp": _safe_num(r.get("sp500_close"), 2),
+                    "sp_m": _safe_num(r.get("sp500_monthly_ret_pct"), 2),
+                    "sp_yoy": _safe_num(r.get("sp500_yoy_pct"), 2),
+                    "sp_5y": _safe_num(r.get("sp500_5y_cagr_pct"), 2),
+                    "sp_dd": _safe_num(r.get("sp500_drawdown_pct"), 2),
+                    "tr": _safe_num(r.get("ust10y_tr_index"), 2),
+                    "px": _safe_num(r.get("ust10y_clean_index"), 2),
+                    "tr_yoy": _safe_num(r.get("ust10y_tr_yoy_pct"), 2),
+                    "tr_dd": _safe_num(r.get("ust10y_tr_drawdown_pct"), 2),
+                    "ief": _safe_num(r.get("ief_close"), 2),
+                    "ief_tr": _safe_num(r.get("ief_adj_close"), 2),
+                    "tlt": _safe_num(r.get("tlt_close"), 2),
+                    "zn": _safe_num(r.get("zn_futures_close"), 2),
+                    "vustx": _safe_num(r.get("vustx_adj_close"), 2),
+                    "era": str(r.get("secular_era", "")),
+                }
+            )
+
+        return {
+            "available": True,
+            "coverage": summary_data.get("coverage", {}),
+            "benchmarks": summary_data.get("benchmarks", {}),
+            "price_benchmarks": summary_data.get("price_benchmarks", {}),
+            "price_catalog": summary_data.get("price_catalog", []),
+            "secular_regimes": summary_data.get("secular_regimes", []),
+            "methodology": summary_data.get("methodology", ""),
+            "series": series_points,
+        }
+
     payload = {
         "metadata": {
             "project_title": "US Equity Atlas · Data Analyst Portfolio (10 US Mega-Caps + S&P 500 + US Macro)",
@@ -850,6 +928,7 @@ def clean_and_engineer(raw_map: Dict[str, pd.DataFrame]) -> Dict[str, Any]:
         "capm_table": capm_table,
         "correlation_matrix": corr_matrix,
         "macro_analysis": macro_analysis,
+        "historical_treasury_sp500": _build_historical_treasury_payload(),
         "unusual_movements": unusual_movements,
         "verified_events": verified_events,
         "spot_checks": spot_checks,
@@ -857,7 +936,7 @@ def clean_and_engineer(raw_map: Dict[str, pd.DataFrame]) -> Dict[str, Any]:
     }
 
     with open(DATA_OUT_DIR / "analyst_dataset.json", "w", encoding="utf-8") as f:
-        json.dump(payload, f, indent=2)
+        json.dump(payload, f, indent=2, allow_nan=False)
 
     return payload
 

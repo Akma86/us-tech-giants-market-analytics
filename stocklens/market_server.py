@@ -6,6 +6,7 @@ needs; the 1.5 GB SQLite database is never made available as a static file.
 
 from __future__ import annotations
 
+import csv
 import json
 import mimetypes
 import sqlite3
@@ -575,6 +576,74 @@ def bubble_tail_contagion(query: dict[str, list[str]]) -> dict[str, object]:
     return engine.get_tail_contagion_matrix(trigger_symbol=trigger, threshold_pct=threshold)
 
 
+def macro_treasury_sp500() -> dict[str, object]:
+    """Serve 1919-Present US Treasury Yield vs S&P 500 historical comparison data."""
+    proc_dir = PROJECT_ROOT / "data" / "processed"
+    summary_path = proc_dir / "us_treasury_sp500_summary.json"
+    monthly_path = proc_dir / "us_treasury_sp500_comparison_monthly.csv"
+    if not summary_path.exists() or not monthly_path.exists():
+        raise FileNotFoundError(
+            "US Treasury historical comparison files missing. Run scripts/download_us_treasury_history.py first."
+        )
+
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    src_map = {
+        "M1333AUSM156NNBR (NBER LT US Bond)": "NBER LT",
+        "LTGOVTBD (Fed LT Govt Bond)": "Fed LT",
+        "GS10 (Fed 10Y CMT)": "GS10",
+        "DGS10 (Month-to-Date Avg)": "DGS10 MTD",
+        "^TNX (Month-to-Date Avg)": "^TNX MTD",
+    }
+
+    def _opt_float(val: str) -> float | None:
+        if val is None or val == "":
+            return None
+        num = float(val)
+        return round(num, 2) if num == num else None
+
+    series: list[dict[str, object]] = []
+    with monthly_path.open("r", encoding="utf-8", newline="") as fh:
+        for row in csv.DictReader(fh):
+            series.append(
+                {
+                    "d": row["date"],
+                    "y10": _opt_float(row.get("treasury_10y_yield", "")),
+                    "src": src_map.get(row.get("source_series", ""), row.get("source_series", "")),
+                    "y3m": _opt_float(row.get("tbill_3m_yield", "")),
+                    "spr": _opt_float(row.get("spread_10y_3m", "")),
+                    "ff": _opt_float(row.get("fedfunds_rate", "")),
+                    "cpi": _opt_float(row.get("cpi_yoy_pct", "")),
+                    "ry": _opt_float(row.get("real_10y_yield", "")),
+                    "sp": _opt_float(row.get("sp500_close", "")),
+                    "sp_m": _opt_float(row.get("sp500_monthly_ret_pct", "")),
+                    "sp_yoy": _opt_float(row.get("sp500_yoy_pct", "")),
+                    "sp_5y": _opt_float(row.get("sp500_5y_cagr_pct", "")),
+                    "sp_dd": _opt_float(row.get("sp500_drawdown_pct", "")),
+                    "tr": _opt_float(row.get("ust10y_tr_index", "")),
+                    "px": _opt_float(row.get("ust10y_clean_index", "")),
+                    "tr_yoy": _opt_float(row.get("ust10y_tr_yoy_pct", "")),
+                    "tr_dd": _opt_float(row.get("ust10y_tr_drawdown_pct", "")),
+                    "ief": _opt_float(row.get("ief_close", "")),
+                    "ief_tr": _opt_float(row.get("ief_adj_close", "")),
+                    "tlt": _opt_float(row.get("tlt_close", "")),
+                    "zn": _opt_float(row.get("zn_futures_close", "")),
+                    "vustx": _opt_float(row.get("vustx_adj_close", "")),
+                    "era": row.get("secular_era", ""),
+                }
+            )
+
+    return {
+        "available": True,
+        "coverage": summary.get("coverage", {}),
+        "benchmarks": summary.get("benchmarks", {}),
+        "price_benchmarks": summary.get("price_benchmarks", {}),
+        "price_catalog": summary.get("price_catalog", []),
+        "secular_regimes": summary.get("secular_regimes", []),
+        "methodology": summary.get("methodology", ""),
+        "series": series,
+    }
+
+
 class MarketRequestHandler(BaseHTTPRequestHandler):
     server_version = "US-Equity-Explorer/1.0"
 
@@ -645,6 +714,9 @@ class MarketRequestHandler(BaseHTTPRequestHandler):
             elif path == "/api/bubble/tail_contagion":
                 self.respond_json(bubble_tail_contagion(query))
                 return
+            elif path == "/api/macro/treasury_sp500":
+                self.respond_json(macro_treasury_sp500())
+                return
             elif path == "/api/news":
                 sym = query.get("symbol", ["AAPL"])[0].strip().upper()
                 c_name = query.get("name", [""])[0].strip()
@@ -700,6 +772,8 @@ class MarketRequestHandler(BaseHTTPRequestHandler):
             self.send_error(HTTPStatus.NOT_FOUND, "File not found")
             return
 
+        if path.startswith("/stocklens"):
+            path = path[len("/stocklens"):] or "/"
         relative = "index.html" if path in {"", "/"} else path.lstrip("/")
         if relative not in STATIC_FILES:
             self.send_error(HTTPStatus.NOT_FOUND, "File not found")
