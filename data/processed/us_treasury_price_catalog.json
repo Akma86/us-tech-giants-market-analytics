@@ -5,10 +5,10 @@
     "category": "Treasury ETF Price",
     "unit": "USD",
     "start_date": "2002-07-30",
-    "end_date": "2026-11-12",
-    "rows": 6113,
-    "latest_close": 90.21,
-    "latest_adj_close": 90.21
+    "end_date": "2026-11-18",
+    "rows": 6117,
+    "latest_close": 90.67,
+    "latest_adj_close": 90.67
   },
   {
     "symbol": "TLT",
@@ -16,10 +16,10 @@
     "category": "Treasury ETF Price",
     "unit": "USD",
     "start_date": "2002-07-30",
-    "end_date": "2026-11-12",
-    "rows": 6113,
-    "latest_close": 79.72,
-    "latest_adj_close": 79.72
+    "end_date": "2026-11-18",
+    "rows": 6117,
+    "latest_close": 80.22,
+    "latest_adj_close": 80.22
   },
   {
     "symbol": "IEI",
@@ -27,10 +27,10 @@
     "category": "Treasury ETF Price",
     "unit": "USD",
     "start_date": "2007-01-11",
-    "end_date": "2026-11-12",
-    "rows": 4992,
-    "latest_close": 113.85,
-    "latest_adj_close": 113.85
+    "end_date": "2026-11-18",
+    "rows": 4996,
+    "latest_close": 114.32,
+    "latest_adj_close": 114.32
   },
   {
     "symbol": "SHY",
@@ -38,10 +38,10 @@
     "category": "Treasury ETF Price",
     "unit": "USD",
     "start_date": "2002-07-30",
-    "end_date": "2026-11-12",
-    "rows": 6113,
-    "latest_close": 81.14,
-    "latest_adj_close": 81.14
+    "end_date": "2026-11-18",
+    "rows": 6117,
+    "latest_close": 81.34,
+    "latest_adj_close": 81.34
   },
   {
     "symbol": "BIL",
@@ -49,10 +49,10 @@
     "category": "Treasury ETF Price",
     "unit": "USD",
     "start_date": "2007-05-30",
-    "end_date": "2026-11-12",
-    "rows": 4897,
-    "latest_close": 91.5,
-    "latest_adj_close": 91.5
+    "end_date": "2026-11-18",
+    "rows": 4901,
+    "latest_close": 91.56,
+    "latest_adj_close": 91.56
   },
   {
     "symbol": "GOVT",
@@ -60,10 +60,10 @@
     "category": "Treasury ETF Price",
     "unit": "USD",
     "start_date": "2012-02-24",
-    "end_date": "2026-11-12",
-    "rows": 3702,
-    "latest_close": 22.02,
-    "latest_adj_close": 22.02
+    "end_date": "2026-11-18",
+    "rows": 3706,
+    "latest_close": 22.11,
+    "latest_adj_close": 22.11
   },
   {
     "symbol": "SGOV",
@@ -71,10 +71,10 @@
     "category": "Treasury ETF Price",
     "unit": "USD",
     "start_date": "2020-06-01",
-    "end_date": "2026-11-12",
-    "rows": 1623,
-    "latest_close": 100.53,
-    "latest_adj_close": 100.53
+    "end_date": "2026-11-18",
+    "rows": 1627,
+    "latest_close": 100.6,
+    "latest_adj_close": 100.6
   },
   {
     "symbol": "ZN=F",
@@ -82,10 +82,10 @@
     "category": "Treasury Futures Price",
     "unit": "Points (100=Par)",
     "start_date": "2000-09-21",
-    "end_date": "2026-11-13",
-    "rows": 6567,
-    "latest_close": 105.359,
-    "latest_adj_close": 105.359
+    "end_date": "2026-11-19",
+    "rows": 6571,
+    "latest_close": 105.656,
+    "latest_adj_close": 105.656
   },
   {
     "symbol": "ZB=F",
@@ -93,10 +93,10 @@
     "category": "Treasury Futures Price",
     "unit": "Points (100=Par)",
     "start_date": "2000-09-21",
-    "end_date": "2026-11-13",
-    "rows": 6573,
-    "latest_close": 105.562,
-    "latest_adj_close": 105.562
+    "end_date": "2026-11-19",
+    "rows": 6577,
+    "latest_close": 106.062,
+    "latest_adj_close": 106.062
   },
   {
     "symbol": "ZF=F",
@@ -104,10 +104,10 @@
     "category": "Treasury Futures Price",
     "unit": "Points (100=Par)",
     "start_date": "2000-09-21",
-    "end_date": "2026-11-13",
-    "rows": 6579,
-    "latest_close": 103.938,
-    "latest_adj_close": 103.938
+    "end_date": "2026-11-19",
+    "rows": 6583,
+    "latest_close": 104.18,
+    "latest_adj_close": 104.18
   },
   {
     "symbol": "ZT=F",
@@ -115,10 +115,10 @@
     "category": "Treasury Futures Price",
     "unit": "Points (100=Par)",
     "start_date": "2000-06-02",
-    "end_date": "2026-11-13",
-    "rows": 6633,
-    "latest_close": 101.809,
-    "latest_adj_close": 101.809
+    "end_date": "2026-11-19",
+    "rows": 6637,
+    "latest_close": 101.883,
+    "latest_adj_close": 101.883
   },
   {
     "symbol": "VUSTX",
@@ -126,10 +126,10 @@
     "category": "Treasury Mutual Fund",
     "unit": "USD",
     "start_date": "1986-05-19",
-    "end_date": "2026-11-12",
-    "rows": 10201,
-    "latest_close": 7.29,
-    "latest_adj_close": 7.29
+    "end_date": "2026-11-18",
+    "rows": 10205,
+    "latest_close": 7.33,
+    "latest_adj_close": 7.33
   },
   {
     "symbol": "VFITX",
@@ -137,10 +137,10 @@
     "category": "Treasury Mutual Fund",
     "unit": "USD",
     "start_date": "1991-10-28",
-    "end_date": "2026-11-12",
-    "rows": 8824,
-    "latest_close": 9.5,
-    "latest_adj_close": 9.5
+    "end_date": "2026-11-18",
+    "rows": 8828,
+    "latest_close": 9.54,
+    "latest_adj_close": 9.54
   },
   {
     "symbol": "VFISX",
@@ -148,10 +148,10 @@
     "category": "Treasury Mutual Fund",
     "unit": "USD",
     "start_date": "1991-10-28",
-    "end_date": "2026-11-12",
-    "rows": 8824,
-    "latest_close": 9.66,
-    "latest_adj_close": 9.66
+    "end_date": "2026-11-18",
+    "rows": 8828,
+    "latest_close": 9.68,
+    "latest_adj_close": 9.68
   },
   {
     "symbol": "^TNX",
@@ -159,10 +159,10 @@
     "category": "Treasury Yield Index",
     "unit": "%",
     "start_date": "1962-01-02",
-    "end_date": "2026-11-12",
-    "rows": 16205,
-    "latest_close": 5.103,
-    "latest_adj_close": 5.103
+    "end_date": "2026-11-18",
+    "rows": 16209,
+    "latest_close": 5.066,
+    "latest_adj_close": 5.066
   },
   {
     "symbol": "^TYX",
@@ -170,10 +170,10 @@
     "category": "Treasury Yield Index",
     "unit": "%",
     "start_date": "1977-02-15",
-    "end_date": "2026-11-12",
-    "rows": 12463,
-    "latest_close": 5.433,
-    "latest_adj_close": 5.433
+    "end_date": "2026-11-18",
+    "rows": 12467,
+    "latest_close": 5.412,
+    "latest_adj_close": 5.412
   },
   {
     "symbol": "^FVX",
@@ -181,10 +181,10 @@
     "category": "Treasury Yield Index",
     "unit": "%",
     "start_date": "1962-01-02",
-    "end_date": "2026-11-12",
-    "rows": 16205,
-    "latest_close": 4.945,
-    "latest_adj_close": 4.945
+    "end_date": "2026-11-18",
+    "rows": 16209,
+    "latest_close": 4.884,
+    "latest_adj_close": 4.884
   },
   {
     "symbol": "^IRX",
@@ -192,10 +192,10 @@
     "category": "Treasury Yield Index",
     "unit": "%",
     "start_date": "1960-01-04",
-    "end_date": "2026-11-12",
-    "rows": 16702,
-    "latest_close": 4.128,
-    "latest_adj_close": 4.128
+    "end_date": "2026-11-18",
+    "rows": 16706,
+    "latest_close": 4.145,
+    "latest_adj_close": 4.145
   },
   {
     "symbol": "^GSPC",
@@ -203,9 +203,9 @@
     "category": "Equity Benchmark",
     "unit": "Index",
     "start_date": "1927-12-30",
-    "end_date": "2026-11-12",
-    "rows": 24835,
-    "latest_close": 7592.4,
-    "latest_adj_close": 7592.4
+    "end_date": "2026-11-18",
+    "rows": 24839,
+    "latest_close": 7323.63,
+    "latest_adj_close": 7323.63
   }
 ]
