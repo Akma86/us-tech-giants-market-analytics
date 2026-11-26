@@ -644,6 +644,51 @@ def macro_treasury_sp500() -> dict[str, object]:
     }
 
 
+_RL_SIMULATOR = None
+
+
+def rl_portfolio_backtest() -> dict[str, object]:
+    """Serve pre-computed Macro-Aware PPO RL Portfolio out-of-sample backtest & regime attribution."""
+    rl_path = PROJECT_ROOT / "data" / "processed" / "rl_portfolio_backtest.json"
+    if not rl_path.exists():
+        raise FileNotFoundError(
+            "RL portfolio backtest JSON missing. Run scripts/train_rl_portfolio.py first."
+        )
+    return json.loads(rl_path.read_text(encoding="utf-8"))
+
+
+def rl_portfolio_simulate(query: dict[str, list[str]]) -> dict[str, object]:
+    """Run interactive day-by-day RL capital trading simulation for a user-selected dollar amount and window."""
+    global _RL_SIMULATOR
+    if _RL_SIMULATOR is None:
+        from src.rl.simulator import DailyRLTradingSimulator
+        _RL_SIMULATOR = DailyRLTradingSimulator()
+
+    capital = float(query.get("capital", ["1000"])[0] or 1000.0)
+    start_date = query.get("start_date", ["2025-01-02"])[0].strip() or "2025-01-02"
+    end_date = query.get("end_date", ["2026-11-18"])[0].strip() or "2026-11-18"
+    reb_days = int(query.get("rebalance_days", ["5"])[0] or 5)
+    cost_bps = float(query.get("cost_bps", ["10"])[0] or 10.0)
+
+    return _RL_SIMULATOR.simulate(
+        initial_capital=capital,
+        start_date=start_date,
+        end_date=end_date,
+        rebalance_every_n_days=reb_days,
+        cost_bps=cost_bps,
+    )
+
+
+def stocklens_quarterly_seasonality() -> dict[str, object]:
+    """Serve 4-Quarter Seasonality (Q1-Q4) winners, losers, heatmap, and fundamental/macro reasons."""
+    qs_path = PROJECT_ROOT / "data" / "processed" / "quarterly_seasonality_summary.json"
+    if not qs_path.exists():
+        raise FileNotFoundError(
+            "Quarterly seasonality JSON missing. Run scripts/analyze_quarterly_seasonality.py first."
+        )
+    return json.loads(qs_path.read_text(encoding="utf-8"))
+
+
 class MarketRequestHandler(BaseHTTPRequestHandler):
     server_version = "US-Equity-Explorer/1.0"
 
@@ -716,6 +761,15 @@ class MarketRequestHandler(BaseHTTPRequestHandler):
                 return
             elif path == "/api/macro/treasury_sp500":
                 self.respond_json(macro_treasury_sp500())
+                return
+            elif path == "/api/rl/backtest":
+                self.respond_json(rl_portfolio_backtest())
+                return
+            elif path == "/api/rl/simulate":
+                self.respond_json(rl_portfolio_simulate(query))
+                return
+            elif path == "/api/stocklens/quarterly_seasonality":
+                self.respond_json(stocklens_quarterly_seasonality())
                 return
             elif path == "/api/news":
                 sym = query.get("symbol", ["AAPL"])[0].strip().upper()

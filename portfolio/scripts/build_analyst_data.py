@@ -912,6 +912,23 @@ def clean_and_engineer(raw_map: Dict[str, pd.DataFrame]) -> Dict[str, Any]:
             "series": series_points,
         }
 
+    def _build_rl_portfolio_payload() -> Dict[str, Any]:
+        import shutil
+        from pathlib import Path
+
+        repo_root = Path(__file__).resolve().parent.parent.parent
+        proc_dir = repo_root / "data" / "processed"
+        rl_json = proc_dir / "rl_portfolio_backtest.json"
+        rl_csv = proc_dir / "rl_portfolio_oos_daily.csv"
+        if not rl_json.exists():
+            return {"available": False}
+
+        for src in (rl_json, rl_csv):
+            if src.exists():
+                shutil.copy2(src, DATA_OUT_DIR / src.name)
+
+        return json.loads(rl_json.read_text(encoding="utf-8"))
+
     payload = {
         "metadata": {
             "project_title": "US Equity Atlas · Data Analyst Portfolio (10 US Mega-Caps + S&P 500 + US Macro)",
@@ -929,6 +946,7 @@ def clean_and_engineer(raw_map: Dict[str, pd.DataFrame]) -> Dict[str, Any]:
         "correlation_matrix": corr_matrix,
         "macro_analysis": macro_analysis,
         "historical_treasury_sp500": _build_historical_treasury_payload(),
+        "rl_portfolio": _build_rl_portfolio_payload(),
         "unusual_movements": unusual_movements,
         "verified_events": verified_events,
         "spot_checks": spot_checks,

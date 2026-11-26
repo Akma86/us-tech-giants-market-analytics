@@ -460,6 +460,103 @@
             </div>
           </section>
 
+          <section id="sec-rl-portfolio" class="ty-secular-section" aria-labelledby="rl-portfolio-heading">
+            <div class="editorial-section-head">
+              <h2 id="rl-portfolio-heading">Macro-Aware Deep RL Portfolio Agent (PPO Out-of-Sample 2022–2026)</h2>
+              <p class="ed-desc">Multi-seed Proximal Policy Optimization (PPO) Actor-Critic trained on 2005–2017, validated on 2018–2021, and tested strictly out-of-sample across 2022–2026 with a +35-day macro publication lag, 10 bps transaction cost, and dynamic rotation across US Tech Giants, ^GSPC, IEF, TLT, and SHY cash.</p>
+            </div>
+
+            <div class="ty-kpi-grid">
+              <article class="kpi-card">
+                <span class="kpi-label">OOS CAGR &amp; Total Return</span>
+                <strong class="kpi-val" id="rl-kpi-cagr">--</strong>
+                <span class="kpi-sub" id="rl-kpi-cagr-sub">PPO Ensemble vs 60/40 Benchmark</span>
+              </article>
+              <article class="kpi-card">
+                <span class="kpi-label">OOS Sharpe &amp; Sortino</span>
+                <strong class="kpi-val" id="rl-kpi-sharpe">--</strong>
+                <span class="kpi-sub" id="rl-kpi-sharpe-sub">Multi-seed stability (seeds 42, 101, 2024)</span>
+              </article>
+              <article class="kpi-card">
+                <span class="kpi-label">OOS Max Drawdown &amp; Calmar</span>
+                <strong class="kpi-val" id="rl-kpi-mdd">--</strong>
+                <span class="kpi-sub" id="rl-kpi-mdd-sub">Downside protection vs 60/40 &amp; ^GSPC</span>
+              </article>
+              <article class="kpi-card">
+                <span class="kpi-label">Latest Target Allocation</span>
+                <strong class="kpi-val" id="rl-kpi-alloc">--</strong>
+                <span class="kpi-sub" id="rl-kpi-alloc-sub">Tech · ^GSPC · IEF/TLT · SHY Cash</span>
+              </article>
+            </div>
+
+            <div class="quant-controls-bar ty-controls-bar">
+              <div class="quant-field">
+                <label for="rl-mode-select">RL Evaluation View</label>
+                <select id="rl-mode-select" class="select-input">
+                  <option value="oos_wealth" selected>Out-of-Sample Equity Curve ($100 Base, 2022–2026): PPO vs Baselines</option>
+                  <option value="weights">Dynamic Sleeve Allocation (2022–2026, %): Tech · ^GSPC · Bonds · SHY Cash</option>
+                  <option value="drawdown">Out-of-Sample Underwater Drawdown (%): PPO vs 60/40 vs ^GSPC</option>
+                  <option value="walk_forward">Full Walk-Forward Trajectory (2005–2026: Train · Val · OOS Split)</option>
+                </select>
+              </div>
+            </div>
+
+            <article class="panel-card panel-spaced">
+              <div class="card-header">
+                <h3 id="rl-chart-title">Out-of-Sample Cumulative Wealth ($100 Base, 2022–2026)</h3>
+                <div class="ty-card-actions">
+                  <span class="badge-note" id="rl-source-badge">2022–2026 OOS Weekly Rebalance</span>
+                  <a class="ty-download-link" href="data/rl_portfolio_oos_daily.csv" download="rl_portfolio_oos_daily.csv">RL OOS Ledger CSV</a>
+                  <a class="ty-download-link" href="data/rl_portfolio_backtest.json" download="rl_portfolio_backtest.json">RL Backtest JSON</a>
+                </div>
+              </div>
+              <div id="rl-portfolio-chart" class="chart-box chart-box-tall">
+                <div class="chart-skeleton" aria-hidden="true"></div>
+              </div>
+              <p class="ty-method-note" id="rl-method-note"></p>
+            </article>
+
+            <div class="table-wrap panel-spaced">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>Strategy (Out-of-Sample 2022–2026)</th>
+                    <th>$100 Terminal</th>
+                    <th>CAGR</th>
+                    <th>Total Return</th>
+                    <th>Ann. Vol</th>
+                    <th>Sharpe</th>
+                    <th>Sortino</th>
+                    <th>Max Drawdown</th>
+                    <th>Calmar</th>
+                    <th>Turnover / Yr</th>
+                  </tr>
+                </thead>
+                <tbody id="rl-leaderboard-tbody">
+                  <tr><td colspan="10" class="table-state-cell">Loading RL Out-of-Sample strategy leaderboard...</td></tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="table-wrap panel-spaced">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th>OOS Macro Sub-Regime</th>
+                    <th>Window</th>
+                    <th>PPO RL Return (Max DD)</th>
+                    <th>60/40 Return (Max DD)</th>
+                    <th>S&amp;P 500 Return</th>
+                    <th>PPO Avg Sleeve Allocation (Tech · ^GSPC · Bonds · SHY)</th>
+                  </tr>
+                </thead>
+                <tbody id="rl-regime-tbody">
+                  <tr><td colspan="6" class="table-state-cell">Loading RL macro regime attribution...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
           <div class="editorial-section-head">
             <h2>Interest rate regimes and implied volatility transmission</h2>
             <p class="ed-desc">Quantitative stress test evaluating equity drawdown sensitivity across US 10-Year Treasury Yield spikes (^TNX) and high VIX fear regimes (^VIX &gt; 25).</p>

@@ -1,0 +1,337 @@
+symbol,quarter,n_years,win_years,loss_years,win_rate_pct,loss_rate_pct,mean_return_pct,median_return_pct,mean_excess_vs_sp500_pct,security_name,sector
+AAL,1,16,8,8,50.0,50.0,2.95,-0.38,0.69,"American Airlines Group, Inc. - Common Stock",Consumer Discretionary
+AAL,2,16,9,7,56.2,43.8,4.25,2.63,0.27,"American Airlines Group, Inc. - Common Stock",Consumer Discretionary
+AAL,3,16,4,12,25.0,75.0,-7.32,-5.24,-8.61,"American Airlines Group, Inc. - Common Stock",Consumer Discretionary
+AAL,4,16,12,4,75.0,25.0,15.94,9.55,11.21,"American Airlines Group, Inc. - Common Stock",Consumer Discretionary
+AAPL,1,16,7,9,43.8,56.2,4.64,-1.0,2.39,Apple Inc. - Common Stock,Information Technology
+AAPL,2,16,10,6,62.5,37.5,5.83,2.91,1.85,Apple Inc. - Common Stock,Information Technology
+AAPL,3,16,14,2,87.5,12.5,11.21,13.6,9.93,Apple Inc. - Common Stock,Information Technology
+AAPL,4,16,12,4,75.0,25.0,5.81,7.23,1.08,Apple Inc. - Common Stock,Information Technology
+ABBV,1,14,6,8,42.9,57.1,2.77,-0.94,1.44,AbbVie Inc. Common Stock,Health Care
+ABBV,2,14,8,6,57.1,42.9,4.2,3.83,-0.61,AbbVie Inc. Common Stock,Health Care
+ABBV,3,14,10,4,71.4,28.6,4.52,3.91,2.44,AbbVie Inc. Common Stock,Health Care
+ABBV,4,14,11,3,78.6,21.4,10.56,9.94,5.89,AbbVie Inc. Common Stock,Health Care
+ABT,1,16,11,5,68.8,31.2,2.46,3.61,0.21,Abbott Laboratories Common Stock,Health Care
+ABT,2,16,10,6,62.5,37.5,2.32,4.32,-1.66,Abbott Laboratories Common Stock,Health Care
+ABT,3,16,9,7,56.2,43.8,2.75,2.26,1.47,Abbott Laboratories Common Stock,Health Care
+ABT,4,16,11,5,68.8,31.2,5.95,6.92,1.23,Abbott Laboratories Common Stock,Health Care
+ADBE,1,16,9,7,56.2,43.8,3.13,4.72,0.88,Adobe Inc. - Common Stock,Information Technology
+ADBE,2,16,12,4,75.0,25.0,6.89,9.13,2.91,Adobe Inc. - Common Stock,Information Technology
+ADBE,3,16,9,7,56.2,43.8,0.21,0.85,-1.08,Adobe Inc. - Common Stock,Information Technology
+ADBE,4,16,10,6,62.5,37.5,6.4,9.66,1.67,Adobe Inc. - Common Stock,Information Technology
+AMAT,1,16,12,4,75.0,25.0,13.17,16.54,10.91,"Applied Materials, Inc. - Common Stock",Information Technology
+AMAT,2,16,11,5,68.8,31.2,11.33,11.21,7.35,"Applied Materials, Inc. - Common Stock",Information Technology
+AMAT,3,16,5,11,31.2,68.8,-2.35,-3.87,-3.63,"Applied Materials, Inc. - Common Stock",Information Technology
+AMAT,4,16,12,4,75.0,25.0,9.12,11.6,4.4,"Applied Materials, Inc. - Common Stock",Information Technology
+AMD,1,16,9,7,56.2,43.8,8.88,2.0,6.62,"Advanced Micro Devices, Inc. - Common Stock",Information Technology
+AMD,2,16,10,6,62.5,37.5,23.51,15.95,19.53,"Advanced Micro Devices, Inc. - Common Stock",Information Technology
+AMD,3,16,8,8,50.0,50.0,4.69,-1.7,3.4,"Advanced Micro Devices, Inc. - Common Stock",Information Technology
+AMD,4,16,10,6,62.5,37.5,11.05,4.26,6.33,"Advanced Micro Devices, Inc. - Common Stock",Information Technology
+AMGN,1,16,9,7,56.2,43.8,3.7,3.65,1.44,Amgen Inc. - Common Stock,Health Care
+AMGN,2,16,9,7,56.2,43.8,2.26,1.78,-1.72,Amgen Inc. - Common Stock,Health Care
+AMGN,3,16,12,4,75.0,25.0,6.7,8.73,5.41,Amgen Inc. - Common Stock,Health Care
+AMGN,4,16,11,5,68.8,31.2,5.2,6.0,0.47,Amgen Inc. - Common Stock,Health Care
+AMT,1,16,9,7,56.2,43.8,2.61,1.11,0.36,American Tower Corporation (REIT) Common Stock,Real Estate
+AMT,2,16,12,4,75.0,25.0,4.95,3.05,0.97,American Tower Corporation (REIT) Common Stock,Real Estate
+AMT,3,16,10,6,62.5,37.5,-0.61,1.25,-1.9,American Tower Corporation (REIT) Common Stock,Real Estate
+AMT,4,16,12,4,75.0,25.0,5.08,7.03,0.35,American Tower Corporation (REIT) Common Stock,Real Estate
+AMZN,1,16,10,6,62.5,37.5,5.8,5.87,3.54,"Amazon.com, Inc. - Common Stock",Consumer Discretionary
+AMZN,2,16,14,2,87.5,12.5,11.13,13.14,7.15,"Amazon.com, Inc. - Common Stock",Consumer Discretionary
+AMZN,3,16,10,6,62.5,37.5,5.46,5.14,4.17,"Amazon.com, Inc. - Common Stock",Consumer Discretionary
+AMZN,4,16,10,6,62.5,37.5,3.52,4.28,-1.21,"Amazon.com, Inc. - Common Stock",Consumer Discretionary
+ANET,1,12,7,5,58.3,41.7,9.74,6.13,9.12,"Arista Networks, Inc. Common Stock",Communication Services
+ANET,2,13,10,3,76.9,23.1,8.23,13.25,3.23,"Arista Networks, Inc. Common Stock",Communication Services
+ANET,3,13,9,4,69.2,30.8,13.04,13.49,11.16,"Arista Networks, Inc. Common Stock",Communication Services
+ANET,4,13,8,5,61.5,38.5,10.93,13.74,6.65,"Arista Networks, Inc. Common Stock",Communication Services
+APD,1,16,9,7,56.2,43.8,1.54,2.91,-0.72,"Air Products and Chemicals, Inc. Common Stock",Materials
+APD,2,16,10,6,62.5,37.5,3.43,3.85,-0.55,"Air Products and Chemicals, Inc. Common Stock",Materials
+APD,3,16,8,8,50.0,50.0,1.85,0.16,0.57,"Air Products and Chemicals, Inc. Common Stock",Materials
+APD,4,16,11,5,68.8,31.2,5.89,5.12,1.16,"Air Products and Chemicals, Inc. Common Stock",Materials
+ASML,1,16,11,5,68.8,31.2,10.82,15.15,8.56,ASML Holding N.V. - New York Registry Shares,Information Technology
+ASML,2,16,12,4,75.0,25.0,8.23,4.72,4.25,ASML Holding N.V. - New York Registry Shares,Information Technology
+ASML,3,16,9,7,56.2,43.8,2.53,2.37,1.24,ASML Holding N.V. - New York Registry Shares,Information Technology
+ASML,4,16,12,4,75.0,25.0,7.07,8.12,2.34,ASML Holding N.V. - New York Registry Shares,Information Technology
+AVGO,1,16,11,5,68.8,31.2,7.94,11.92,5.68,Broadcom Inc. - Common Stock,Information Technology
+AVGO,2,16,13,3,81.2,18.8,12.9,5.93,8.92,Broadcom Inc. - Common Stock,Information Technology
+AVGO,3,16,9,7,56.2,43.8,3.67,2.45,2.39,Broadcom Inc. - Common Stock,Information Technology
+AVGO,4,16,14,2,87.5,12.5,14.18,15.83,9.45,Broadcom Inc. - Common Stock,Information Technology
+AZO,1,16,10,6,62.5,37.5,5.55,8.78,3.29,"AutoZone, Inc. Common Stock",Consumer Discretionary
+AZO,2,16,8,8,50.0,50.0,2.03,0.64,-1.95,"AutoZone, Inc. Common Stock",Consumer Discretionary
+AZO,3,16,10,6,62.5,37.5,3.61,3.1,2.32,"AutoZone, Inc. Common Stock",Consumer Discretionary
+AZO,4,16,14,2,87.5,12.5,7.1,5.43,2.38,"AutoZone, Inc. Common Stock",Consumer Discretionary
+BA,1,16,9,7,56.2,43.8,0.42,6.75,-1.84,Boeing Company (The) Common Stock,Industrials
+BA,2,16,10,6,62.5,37.5,2.77,1.24,-1.21,Boeing Company (The) Common Stock,Industrials
+BA,3,16,7,9,43.8,56.2,-1.9,-5.38,-3.19,Boeing Company (The) Common Stock,Industrials
+BA,4,16,12,4,75.0,25.0,11.82,13.76,7.1,Boeing Company (The) Common Stock,Industrials
+BAC,1,16,8,8,50.0,50.0,2.72,0.99,0.46,Bank of America Corporation Common Stock,Financials
+BAC,2,16,10,6,62.5,37.5,0.59,4.35,-3.39,Bank of America Corporation Common Stock,Financials
+BAC,3,16,11,5,68.8,31.2,0.61,2.81,-0.68,Bank of America Corporation Common Stock,Financials
+BAC,4,16,13,3,81.2,18.8,11.74,10.84,7.02,Bank of America Corporation Common Stock,Financials
+BLK,1,16,10,6,62.5,37.5,1.68,2.17,-0.58,"BlackRock, Inc. Common Stock",Financials
+BLK,2,16,10,6,62.5,37.5,1.6,0.92,-2.38,"BlackRock, Inc. Common Stock",Financials
+BLK,3,16,9,7,56.2,43.8,0.79,3.76,-0.49,"BlackRock, Inc. Common Stock",Financials
+BLK,4,16,14,2,87.5,12.5,12.8,14.37,8.07,"BlackRock, Inc. Common Stock",Financials
+BMY,1,16,9,7,56.2,43.8,3.32,2.45,1.06,Bristol-Myers Squibb Company Common Stock,Health Care
+BMY,2,16,9,7,56.2,43.8,-0.62,3.48,-4.6,Bristol-Myers Squibb Company Common Stock,Health Care
+BMY,3,16,9,7,56.2,43.8,1.87,3.84,0.59,Bristol-Myers Squibb Company Common Stock,Health Care
+BMY,4,16,11,5,68.8,31.2,6.77,7.25,2.04,Bristol-Myers Squibb Company Common Stock,Health Care
+C,1,16,8,8,50.0,50.0,0.83,-0.68,-1.43,"Citigroup, Inc. Common Stock",Financials
+C,2,16,9,7,56.2,43.8,3.97,1.43,-0.01,"Citigroup, Inc. Common Stock",Financials
+C,3,16,7,9,43.8,56.2,-0.62,-0.24,-1.91,"Citigroup, Inc. Common Stock",Financials
+C,4,16,13,3,81.2,18.8,9.14,8.62,4.41,"Citigroup, Inc. Common Stock",Financials
+CAH,1,16,13,3,81.2,18.8,6.47,7.28,4.22,"Cardinal Health, Inc. Common Stock",Health Care
+CAH,2,16,6,10,37.5,62.5,1.91,-1.77,-2.07,"Cardinal Health, Inc. Common Stock",Health Care
+CAH,3,16,7,9,43.8,56.2,-0.13,-6.21,-1.42,"Cardinal Health, Inc. Common Stock",Health Care
+CAH,4,16,12,4,75.0,25.0,9.53,8.21,4.8,"Cardinal Health, Inc. Common Stock",Health Care
+CAT,1,16,10,6,62.5,37.5,6.26,7.81,4.01,"Caterpillar, Inc. Common Stock",Industrials
+CAT,2,16,9,7,56.2,43.8,3.25,0.61,-0.73,"Caterpillar, Inc. Common Stock",Industrials
+CAT,3,16,9,7,56.2,43.8,0.84,1.89,-0.45,"Caterpillar, Inc. Common Stock",Industrials
+CAT,4,16,12,4,75.0,25.0,8.76,8.58,4.04,"Caterpillar, Inc. Common Stock",Industrials
+CHD,1,16,14,2,87.5,12.5,7.32,8.76,5.06,"Church & Dwight Company, Inc. Common Stock",Consumer Discretionary
+CHD,2,16,10,6,62.5,37.5,3.22,2.75,-0.76,"Church & Dwight Company, Inc. Common Stock",Consumer Discretionary
+CHD,3,16,7,9,43.8,56.2,-0.61,-2.24,-1.9,"Church & Dwight Company, Inc. Common Stock",Consumer Discretionary
+CHD,4,16,11,5,68.8,31.2,5.0,3.72,0.27,"Church & Dwight Company, Inc. Common Stock",Consumer Discretionary
+CMCSA,1,16,9,7,56.2,43.8,3.35,3.71,1.1,Comcast Corporation - Class A Common Stock,Communication Services
+CMCSA,2,16,10,6,62.5,37.5,1.84,5.13,-2.14,Comcast Corporation - Class A Common Stock,Communication Services
+CMCSA,3,16,9,7,56.2,43.8,0.12,1.4,-1.17,Comcast Corporation - Class A Common Stock,Communication Services
+CMCSA,4,16,10,6,62.5,37.5,4.91,4.72,0.18,Comcast Corporation - Class A Common Stock,Communication Services
+COST,1,16,12,4,75.0,25.0,4.93,4.18,2.68,Costco Wholesale Corporation - Common Stock,Consumer Discretionary
+COST,2,16,11,5,68.8,31.2,3.72,4.89,-0.26,Costco Wholesale Corporation - Common Stock,Consumer Discretionary
+COST,3,16,12,4,75.0,25.0,5.06,4.79,3.77,Costco Wholesale Corporation - Common Stock,Consumer Discretionary
+COST,4,16,13,3,81.2,18.8,7.14,5.58,2.41,Costco Wholesale Corporation - Common Stock,Consumer Discretionary
+CRM,1,16,10,6,62.5,37.5,6.46,4.91,4.2,"Salesforce, Inc. Common Stock",Information Technology
+CRM,2,16,10,6,62.5,37.5,1.16,3.08,-2.82,"Salesforce, Inc. Common Stock",Information Technology
+CRM,3,16,8,8,50.0,50.0,6.44,3.25,5.15,"Salesforce, Inc. Common Stock",Information Technology
+CRM,4,16,9,7,56.2,43.8,2.73,4.71,-2.0,"Salesforce, Inc. Common Stock",Information Technology
+CSCO,1,16,12,4,75.0,25.0,4.42,5.3,2.16,"Cisco Systems, Inc. - Common Stock",Communication Services
+CSCO,2,16,9,7,56.2,43.8,3.8,1.41,-0.18,"Cisco Systems, Inc. - Common Stock",Communication Services
+CSCO,3,16,8,8,50.0,50.0,1.52,1.26,0.24,"Cisco Systems, Inc. - Common Stock",Communication Services
+CSCO,4,16,10,6,62.5,37.5,5.87,7.47,1.14,"Cisco Systems, Inc. - Common Stock",Communication Services
+CVX,1,16,10,6,62.5,37.5,6.67,7.15,4.41,Chevron Corporation Common Stock,Energy
+CVX,2,16,8,8,50.0,50.0,0.22,-0.27,-3.76,Chevron Corporation Common Stock,Energy
+CVX,3,16,7,9,43.8,56.2,0.31,-1.31,-0.97,Chevron Corporation Common Stock,Energy
+CVX,4,16,10,6,62.5,37.5,5.6,3.14,0.87,Chevron Corporation Common Stock,Energy
+D,1,16,11,5,68.8,31.2,2.32,5.56,0.06,"Dominion Energy, Inc. Common Stock",Utilities
+D,2,16,10,6,62.5,37.5,2.16,1.82,-1.82,"Dominion Energy, Inc. Common Stock",Utilities
+D,3,16,9,7,56.2,43.8,1.21,0.7,-0.08,"Dominion Energy, Inc. Common Stock",Utilities
+D,4,16,10,6,62.5,37.5,2.39,3.72,-2.34,"Dominion Energy, Inc. Common Stock",Utilities
+DAL,1,16,8,8,50.0,50.0,0.91,-0.15,-1.35,"Delta Air Lines, Inc. Common Stock",Consumer Discretionary
+DAL,2,16,8,8,50.0,50.0,4.1,4.84,0.12,"Delta Air Lines, Inc. Common Stock",Consumer Discretionary
+DAL,3,16,8,8,50.0,50.0,0.54,0.32,-0.75,"Delta Air Lines, Inc. Common Stock",Consumer Discretionary
+DAL,4,16,14,2,87.5,12.5,14.3,16.78,9.57,"Delta Air Lines, Inc. Common Stock",Consumer Discretionary
+DE,1,16,11,5,68.8,31.2,6.92,4.14,4.66,Deere & Company Common Stock,Industrials
+DE,2,16,9,7,56.2,43.8,0.02,0.48,-3.96,Deere & Company Common Stock,Industrials
+DE,3,16,10,6,62.5,37.5,1.2,2.19,-0.08,Deere & Company Common Stock,Industrials
+DE,4,16,14,2,87.5,12.5,10.01,5.85,5.28,Deere & Company Common Stock,Industrials
+DIS,1,16,10,6,62.5,37.5,2.57,3.32,0.32,Walt Disney Company (The) Common Stock,Consumer Discretionary
+DIS,2,16,9,7,56.2,43.8,1.71,2.49,-2.27,Walt Disney Company (The) Common Stock,Consumer Discretionary
+DIS,3,16,6,10,37.5,62.5,-1.66,-3.22,-2.95,Walt Disney Company (The) Common Stock,Consumer Discretionary
+DIS,4,16,12,4,75.0,25.0,9.83,10.8,5.1,Walt Disney Company (The) Common Stock,Consumer Discretionary
+DLR,1,16,11,5,68.8,31.2,4.73,8.6,2.48,"Digital Realty Trust, Inc.",Real Estate
+DLR,2,16,13,3,81.2,18.8,6.49,6.67,2.51,"Digital Realty Trust, Inc.",Real Estate
+DLR,3,16,7,9,43.8,56.2,-1.29,-0.4,-2.57,"Digital Realty Trust, Inc.",Real Estate
+DLR,4,16,9,7,56.2,43.8,3.92,1.84,-0.81,"Digital Realty Trust, Inc.",Real Estate
+DUK,1,16,11,5,68.8,31.2,3.6,4.86,1.34,Duke Energy Corporation (Holding Company) Common Stock,Utilities
+DUK,2,16,8,8,50.0,50.0,0.94,1.46,-3.04,Duke Energy Corporation (Holding Company) Common Stock,Utilities
+DUK,3,16,10,6,62.5,37.5,1.68,1.68,0.39,Duke Energy Corporation (Holding Company) Common Stock,Utilities
+DUK,4,16,11,5,68.8,31.2,4.58,4.45,-0.14,Duke Energy Corporation (Holding Company) Common Stock,Utilities
+ED,1,16,11,5,68.8,31.2,4.88,4.1,2.63,"Consolidated Edison, Inc. Common Stock",Utilities
+ED,2,16,8,8,50.0,50.0,0.44,0.15,-3.54,"Consolidated Edison, Inc. Common Stock",Utilities
+ED,3,16,8,8,50.0,50.0,1.79,-0.05,0.51,"Consolidated Edison, Inc. Common Stock",Utilities
+ED,4,16,9,7,56.2,43.8,3.58,1.29,-1.15,"Consolidated Edison, Inc. Common Stock",Utilities
+EOG,1,16,11,5,68.8,31.2,8.68,6.35,6.42,"EOG Resources, Inc. Common Stock",Energy
+EOG,2,16,7,9,43.8,56.2,3.05,-1.4,-0.93,"EOG Resources, Inc. Common Stock",Energy
+EOG,3,16,8,8,50.0,50.0,-1.29,0.51,-2.58,"EOG Resources, Inc. Common Stock",Energy
+EOG,4,16,10,6,62.5,37.5,6.79,6.35,2.06,"EOG Resources, Inc. Common Stock",Energy
+EQIX,1,16,12,4,75.0,25.0,9.05,6.17,6.79,"Equinix, Inc. - Common Stock",Real Estate
+EQIX,2,16,12,4,75.0,25.0,6.18,9.51,2.2,"Equinix, Inc. - Common Stock",Real Estate
+EQIX,3,16,8,8,50.0,50.0,1.87,0.28,0.59,"Equinix, Inc. - Common Stock",Real Estate
+EQIX,4,16,11,5,68.8,31.2,3.71,2.22,-1.02,"Equinix, Inc. - Common Stock",Real Estate
+ETN,1,16,12,4,75.0,25.0,7.12,10.68,4.86,"Eaton Corporation, PLC Ordinary Shares",Information Technology
+ETN,2,16,11,5,68.8,31.2,3.74,3.86,-0.24,"Eaton Corporation, PLC Ordinary Shares",Information Technology
+ETN,3,16,12,4,75.0,25.0,1.6,5.19,0.31,"Eaton Corporation, PLC Ordinary Shares",Information Technology
+ETN,4,16,13,3,81.2,18.8,5.78,9.62,1.05,"Eaton Corporation, PLC Ordinary Shares",Information Technology
+FCX,1,16,9,7,56.2,43.8,4.37,2.66,2.11,"Freeport-McMoRan, Inc. Common Stock",Materials
+FCX,2,16,7,9,43.8,56.2,2.43,-1.48,-1.55,"Freeport-McMoRan, Inc. Common Stock",Materials
+FCX,3,16,6,10,37.5,62.5,-4.19,-6.25,-5.48,"Freeport-McMoRan, Inc. Common Stock",Materials
+FCX,4,16,10,6,62.5,37.5,10.28,18.32,5.56,"Freeport-McMoRan, Inc. Common Stock",Materials
+FDX,1,16,10,6,62.5,37.5,4.27,6.11,2.02,FedEx Corporation Common Stock,Consumer Discretionary
+FDX,2,16,10,6,62.5,37.5,2.92,2.34,-1.06,FedEx Corporation Common Stock,Consumer Discretionary
+FDX,3,16,8,8,50.0,50.0,0.03,-1.72,-1.26,FedEx Corporation Common Stock,Consumer Discretionary
+FDX,4,16,14,2,87.5,12.5,8.25,8.13,3.52,FedEx Corporation Common Stock,Consumer Discretionary
+GE,1,16,9,7,56.2,43.8,7.88,6.63,5.62,GE Aerospace Common Stock,Information Technology
+GE,2,16,11,5,68.8,31.2,3.55,2.47,-0.43,GE Aerospace Common Stock,Information Technology
+GE,3,16,5,11,31.2,68.8,-3.22,-4.24,-4.5,GE Aerospace Common Stock,Information Technology
+GE,4,16,10,6,62.5,37.5,8.7,6.35,3.97,GE Aerospace Common Stock,Information Technology
+GILD,1,16,10,6,62.5,37.5,6.41,5.46,4.15,"Gilead Sciences, Inc. - Common Stock",Health Care
+GILD,2,16,9,7,56.2,43.8,2.26,4.3,-1.72,"Gilead Sciences, Inc. - Common Stock",Health Care
+GILD,3,16,10,6,62.5,37.5,6.3,1.7,5.01,"Gilead Sciences, Inc. - Common Stock",Health Care
+GILD,4,16,11,5,68.8,31.2,4.78,5.25,0.05,"Gilead Sciences, Inc. - Common Stock",Health Care
+GLD,1,16,14,2,87.5,12.5,4.88,6.06,2.62,SPDR Gold Shares ETF,Materials
+GLD,2,16,8,8,50.0,50.0,-0.43,1.48,-4.41,SPDR Gold Shares ETF,Materials
+GLD,3,16,9,7,56.2,43.8,2.51,3.2,1.22,SPDR Gold Shares ETF,Materials
+GLD,4,16,8,8,50.0,50.0,-0.02,0.16,-4.74,SPDR Gold Shares ETF,Materials
+GOOGL,1,16,7,9,43.8,56.2,1.89,-0.64,-0.37,Alphabet Inc. - Class A Common Stock,Information Technology
+GOOGL,2,16,10,6,62.5,37.5,5.37,9.27,1.39,Alphabet Inc. - Class A Common Stock,Information Technology
+GOOGL,3,16,12,4,75.0,25.0,7.77,5.82,6.49,Alphabet Inc. - Class A Common Stock,Information Technology
+GOOGL,4,16,10,6,62.5,37.5,7.14,8.27,2.42,Alphabet Inc. - Class A Common Stock,Information Technology
+GS,1,16,5,11,31.2,68.8,0.81,-3.53,-1.45,"Goldman Sachs Group, Inc. (The) Common Stock",Financials
+GS,2,16,9,7,56.2,43.8,3.73,2.83,-0.25,"Goldman Sachs Group, Inc. (The) Common Stock",Financials
+GS,3,16,12,4,75.0,25.0,1.54,2.16,0.25,"Goldman Sachs Group, Inc. (The) Common Stock",Financials
+GS,4,16,13,3,81.2,18.8,10.63,11.25,5.91,"Goldman Sachs Group, Inc. (The) Common Stock",Financials
+HAL,1,16,10,6,62.5,37.5,6.2,10.23,3.94,Halliburton Company Common Stock,Energy
+HAL,2,16,7,9,43.8,56.2,2.56,-2.55,-1.42,Halliburton Company Common Stock,Energy
+HAL,3,16,5,11,31.2,68.8,-3.68,-6.59,-4.97,Halliburton Company Common Stock,Energy
+HAL,4,16,10,6,62.5,37.5,7.91,5.85,3.18,Halliburton Company Common Stock,Energy
+HD,1,16,9,7,56.2,43.8,2.2,3.94,-0.06,"Home Depot, Inc. (The) Common Stock",Consumer Discretionary
+HD,2,16,11,5,68.8,31.2,4.69,5.05,0.71,"Home Depot, Inc. (The) Common Stock",Consumer Discretionary
+HD,3,16,12,4,75.0,25.0,4.69,5.59,3.41,"Home Depot, Inc. (The) Common Stock",Consumer Discretionary
+HD,4,16,11,5,68.8,31.2,7.79,12.03,3.06,"Home Depot, Inc. (The) Common Stock",Consumer Discretionary
+INTC,1,16,10,6,62.5,37.5,5.92,3.71,3.66,Intel Corporation,Information Technology
+INTC,2,16,7,9,43.8,56.2,11.42,-1.69,7.44,Intel Corporation,Information Technology
+INTC,3,16,6,10,37.5,62.5,-0.21,-3.52,-1.49,Intel Corporation,Information Technology
+INTC,4,16,9,7,56.2,43.8,3.58,4.43,-1.15,Intel Corporation,Information Technology
+JNJ,1,16,11,5,68.8,31.2,3.8,4.67,1.54,Johnson & Johnson Common Stock,Health Care
+JNJ,2,16,12,4,75.0,25.0,3.18,3.96,-0.8,Johnson & Johnson Common Stock,Health Care
+JNJ,3,16,8,8,50.0,50.0,2.3,0.31,1.02,Johnson & Johnson Common Stock,Health Care
+JNJ,4,16,12,4,75.0,25.0,4.06,5.16,-0.66,Johnson & Johnson Common Stock,Health Care
+JPM,1,16,10,6,62.5,37.5,2.65,3.11,0.39,JP Morgan Chase & Co. Common Stock,Financials
+JPM,2,16,11,5,68.8,31.2,2.55,5.11,-1.43,JP Morgan Chase & Co. Common Stock,Financials
+JPM,3,16,12,4,75.0,25.0,1.85,4.95,0.56,JP Morgan Chase & Co. Common Stock,Financials
+JPM,4,16,13,3,81.2,18.8,11.98,11.99,7.26,JP Morgan Chase & Co. Common Stock,Financials
+KO,1,16,9,7,56.2,43.8,1.91,2.43,-0.35,Coca-Cola Company (The) Common Stock,Consumer Staples
+KO,2,16,11,5,68.8,31.2,3.12,2.18,-0.86,Coca-Cola Company (The) Common Stock,Consumer Staples
+KO,3,16,9,7,56.2,43.8,0.93,1.12,-0.36,Coca-Cola Company (The) Common Stock,Consumer Staples
+KO,4,16,12,4,75.0,25.0,4.92,5.21,0.2,Coca-Cola Company (The) Common Stock,Consumer Staples
+KR,1,16,12,4,75.0,25.0,8.27,11.08,6.02,The Kroger Co.,Consumer Staples
+KR,2,16,7,9,43.8,56.2,-2.05,-3.67,-6.03,The Kroger Co.,Consumer Staples
+KR,3,16,9,7,56.2,43.8,0.94,1.37,-0.34,The Kroger Co.,Consumer Staples
+KR,4,16,12,4,75.0,25.0,9.57,11.03,4.85,The Kroger Co.,Consumer Staples
+LIN,1,16,12,4,75.0,25.0,4.11,6.87,1.85,LIN,Information Technology
+LIN,2,16,11,5,68.8,31.2,4.35,3.67,0.37,LIN,Information Technology
+LIN,3,16,8,8,50.0,50.0,-0.42,-0.2,-1.7,LIN,Information Technology
+LIN,4,16,12,4,75.0,25.0,6.01,8.3,1.28,LIN,Information Technology
+LLY,1,16,11,5,68.8,31.2,5.43,6.08,3.17,Eli Lilly and Company Common Stock,Health Care
+LLY,2,16,12,4,75.0,25.0,10.34,10.57,6.36,Eli Lilly and Company Common Stock,Health Care
+LLY,3,16,11,5,68.8,31.2,3.46,1.25,2.17,Eli Lilly and Company Common Stock,Health Care
+LLY,4,16,13,3,81.2,18.8,9.54,8.55,4.81,Eli Lilly and Company Common Stock,Health Care
+LMT,1,16,13,3,81.2,18.8,7.36,6.08,5.11,Lockheed Martin Corporation,Industrials
+LMT,2,16,9,7,56.2,43.8,2.01,2.39,-1.97,Lockheed Martin Corporation,Industrials
+LMT,3,16,11,5,68.8,31.2,5.78,8.16,4.5,Lockheed Martin Corporation,Industrials
+LMT,4,16,12,4,75.0,25.0,3.64,4.55,-1.09,Lockheed Martin Corporation,Industrials
+LRCX,1,16,13,3,81.2,18.8,10.27,12.7,8.02,Lam Research Corporation,Information Technology
+LRCX,2,16,12,4,75.0,25.0,12.86,9.67,8.88,Lam Research Corporation,Information Technology
+LRCX,3,16,7,9,43.8,56.2,-0.1,-6.92,-1.39,Lam Research Corporation,Information Technology
+LRCX,4,16,11,5,68.8,31.2,10.41,12.9,5.68,Lam Research Corporation,Information Technology
+MA,1,16,10,6,62.5,37.5,3.93,4.46,1.68,Mastercard Incorporated Common Stock,Consumer Discretionary
+MA,2,16,12,4,75.0,25.0,5.07,4.63,1.09,Mastercard Incorporated Common Stock,Consumer Discretionary
+MA,3,16,13,3,81.2,18.8,5.96,5.17,4.67,Mastercard Incorporated Common Stock,Consumer Discretionary
+MA,4,16,15,1,93.8,6.2,8.96,8.05,4.23,Mastercard Incorporated Common Stock,Consumer Discretionary
+META,1,14,8,6,57.1,42.9,8.27,6.6,6.94,"Meta Platforms, Inc. - Class A Common Stock",Information Technology
+META,2,15,11,4,73.3,26.7,8.75,6.29,4.48,"Meta Platforms, Inc. - Class A Common Stock",Information Technology
+META,3,15,9,6,60.0,40.0,9.32,4.82,7.0,"Meta Platforms, Inc. - Class A Common Stock",Information Technology
+META,4,15,8,7,53.3,46.7,1.47,2.37,-2.83,"Meta Platforms, Inc. - Class A Common Stock",Information Technology
+MRK,1,16,10,6,62.5,37.5,3.18,2.51,0.92,"Merck & Company, Inc. Common Stock (new)",Health Care
+MRK,2,16,13,3,81.2,18.8,4.49,6.34,0.51,"Merck & Company, Inc. Common Stock (new)",Health Care
+MRK,3,16,10,6,62.5,37.5,1.82,2.14,0.54,"Merck & Company, Inc. Common Stock (new)",Health Care
+MRK,4,16,9,7,56.2,43.8,4.25,4.54,-0.47,"Merck & Company, Inc. Common Stock (new)",Health Care
+MSFT,1,16,11,5,68.8,31.2,3.17,6.44,0.92,Microsoft Corporation - Common Stock,Information Technology
+MSFT,2,16,13,3,81.2,18.8,8.72,7.47,4.74,Microsoft Corporation - Common Stock,Information Technology
+MSFT,3,16,10,6,62.5,37.5,4.79,3.87,3.51,Microsoft Corporation - Common Stock,Information Technology
+MSFT,4,16,11,5,68.8,31.2,6.36,5.55,1.64,Microsoft Corporation - Common Stock,Information Technology
+MU,1,16,12,4,75.0,25.0,14.89,19.57,12.63,"Micron Technology, Inc.",Information Technology
+MU,2,16,10,6,62.5,37.5,19.62,4.06,15.64,"Micron Technology, Inc.",Information Technology
+MU,3,16,7,9,43.8,56.2,0.4,-6.47,-0.88,"Micron Technology, Inc.",Information Technology
+MU,4,16,12,4,75.0,25.0,13.21,14.65,8.48,"Micron Technology, Inc.",Information Technology
+NEE,1,16,10,6,62.5,37.5,4.88,5.75,2.62,NEE,Information Technology
+NEE,2,16,10,6,62.5,37.5,3.14,4.11,-0.84,NEE,Information Technology
+NEE,3,16,10,6,62.5,37.5,1.55,1.36,0.27,NEE,Information Technology
+NEE,4,16,13,3,81.2,18.8,6.63,7.21,1.91,NEE,Information Technology
+NEM,1,16,11,5,68.8,31.2,6.44,4.08,4.18,Newmont Corporation,Materials
+NEM,2,16,8,8,50.0,50.0,4.26,2.61,0.28,Newmont Corporation,Materials
+NEM,3,16,8,8,50.0,50.0,1.83,-0.28,0.55,Newmont Corporation,Materials
+NEM,4,16,8,8,50.0,50.0,-0.62,-1.96,-5.35,Newmont Corporation,Materials
+NFLX,1,16,12,4,75.0,25.0,21.44,18.28,19.18,"Netflix, Inc. - Common Stock",Consumer Discretionary
+NFLX,2,16,12,4,75.0,25.0,7.25,10.8,3.27,"Netflix, Inc. - Common Stock",Consumer Discretionary
+NFLX,3,16,9,7,56.2,43.8,1.06,3.75,-0.23,"Netflix, Inc. - Common Stock",Consumer Discretionary
+NFLX,4,16,10,6,62.5,37.5,6.97,9.45,2.25,"Netflix, Inc. - Common Stock",Consumer Discretionary
+NKE,1,16,7,9,43.8,56.2,-2.43,-3.59,-4.68,NKE,Information Technology
+NKE,2,16,9,7,56.2,43.8,0.74,5.78,-3.24,NKE,Information Technology
+NKE,3,16,8,8,50.0,50.0,2.81,2.63,1.53,NKE,Information Technology
+NKE,4,16,12,4,75.0,25.0,7.4,8.37,2.67,NKE,Information Technology
+NOW,1,14,9,5,64.3,35.7,3.32,7.45,1.98,"ServiceNow, Inc.",Information Technology
+NOW,2,14,11,3,78.6,21.4,9.96,9.21,5.15,"ServiceNow, Inc.",Information Technology
+NOW,3,15,9,6,60.0,40.0,10.68,13.23,8.35,"ServiceNow, Inc.",Information Technology
+NOW,4,15,10,5,66.7,33.3,3.27,7.82,-1.03,"ServiceNow, Inc.",Information Technology
+NVDA,1,16,13,3,81.2,18.8,17.03,9.8,14.77,NVIDIA Corporation - Common Stock,Information Technology
+NVDA,2,16,11,5,68.8,31.2,15.31,12.43,11.33,NVIDIA Corporation - Common Stock,Information Technology
+NVDA,3,16,11,5,68.8,31.2,10.23,8.74,8.95,NVIDIA Corporation - Common Stock,Information Technology
+NVDA,4,16,11,5,68.8,31.2,9.17,9.86,4.44,NVIDIA Corporation - Common Stock,Information Technology
+ORCL,1,16,9,7,56.2,43.8,3.51,7.12,1.25,Oracle Corporation,Information Technology
+ORCL,2,16,9,7,56.2,43.8,7.17,1.24,3.19,Oracle Corporation,Information Technology
+ORCL,3,16,7,9,43.8,56.2,2.26,-3.11,0.97,Oracle Corporation,Information Technology
+ORCL,4,16,7,9,43.8,56.2,0.42,-0.92,-4.31,Oracle Corporation,Information Technology
+PEP,1,16,10,6,62.5,37.5,1.87,1.49,-0.39,"PepsiCo, Inc.",Consumer Staples
+PEP,2,16,12,4,75.0,25.0,2.22,4.03,-1.76,"PepsiCo, Inc.",Consumer Staples
+PEP,3,16,10,6,62.5,37.5,0.49,2.01,-0.79,"PepsiCo, Inc.",Consumer Staples
+PEP,4,16,12,4,75.0,25.0,4.15,4.12,-0.57,"PepsiCo, Inc.",Consumer Staples
+PFE,1,16,7,9,43.8,56.2,0.97,-0.81,-1.28,PFE,Information Technology
+PFE,2,16,9,7,56.2,43.8,0.54,1.64,-3.44,PFE,Information Technology
+PFE,3,16,10,6,62.5,37.5,2.3,4.15,1.01,PFE,Information Technology
+PFE,4,16,10,6,62.5,37.5,5.89,2.99,1.16,PFE,Information Technology
+PG,1,16,8,8,50.0,50.0,0.65,0.63,-1.6,Procter & Gamble Company (The) Common Stock,Consumer Discretionary
+PG,2,16,9,7,56.2,43.8,0.23,0.46,-3.75,Procter & Gamble Company (The) Common Stock,Consumer Discretionary
+PG,3,16,10,6,62.5,37.5,3.51,4.74,2.22,Procter & Gamble Company (The) Common Stock,Consumer Discretionary
+PG,4,16,12,4,75.0,25.0,5.81,4.1,1.08,Procter & Gamble Company (The) Common Stock,Consumer Discretionary
+PGR,1,16,14,2,87.5,12.5,11.34,10.82,9.08,The Progressive Corporation,Financials
+PGR,2,16,11,5,68.8,31.2,1.61,1.64,-2.37,The Progressive Corporation,Financials
+PGR,3,16,8,8,50.0,50.0,2.86,-0.14,1.58,The Progressive Corporation,Financials
+PGR,4,16,12,4,75.0,25.0,4.86,6.61,0.14,The Progressive Corporation,Financials
+PLD,1,16,11,5,68.8,31.2,6.6,5.54,4.34,PLD,Information Technology
+PLD,2,16,9,7,56.2,43.8,0.41,0.93,-3.57,PLD,Information Technology
+PLD,3,16,11,5,68.8,31.2,1.02,5.7,-0.27,PLD,Information Technology
+PLD,4,16,10,6,62.5,37.5,6.42,5.12,1.69,PLD,Information Technology
+RTX,1,16,13,3,81.2,18.8,5.87,6.8,3.61,RTX Corporation,Industrials
+RTX,2,16,10,6,62.5,37.5,2.03,1.11,-1.95,RTX Corporation,Industrials
+RTX,3,16,7,9,43.8,56.2,-1.46,-1.07,-2.75,RTX Corporation,Industrials
+RTX,4,16,14,2,87.5,12.5,7.52,8.61,2.79,RTX Corporation,Industrials
+SMCI,1,16,10,6,62.5,37.5,24.69,11.02,22.43,"Super Micro Computer, Inc.",Information Technology
+SMCI,2,16,8,8,50.0,50.0,14.83,-1.22,10.85,"Super Micro Computer, Inc.",Information Technology
+SMCI,3,16,6,10,37.5,62.5,-0.52,-4.07,-1.8,"Super Micro Computer, Inc.",Information Technology
+SMCI,4,16,9,7,56.2,43.8,2.4,11.11,-2.33,"Super Micro Computer, Inc.",Information Technology
+SO,1,16,11,5,68.8,31.2,3.59,2.89,1.33,The Southern Company,Utilities
+SO,2,16,9,7,56.2,43.8,1.78,1.31,-2.2,The Southern Company,Utilities
+SO,3,16,9,7,56.2,43.8,1.4,2.01,0.11,The Southern Company,Utilities
+SO,4,16,11,5,68.8,31.2,4.24,5.06,-0.49,The Southern Company,Utilities
+TMO,1,16,10,6,62.5,37.5,4.42,6.04,2.16,Thermo Fisher Scientific Inc Common Stock,Industrials
+TMO,2,16,9,7,56.2,43.8,2.49,1.26,-1.49,Thermo Fisher Scientific Inc Common Stock,Industrials
+TMO,3,16,11,5,68.8,31.2,7.78,8.8,6.49,Thermo Fisher Scientific Inc Common Stock,Industrials
+TMO,4,16,12,4,75.0,25.0,4.54,5.24,-0.19,Thermo Fisher Scientific Inc Common Stock,Industrials
+TSLA,1,16,8,8,50.0,50.0,4.58,-1.15,2.33,"Tesla, Inc.  - Common Stock",Industrials
+TSLA,2,16,12,4,75.0,25.0,25.34,14.15,21.36,"Tesla, Inc.  - Common Stock",Industrials
+TSLA,3,16,8,8,50.0,50.0,13.1,-1.4,11.81,"Tesla, Inc.  - Common Stock",Industrials
+TSLA,4,16,10,6,62.5,37.5,12.77,6.44,8.04,"Tesla, Inc.  - Common Stock",Industrials
+TSM,1,16,12,4,75.0,25.0,7.37,10.67,5.11,Taiwan Semiconductor Manufacturing Co.,Information Technology
+TSM,2,16,11,5,68.8,31.2,7.99,6.71,4.01,Taiwan Semiconductor Manufacturing Co.,Information Technology
+TSM,3,16,8,8,50.0,50.0,5.18,-1.62,3.89,Taiwan Semiconductor Manufacturing Co.,Information Technology
+TSM,4,16,13,3,81.2,18.8,8.08,9.18,3.35,Taiwan Semiconductor Manufacturing Co.,Information Technology
+UNH,1,16,10,6,62.5,37.5,3.04,3.42,0.78,UnitedHealth Group Incorporated Common Stock (DE),Health Care
+UNH,2,16,13,3,81.2,18.8,7.4,5.8,3.42,UnitedHealth Group Incorporated Common Stock (DE),Health Care
+UNH,3,16,8,8,50.0,50.0,1.46,2.46,0.18,UnitedHealth Group Incorporated Common Stock (DE),Health Care
+UNH,4,16,11,5,68.8,31.2,7.58,5.43,2.86,UnitedHealth Group Incorporated Common Stock (DE),Health Care
+V,1,16,10,6,62.5,37.5,4.13,4.95,1.88,Visa Inc.,Consumer Discretionary
+V,2,16,12,4,75.0,25.0,5.48,5.62,1.5,Visa Inc.,Consumer Discretionary
+V,3,16,11,5,68.8,31.2,3.15,3.79,1.86,Visa Inc.,Consumer Discretionary
+V,4,16,13,3,81.2,18.8,9.7,12.34,4.97,Visa Inc.,Consumer Discretionary
+WMT,1,16,9,7,56.2,43.8,2.55,3.21,0.29,Walmart Inc. - Common Stock,Consumer Discretionary
+WMT,2,16,11,5,68.8,31.2,2.63,4.96,-1.35,Walmart Inc. - Common Stock,Consumer Discretionary
+WMT,3,16,10,6,62.5,37.5,3.99,3.22,2.7,Walmart Inc. - Common Stock,Consumer Discretionary
+WMT,4,16,11,5,68.8,31.2,6.71,5.62,1.98,Walmart Inc. - Common Stock,Consumer Discretionary
+XOM,1,16,11,5,68.8,31.2,7.71,6.49,5.45,ExxonMobil Holdings Corporation Common Stock,Energy
+XOM,2,16,7,9,43.8,56.2,1.94,-0.4,-2.04,ExxonMobil Holdings Corporation Common Stock,Energy
+XOM,3,16,8,8,50.0,50.0,-0.9,-0.79,-2.19,ExxonMobil Holdings Corporation Common Stock,Energy
+XOM,4,16,10,6,62.5,37.5,4.03,3.65,-0.69,ExxonMobil Holdings Corporation Common Stock,Energy
+^GSPC,1,16,11,5,68.8,31.2,2.26,3.36,0.0,S&P 500 Index,Index
+^GSPC,2,16,12,4,75.0,25.0,3.98,3.36,0.0,S&P 500 Index,Index
+^GSPC,3,16,12,4,75.0,25.0,1.29,2.67,0.0,S&P 500 Index,Index
+^GSPC,4,16,13,3,81.2,18.8,4.73,6.29,0.0,S&P 500 Index,Index

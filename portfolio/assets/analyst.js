@@ -1521,6 +1521,377 @@
     }
   }
 
+  let rlMode = "oos_wealth";
+
+  function renderRlPortfolioSection() {
+    const rl = DATASET?.rl_portfolio;
+    const cagrEl = document.getElementById("rl-kpi-cagr");
+    if (!rl || !rl.available || !Array.isArray(rl.oos_series) || !rl.oos_series.length) {
+      if (cagrEl) cagrEl.textContent = "Unavailable";
+      showEmptyState("rl-portfolio-chart", "RL portfolio backtest dataset is not loaded.");
+      return;
+    }
+
+    const lb = rl.oos_leaderboard || [];
+    const ppoRow = lb.find((r) => r.strategy.includes("PPO")) || lb[0] || {};
+    const b60Row = lb.find((r) => r.strategy.includes("60/40")) || {};
+    const spRow = lb.find((r) => r.strategy.includes("S&P 500")) || {};
+    const ms = rl.multi_seed_stability || {};
+    const lat = rl.latest_allocation || {};
+
+    const cagrSubEl = document.getElementById("rl-kpi-cagr-sub");
+    const sharpeEl = document.getElementById("rl-kpi-sharpe");
+    const sharpeSubEl = document.getElementById("rl-kpi-sharpe-sub");
+    const mddEl = document.getElementById("rl-kpi-mdd");
+    const mddSubEl = document.getElementById("rl-kpi-mdd-sub");
+    const allocEl = document.getElementById("rl-kpi-alloc");
+    const allocSubEl = document.getElementById("rl-kpi-alloc-sub");
+    const methodEl = document.getElementById("rl-method-note");
+
+    if (cagrEl) cagrEl.textContent = `${fmtPct(ppoRow.cagr_pct)} (${fmtPct(ppoRow.total_return_pct)})`;
+    if (cagrSubEl) {
+      cagrSubEl.textContent = `$100 -> $${fmtNum(ppoRow.terminal_wealth_100, 2)} vs 60/40 $${fmtNum(b60Row.terminal_wealth_100, 2)} (${fmtPct(b60Row.cagr_pct)} CAGR)`;
+    }
+    if (sharpeEl) sharpeEl.textContent = `${fmtNum(ppoRow.sharpe, 2)} / ${fmtNum(ppoRow.sortino, 2)}`;
+    if (sharpeSubEl) {
+      sharpeSubEl.textContent = `Seed Sharpe ${fmtNum(ms.oos_sharpe_mean, 2)} ± ${fmtNum(ms.oos_sharpe_std, 2)} · 60/40 Sharpe ${fmtNum(b60Row.sharpe, 2)}`;
+    }
+    if (mddEl) mddEl.textContent = `${fmtPct(ppoRow.max_drawdown_pct)} · Calmar ${fmtNum(ppoRow.calmar, 2)}`;
+    if (mddSubEl) {
+      mddSubEl.textContent = `vs 60/40 Max DD ${fmtPct(b60Row.max_drawdown_pct)} · ^GSPC Max DD ${fmtPct(spRow.max_drawdown_pct)}`;
+    }
+    if (allocEl) {
+      const eqTotal = (lat.tech_equities_pct || 0) + (lat.sp500_index_pct || 0);
+      const defTotal = (lat.treasury_bonds_pct || 0) + (lat.cash_shy_pct || 0);
+      allocEl.textContent = `${fmtNum(eqTotal, 1)}% Eq / ${fmtNum(defTotal, 1)}% Def`;
+    }
+    if (allocSubEl) {
+      allocSubEl.textContent = `Tech ${fmtNum(lat.tech_equities_pct, 1)}% · ^GSPC ${fmtNum(lat.sp500_index_pct, 1)}% · Bonds ${fmtNum(lat.treasury_bonds_pct, 1)}% · SHY ${fmtNum(lat.cash_shy_pct, 1)}% (${lat.as_of_date || "--"})`;
+    }
+    if (methodEl) methodEl.textContent = rl.methodology || "";
+
+    const lbTbody = document.getElementById("rl-leaderboard-tbody");
+    if (lbTbody) {
+      lbTbody.innerHTML = lb
+        .map(
+          (r) => `
+        <tr>
+          <td><strong>${escapeHtml(r.strategy)}</strong></td>
+          <td class="mono">$${fmtNum(r.terminal_wealth_100, 2)}</td>
+          <td class="${clsSigned(r.cagr_pct)} mono">${fmtPct(r.cagr_pct)}</td>
+          <td class="${clsSigned(r.total_return_pct)} mono">${fmtPct(r.total_return_pct)}</td>
+          <td class="mono">${fmtNum(r.ann_vol_pct, 2)}%</td>
+          <td class="${clsSigned(r.sharpe)} mono"><strong>${fmtNum(r.sharpe, 3)}</strong></td>
+          <td class="${clsSigned(r.sortino)} mono">${fmtNum(r.sortino, 3)}</td>
+          <td class="neg mono">${fmtPct(r.max_drawdown_pct)}</td>
+          <td class="mono">${fmtNum(r.calmar, 2)}</td>
+          <td class="mono">${fmtNum(r.ann_turnover_pct, 1)}%</td>
+        </tr>
+      `
+        )
+        .join("");
+    }
+
+    const regTbody = document.getElementById("rl-regime-tbody");
+    if (regTbody) {
+      const regimes = rl.regime_breakdown || [];
+      regTbody.innerHTML = regimes
+        .map(
+          (r) => `
+        <tr>
+          <td><strong>${escapeHtml(r.regime)}</strong><br><span class="badge-note">${escapeHtml(r.description)}</span></td>
+          <td class="mono">${escapeHtml(r.start_date.slice(0, 7))} -> ${escapeHtml(r.end_date.slice(0, 7))}</td>
+          <td class="${clsSigned(r.rl_return_pct)} mono"><strong>${fmtPct(r.rl_return_pct)}</strong> <span class="badge-note">(DD ${fmtPct(r.rl_max_dd_pct)})</span></td>
+          <td class="${clsSigned(r.bench_60_40_return_pct)} mono">${fmtPct(r.bench_60_40_return_pct)} <span class="badge-note">(DD ${fmtPct(r.bench_60_40_max_dd_pct)})</span></td>
+          <td class="${clsSigned(r.sp500_return_pct)} mono">${fmtPct(r.sp500_return_pct)}</td>
+          <td class="mono">Tech ${fmtNum(r.avg_tech_weight_pct, 1)}% · ^GSPC ${fmtNum(r.avg_sp500_weight_pct, 1)}% · Bonds ${fmtNum(r.avg_bond_weight_pct, 1)}% · SHY ${fmtNum(r.avg_cash_shy_weight_pct, 1)}%</td>
+        </tr>
+      `
+        )
+        .join("");
+    }
+
+    renderRlPortfolioChart();
+  }
+
+  function renderRlPortfolioChart() {
+    const container = document.getElementById("rl-portfolio-chart");
+    const rl = DATASET?.rl_portfolio;
+    if (!container || !rl || !rl.available) return;
+
+    const pts = rlMode === "walk_forward" ? rl.walk_forward_series || [] : rl.oos_series || [];
+    if (pts.length < 3) {
+      showEmptyState("rl-portfolio-chart", "Insufficient RL evaluation steps.");
+      return;
+    }
+
+    const titleEl = document.getElementById("rl-chart-title");
+    const badgeEl = document.getElementById("rl-source-badge");
+    if (titleEl) {
+      if (rlMode === "oos_wealth") titleEl.textContent = "Out-of-Sample Cumulative Wealth ($100 Base, 2022–2026): PPO Macro-RL vs Baselines";
+      else if (rlMode === "weights") titleEl.textContent = "PPO Agent Dynamic Sleeve Allocation (2022–2026, %): Tech · ^GSPC · Treasury Bonds · SHY Cash";
+      else if (rlMode === "drawdown") titleEl.textContent = "Out-of-Sample Underwater Drawdown (%): PPO Macro-RL vs 60/40 vs S&P 500";
+      else titleEl.textContent = "Full Walk-Forward Wealth Trajectory (2005–2026, Log Scale): Train · Validation · Out-of-Sample";
+    }
+    if (badgeEl) {
+      badgeEl.textContent = `${pts[0].d.slice(0, 7)} -> ${pts[pts.length - 1].d.slice(0, 7)} (${pts.length} steps)`;
+    }
+
+    const width = 920;
+    const height = 370;
+    const padL = 64;
+    const padR = 26;
+    const padT = 22;
+    const padB = 34;
+    const plotW = width - padL - padR;
+    const plotH = height - padT - padB;
+    const n = pts.length;
+    const mapX = (i) => padL + (i / Math.max(n - 1, 1)) * plotW;
+
+    let seriesList = [];
+    let yMin = 0;
+    let yMax = 100;
+    let useLog = rlMode === "walk_forward";
+
+    if (rlMode === "oos_wealth") {
+      seriesList = [
+        { key: "rl", label: "PPO Macro-RL Ensemble", color: "#116947", width: 2.4, dash: "" },
+        { key: "b60", label: "60/40 Benchmark (^GSPC/IEF)", color: "#b43622", width: 1.9, dash: "" },
+        { key: "sp", label: "S&P 500 (^GSPC)", color: "#111a17", width: 1.8, dash: "4 3" },
+        { key: "ew", label: "Equal-Weight (1/N)", color: "#1d4ed8", width: 1.6, dash: "3 3" },
+      ];
+    } else if (rlMode === "weights") {
+      seriesList = [
+        { key: "w_tech", label: "US Tech Giants Sleeve (%)", color: "#116947", width: 2.1, dash: "" },
+        { key: "w_sp", label: "S&P 500 Index Sleeve (%)", color: "#111a17", width: 1.85, dash: "" },
+        { key: "w_bond", label: "Treasury Bonds IEF+TLT (%)", color: "#b43622", width: 1.85, dash: "" },
+        { key: "w_cash", label: "SHY 1-3Y Cash Defense (%)", color: "#1d4ed8", width: 1.95, dash: "4 3" },
+      ];
+    } else if (rlMode === "drawdown") {
+      seriesList = [
+        { key: "rl_dd", label: "PPO Macro-RL Drawdown (%)", color: "#116947", width: 2.3, dash: "" },
+        { key: "b60_dd", label: "60/40 Benchmark Drawdown (%)", color: "#b43622", width: 1.85, dash: "" },
+        { key: "sp_dd", label: "S&P 500 Drawdown (%)", color: "#111a17", width: 1.7, dash: "4 3" },
+      ];
+    } else {
+      seriesList = [
+        { key: "rl", label: "PPO Macro-RL Ensemble (Log $100 Base)", color: "#116947", width: 2.35, dash: "" },
+        { key: "b60", label: "60/40 Benchmark", color: "#b43622", width: 1.85, dash: "" },
+        { key: "sp", label: "S&P 500 (^GSPC)", color: "#111a17", width: 1.75, dash: "4 3" },
+      ];
+    }
+
+    if (rlMode === "weights") {
+      yMin = 0;
+      yMax = 100;
+    } else {
+      const allVals = [];
+      seriesList.forEach((s) => {
+        pts.forEach((p) => {
+          const v = p[s.key];
+          if (v !== null && v !== undefined && Number.isFinite(v) && (!useLog || v > 0)) allVals.push(v);
+        });
+      });
+      yMin = Math.min(...allVals);
+      yMax = Math.max(...allVals);
+      if (useLog) {
+        yMin = Math.max(50, yMin * 0.9);
+        yMax = yMax * 1.12;
+      } else {
+        const pad = (yMax - yMin || 1) * 0.08;
+        yMin -= pad;
+        yMax += pad;
+        if (rlMode === "drawdown") yMax = 0.5;
+      }
+    }
+
+    const mapY = (v) => {
+      if (useLog) {
+        const lv = Math.log10(Math.max(v, 1));
+        const lo = Math.log10(yMin);
+        const hi = Math.log10(yMax);
+        return padT + plotH - ((lv - lo) / (hi - lo || 1)) * plotH;
+      }
+      return padT + plotH - ((v - yMin) / (yMax - yMin || 1)) * plotH;
+    };
+
+    const yTicks = useLog
+      ? [100, 200, 400, 800, 1600, 3200, 6400].filter((c) => c >= yMin * 0.9 && c <= yMax * 1.1)
+      : buildNiceLinearTicks(yMin, yMax, 5);
+
+    const gridSvg = yTicks
+      .map((tv) => {
+        const y = mapY(tv);
+        if (y < padT - 4 || y > padT + plotH + 4) return "";
+        const lbl = rlMode === "weights" || rlMode === "drawdown" ? `${tv.toFixed(0)}%` : `$${formatCompactIndex(tv)}`;
+        return `
+          <line x1="${padL}" y1="${y.toFixed(1)}" x2="${width - padR}" y2="${y.toFixed(1)}" stroke="rgba(17,26,23,0.09)" stroke-dasharray="3 3" />
+          <text x="${padL - 8}" y="${(y + 4).toFixed(1)}" text-anchor="end" font-family="DM Mono, monospace" font-size="11" fill="#111a17">${escapeHtml(lbl)}</text>
+        `;
+      })
+      .join("");
+
+    const stepIdx = Math.max(1, Math.floor((n - 1) / 6));
+    const xIndices = [];
+    for (let i = 0; i < n; i += stepIdx) xIndices.push(i);
+    if (xIndices[xIndices.length - 1] !== n - 1) {
+      if (mapX(n - 1) - mapX(xIndices[xIndices.length - 1]) < 64) xIndices.pop();
+      xIndices.push(n - 1);
+    }
+    const xTicksSvg = xIndices
+      .map((i) => {
+        const x = mapX(i);
+        const lbl = rlMode === "walk_forward" ? pts[i].d.slice(0, 4) : pts[i].d.slice(0, 7);
+        return `
+          <line x1="${x.toFixed(1)}" y1="${padT + plotH}" x2="${x.toFixed(1)}" y2="${padT + plotH + 5}" stroke="rgba(17,26,23,0.28)" />
+          <text x="${x.toFixed(1)}" y="${padT + plotH + 20}" text-anchor="middle" font-family="DM Mono, monospace" font-size="11" fill="#52625b">${escapeHtml(lbl)}</text>
+        `;
+      })
+      .join("");
+
+    const buildPath = (key) => {
+      let d = "";
+      let pen = false;
+      pts.forEach((p, i) => {
+        const v = p[key];
+        if (v === null || v === undefined || !Number.isFinite(v) || (useLog && v <= 0)) {
+          pen = false;
+          return;
+        }
+        const x = mapX(i).toFixed(1);
+        const y = mapY(v).toFixed(1);
+        d += pen ? ` L ${x} ${y}` : ` M ${x} ${y}`;
+        pen = true;
+      });
+      return d.trim();
+    };
+
+    let extraSvg = "";
+    if (rlMode === "walk_forward") {
+      const valIdx = pts.findIndex((p) => p.split === "VAL");
+      const oosIdx = pts.findIndex((p) => p.split === "OOS");
+      [
+        { idx: valIdx, txt: "2018 Validation" },
+        { idx: oosIdx, txt: "2022 Out-of-Sample" },
+      ].forEach((m) => {
+        if (m.idx > 0) {
+          const mx = mapX(m.idx);
+          extraSvg += `
+            <line x1="${mx.toFixed(1)}" y1="${padT}" x2="${mx.toFixed(1)}" y2="${padT + plotH}" stroke="#b43622" stroke-width="1.2" stroke-dasharray="4 3" />
+            <text x="${(mx + 5).toFixed(1)}" y="${padT + 14}" font-family="DM Mono, monospace" font-size="10" fill="#b43622">${escapeHtml(m.txt)}</text>
+          `;
+        }
+      });
+    }
+
+    const pathsSvg = seriesList
+      .map((s) => {
+        const d = buildPath(s.key);
+        return d
+          ? `<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.width}" ${s.dash ? `stroke-dasharray="${s.dash}"` : ""} stroke-linejoin="round" stroke-linecap="round" />`
+          : "";
+      })
+      .join("");
+
+    container.innerHTML = `
+      <div class="chart-readout" id="rl-readout" aria-live="polite">
+        <span id="rl-readout-date">Hover or use Left/Right arrows</span>
+        <span id="rl-readout-vals"></span>
+      </div>
+      <div class="chart-interactive-surface" id="rl-surface" tabindex="0" role="region" aria-label="Macro-Aware RL Portfolio evaluation chart. Use left and right arrow keys to inspect each rebalance date.">
+        <svg viewBox="0 0 ${width} ${height}" aria-hidden="true">
+          <rect x="0" y="0" width="${width}" height="${height}" fill="#fbfaf5" rx="6" />
+          ${gridSvg}
+          ${xTicksSvg}
+          ${extraSvg}
+          <line x1="${padL}" y1="${padT}" x2="${padL}" y2="${padT + plotH}" stroke="rgba(17,26,23,0.22)" />
+          <line x1="${padL}" y1="${padT + plotH}" x2="${width - padR}" y2="${padT + plotH}" stroke="rgba(17,26,23,0.28)" />
+          ${pathsSvg}
+          <line id="rl-crosshair" x1="0" y1="${padT}" x2="0" y2="${padT + plotH}" stroke="#111a17" stroke-width="1.2" stroke-dasharray="3 3" visibility="hidden" />
+          <circle id="rl-dot-primary" r="4" fill="#116947" stroke="#fbfaf5" stroke-width="1.5" visibility="hidden" />
+        </svg>
+      </div>
+      <div class="chart-legend">
+        ${seriesList
+          .map(
+            (s) =>
+              `<span class="legend-item"><span class="legend-swatch ${s.dash ? "is-dashed" : ""}" style="${s.dash ? `color:${s.color}` : `background:${s.color}`}"></span>${escapeHtml(s.label)}</span>`
+          )
+          .join("")}
+      </div>
+    `;
+
+    const surface = document.getElementById("rl-surface");
+    const svgEl = surface?.querySelector("svg");
+    const crosshair = document.getElementById("rl-crosshair");
+    const dotP = document.getElementById("rl-dot-primary");
+    const roDate = document.getElementById("rl-readout-date");
+    const roVals = document.getElementById("rl-readout-vals");
+    let curIdx = n - 1;
+
+    function updateRlReadout(idx) {
+      const c = Math.max(0, Math.min(n - 1, idx));
+      curIdx = c;
+      const p = pts[c];
+      const cx = mapX(c);
+      if (crosshair) {
+        crosshair.setAttribute("x1", cx.toFixed(1));
+        crosshair.setAttribute("x2", cx.toFixed(1));
+        crosshair.setAttribute("visibility", "visible");
+      }
+      const primaryKey = seriesList[0].key;
+      const pv = p[primaryKey];
+      if (dotP && pv !== null && pv !== undefined && Number.isFinite(pv)) {
+        dotP.setAttribute("cx", cx.toFixed(1));
+        dotP.setAttribute("cy", mapY(pv).toFixed(1));
+        dotP.setAttribute("visibility", "visible");
+      }
+      if (roDate) {
+        const tag = p.split ? ` · ${p.split}` : " · OOS";
+        roDate.innerHTML = `<strong>${escapeHtml(p.d)}</strong>${escapeHtml(tag)}`;
+      }
+      if (roVals) {
+        if (rlMode === "weights") {
+          roVals.innerHTML = `Tech: <strong>${fmtNum(p.w_tech, 1)}%</strong> · ^GSPC: <strong>${fmtNum(p.w_sp, 1)}%</strong> · Bonds (IEF+TLT): <strong>${fmtNum(p.w_bond, 1)}%</strong> · SHY Cash: <strong>${fmtNum(p.w_cash, 1)}%</strong>`;
+        } else if (rlMode === "drawdown") {
+          roVals.innerHTML = `PPO RL DD: <strong>${fmtPct(p.rl_dd)}</strong> · 60/40 DD: <strong>${fmtPct(p.b60_dd)}</strong> · ^GSPC DD: ${fmtPct(p.sp_dd)}`;
+        } else if (rlMode === "walk_forward") {
+          roVals.innerHTML = `PPO RL: <strong>$${formatCompactIndex(p.rl)}</strong> · 60/40: <strong>$${formatCompactIndex(p.b60)}</strong> · ^GSPC: $${formatCompactIndex(p.sp)}`;
+        } else {
+          roVals.innerHTML = `PPO RL: <strong>$${fmtNum(p.rl, 2)}</strong> · 60/40: <strong>$${fmtNum(p.b60, 2)}</strong> · ^GSPC: $${fmtNum(p.sp, 2)} · 1/N: $${fmtNum(p.ew, 2)} · Tech/Def: ${fmtNum((p.w_tech || 0) + (p.w_sp || 0), 0)}%/${fmtNum((p.w_bond || 0) + (p.w_cash || 0), 0)}%`;
+        }
+      }
+    }
+
+    updateRlReadout(n - 1);
+    if (surface && svgEl) {
+      surface.addEventListener("pointermove", (e) => {
+        const rect = svgEl.getBoundingClientRect();
+        if (!rect.width) return;
+        const svgX = ((e.clientX - rect.left) / rect.width) * width;
+        const ratio = Math.max(0, Math.min(1, (svgX - padL) / plotW));
+        updateRlReadout(Math.round(ratio * (n - 1)));
+      });
+      surface.addEventListener("pointerleave", () => updateRlReadout(n - 1));
+      surface.addEventListener("keydown", (e) => {
+        const step = e.shiftKey ? 8 : 1;
+        if (e.key === "ArrowLeft") {
+          e.preventDefault();
+          updateRlReadout(curIdx - step);
+        } else if (e.key === "ArrowRight") {
+          e.preventDefault();
+          updateRlReadout(curIdx + step);
+        } else if (e.key === "Home") {
+          e.preventDefault();
+          updateRlReadout(0);
+        } else if (e.key === "End") {
+          e.preventDefault();
+          updateRlReadout(n - 1);
+        }
+      });
+    }
+  }
+
   function renderSpotCheckTable() {
     const tbody = document.getElementById("spot-check-tbody");
     if (!tbody || !DATASET) return;
@@ -1680,6 +2051,14 @@
     const anomFilter = document.getElementById("anom-ticker-filter");
     if (anomFilter) anomFilter.addEventListener("change", renderAnomaliesTable);
 
+    const rlModeSel = document.getElementById("rl-mode-select");
+    if (rlModeSel) {
+      rlModeSel.addEventListener("change", () => {
+        rlMode = rlModeSel.value || "oos_wealth";
+        renderRlPortfolioChart();
+      });
+    }
+
     const retryBtn = document.getElementById("retry-dataset-btn");
     if (retryBtn) retryBtn.addEventListener("click", loadDataset);
   }
@@ -1697,6 +2076,7 @@
       renderExplorerTab();
       renderComparisonTab();
       renderHistoricalTreasurySection();
+      renderRlPortfolioSection();
       renderEventsTab();
     } catch (err) {
       console.error("Failed to load analyst_dataset.json:", err);
